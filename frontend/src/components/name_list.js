@@ -12,9 +12,7 @@ const NameList = () => {
   
     return (
       <div>
-        {/* loads all input values */}
         <FirstName addName={addName} />
-        {/* loop over user input */}
         {names.map((name, index) => (
           <FullName key={index} 
           firstName={name.firstName} 

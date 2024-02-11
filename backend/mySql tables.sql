@@ -1,12 +1,16 @@
 /* This is for MySQL */
 CREATE TABLE users (
-  userId BIGINT NOT NULL AUTO_INCREMENT,
-  username VARCHAR(255) NULL,
-  email VARCHAR(255) NULL,
-  password VARCHAR(255) NULL,
-  building VARCHAR(10) NULL,
+  user_id BIGINT NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR(255) NULL,
+  last_name VARCHAR(255) NULL,
+  age VARCHAR(255) NULL,
+  address1 VARCHAR(255) NULL,
+  address2 VARCHAR(255) NULL,
+  city VARCHAR(255) NULL,
+  state VARCHAR(255) NULL,
+  zip_code VARCHAR(255) NULL,
   token TEXT NULL,
-  PRIMARY KEY (userId)
+  PRIMARY KEY (user_id)
 );
 
 CREATE TABLE products (

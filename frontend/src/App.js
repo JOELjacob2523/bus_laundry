@@ -1,7 +1,7 @@
 import './App.css';
 import NameList from './components/name_list';
 import Header from './components/header';
-import apiCall from './components/try_axios';
+import {apiCall} from './components/try_axios';
 
 apiCall()
 
