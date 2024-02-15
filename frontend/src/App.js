@@ -1,16 +1,22 @@
 import './App.css';
-import NameList from './components/name_list';
-import Header from './components/header';
-import {apiCall} from './components/try_axios';
-
-apiCall()
+import Buttons from './components/main_page';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import HebrewDate from './components/hebrew_date';
 
 function App() {
+
   return(
-    <div>
-    <Header />
-    <NameList />
-    </div>
+    <>
+    < HebrewDate />
+
+    <Router>
+    <Routes>
+
+      <Route path='/' exact element={ <Buttons /> } />
+
+      </Routes>
+    </Router>
+    </>
   )
 }
 

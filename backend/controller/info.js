@@ -1,7 +1,8 @@
 const { knex } = require('../db')
 
 module.exports = {
-    insertUserInfo
+    insertUserInfo,
+    getUserInfo
 }
 
 async function insertUserInfo(userInfo) {
@@ -15,4 +16,8 @@ async function insertUserInfo(userInfo) {
         state: userInfo.state,
         zip_code: userInfo.zip_code
     })
+}
+
+async function getUserInfo() {
+    return await knex("users").select();
 }

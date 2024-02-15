@@ -1,12 +1,16 @@
 import axios from 'axios';
 
-export const apiCall = () => {
-    axios.get('http://localhost:3001').then((data) => {
-      //this console.log will be in our frontend console
-      console.log(data)
-      console.log(`This is my data ${data.data}`)
-    })
+export const getUserInfo = async () => {
+  try {
+     const response = await axios.get('http://localhost:3001/get_user_info')
+     const data = response.data;
+      return data;
+    }
+    catch(error) {
+      console.error('Error fetching data:', error);
+    }
   }
+  
 
   export const userInfo = async (e) => {
     e.preventDefault();

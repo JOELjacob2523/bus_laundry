@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import FullName from "./full_name"
-import FirstName from "./name";
+import FirstName from "./user_info";
 import './name_list.css';
 
 const NameList = () => {
