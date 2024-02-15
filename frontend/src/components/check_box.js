@@ -3,7 +3,7 @@ import { Checkbox, Divider } from 'antd';
 
 const CheckboxGroup = Checkbox.Group;
 
-const plainOptions = ['באסעס', 'וועש'];
+const plainOptions = ['באסעס', 'וועש', 'די וואך'];
 const defaultCheckedList = ['באסעס', 'וועש'];
 
 const CheckBox = () => {

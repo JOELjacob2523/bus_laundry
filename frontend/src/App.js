@@ -1,7 +1,8 @@
 import './App.css';
-import Buttons from './components/main_page';
+//import Buttons from './components/main_page';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HebrewDate from './components/hebrew_date';
+import CityTotal from './components/city_total';
 
 function App() {
 
@@ -12,7 +13,7 @@ function App() {
     <Router>
     <Routes>
 
-      <Route path='/' exact element={ <Buttons /> } />
+      <Route path='/' exact element={ <CityTotal /> } />
 
       </Routes>
     </Router>

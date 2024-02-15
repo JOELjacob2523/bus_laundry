@@ -1,16 +1,5 @@
-import axios from 'axios';
-
-export const getUserInfo = async () => {
-  try {
-     const response = await axios.get('http://localhost:3001/get_user_info')
-     const data = response.data;
-      return data;
-    }
-    catch(error) {
-      console.error('Error fetching data:', error);
-    }
-  }
-  
+import axios from 'axios';  
+let URL = `http://localhost:3001`;
 
   export const userInfo = async (e) => {
     e.preventDefault();
@@ -18,7 +7,7 @@ export const getUserInfo = async () => {
     const formData = new FormData(e.target);
 
     try{
-    const response = await axios.post('http://localhost:3001/user_info', formData, {
+    const response = await axios.post(`${URL}/user_info`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -33,3 +22,14 @@ export const getUserInfo = async () => {
     console.error('Error:', err.message);
   }
 }
+
+  export const getUserInfo = async () => {
+    try {
+      const response = await axios.get(`${URL}/get_user_info`)
+      const data = response.data;
+        return data;
+      }
+      catch(error) {
+        console.error('Error fetching data:', error);
+      }
+    }

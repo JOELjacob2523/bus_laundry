@@ -3,7 +3,7 @@ import FirstName from "./user_info";
 import FullInfo from "./full_name";
 import './css_components/main_page.css';
 
-const Buttons = () => {
+const Buttons = ({ cityCounts }) => {
 
   const [isFormVisible, setFormVisible] = useState(false)
   const [isVisible, setVisible] = useState(false)
@@ -35,10 +35,7 @@ const Buttons = () => {
   return (
     <>
     <h2 className="container text-center mt-5">
-        די קומענדיגע מאל וואס מען פארט אהיים איז ... עס זענען איינגעשריבן ? בחורים קיין  
-        <span className="fw-bold"> וויליאמסבורג </span>
-            און ? בחורים קיין <span className="fw-bold"> מאנסי </span>
-             און ? בחורים קיין <span className="fw-bold"> בארא פארק </span>
+    <span>?</span> די קומענדיגע מאל וואס מען פארט אהיים איז 
     </h2>
 
     <div className="container text-center mt-5 btn_div">
@@ -47,7 +44,7 @@ const Buttons = () => {
           className="btn btn-outline-primary btn-lg w-25"
           style={{ height: '150px'}}
           >
-           {isVisible ? 'Hide student detail' : 'View student detail'}
+           {isVisible ? 'Hide student detail' : 'בחורים אינפארמאציע'}
         </button>
         {isVisible && < FullInfo />}
 
@@ -55,7 +52,7 @@ const Buttons = () => {
           className="btn btn-outline-primary btn-lg w-25"
           style={{ height: '150px'}}
           >
-          {isFormVisible ? 'Hide add student' : 'Add student'}
+          {isFormVisible ? 'Hide add student' : 'לייג צו נאך א בחור'}
         </button>
       {isFormVisible && < FirstName />}
     </div>
@@ -65,21 +62,21 @@ const Buttons = () => {
           className="btn btn-outline-primary btn-lg w-25"
           style={{ height: '150px'}}
           >
-          {isWiliVisible ? 'Hide Williamsburg' : 'Williamsburg'}
+          {isWiliVisible ? 'Hide Williamsburg' : `עס איז איינגעשריבן ${cityCounts.brooklyn || 0} בחורים קיין וויליאמסבורג`}
         </button>
 
         <button onClick={toggleVisibilityBP} 
           className="btn btn-outline-primary btn-lg w-25"
           style={{ height: '150px'}}
           >
-          {isBPVisible ? 'Hide Borough Park' : 'Borough Park'}
+          {isBPVisible ? 'Hide Boro Park' : `עס איז איינגעשריבן ${cityCounts.boropark || 0} בחורים קיין בארא פארק`}
         </button>
 
         <button onClick={toggleVisibilityMonsey} 
           className="btn btn-outline-primary btn-lg w-25"
           style={{ height: '150px'}}
           >
-          {isMonseyVisible ? 'Hide Monsey' : 'Monsey'}
+          {isMonseyVisible ? 'Hide Monsey' : `עס איז איינגעשריבן ${cityCounts.monsey || 0} בחורים קיין מאנסי`}
         </button>
     </div>
     </>

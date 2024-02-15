@@ -21,6 +21,6 @@ router.get('/get_user_info', async (req, res, next) => {
         console.error('Error inserting user credentials:', err)
         res.status(500).json({success: false, error: err.message})
     }
-})
+});
 
 module.exports = router;
