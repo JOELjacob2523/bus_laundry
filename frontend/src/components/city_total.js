@@ -1,6 +1,7 @@
 import {useState, useEffect } from 'react';
 import { getUserInfo } from './servers';
 import Buttons from './main_page';
+import MonseyStudents from './monsey_students';
 
 const CityTotal = () => {
     const [userInfo, setUserInfo] = useState([]);
@@ -18,7 +19,6 @@ const CityTotal = () => {
         
         fetchData();
     }, [])
-
 
     useEffect(() => {
 
@@ -44,7 +44,10 @@ const CityTotal = () => {
         <>
             {cityCounts && (
                 < Buttons cityCounts={cityCounts} />
-            )}           
+            )}
+            {userInfo.length > 0 && (
+                < MonseyStudents monseyStudents={userInfo}/> 
+            )}         
         </>
       );
 }
