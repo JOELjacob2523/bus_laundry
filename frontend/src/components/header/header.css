@@ -1,17 +1,44 @@
-.layout{
+.header_container{
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     position: sticky;    
     min-height: 100px;
-    margin-top: 20px;
-    background-color: aliceblue;
+    width: 100%;
+    top: 0;
+    background-color: lightgray;
 }
 
-/* .header_container{
-} */
+.KY_symbol_container{
+    display: flex;
+    flex-direction: row;
+    height: 100px;
+    width: 250px;
+    filter: drop-shadow(3px 3px 3px gray);
+}
 
-.header{
-    background-color:aliceblue;
+.KY_symbol_img {
+    height: 100px;
+    width: 250px;
+}
+
+.hebrew_date{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex: 1;
+}
+
+.profile_container{
+    width: 5%;
+}
+
+.profile_btn{
+    height: fit-content;
+    background-color: lightgray;
+}
+
+.profile{
+    font-size: xx-large;
 }

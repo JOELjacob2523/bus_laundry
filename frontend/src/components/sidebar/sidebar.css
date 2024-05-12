@@ -1,9 +1,10 @@
 .sider_container{
-    background-color: red;
-    width: 20%;
+    display: flex;
+    flex: 0 0 250px;
+    background-color: aliceblue;
+    filter: drop-shadow(3px 3px 3px gray);
 }
 
 .sider{
-    background-color: red;
-    color: white;
+    width: 100%;
 }

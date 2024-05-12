@@ -1,20 +1,23 @@
 import "./header.css";
+import KYSymbol from "../images/KYSymbol.png";
+import { CgProfile } from "react-icons/cg";
 import React from "react";
-import { Layout } from "antd";
 import HebrewDate from "../hebrewDate/hebrewDate";
-const { Header } = Layout;
+import { Button } from "antd";
 
 const PageHeader = () => (
-  <Layout className="layout">
-    <div className="header_container">
-      <Header className="header">
-        <div className="hebrew_date">
-          <HebrewDate />
-        </div>
-      </Header>
+  <div className="header_container">
+    <div className="KY_symbol_container">
+      {<img className="KY_symbol_img" alt="KYSymbol" src={KYSymbol} />}
     </div>
-    {/* <Content>Content</Content>
-        <Footer>Footer</Footer> */}
-  </Layout>
+    <div className="hebrew_date">
+      <HebrewDate />
+    </div>
+    <div className="profile_container">
+      <Button className="profile_btn">
+        <CgProfile className="profile" />
+      </Button>
+    </div>
+  </div>
 );
 export default PageHeader;

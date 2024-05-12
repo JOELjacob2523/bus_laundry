@@ -1,10 +1,9 @@
+import "./main_page.css";
 import React, { useState } from "react";
-import FirstName from "./user_info";
-import FullInfo from "./full_name";
-import MonseyStudents from "./monsey_students";
-import "./css_components/main_page.css";
-import PageHeader from "./header/header";
-import Sidebar from "./sidebar/sidebar";
+import FirstName from "../user_info";
+import FullInfo from "../full_name";
+import MonseyStudents from "../monsey_students";
+import Sidebar from "../sidebar/sidebar";
 
 const Buttons = ({ cityCounts }) => {
   const [visibility, setVisibility] = useState({
@@ -25,18 +24,16 @@ const Buttons = ({ cityCounts }) => {
   return (
     <div className="main_container">
       <div>
-        <PageHeader />
-        <Sidebar />
+        <h2 style={{ fontFamily: "OYoelTovia" }}>
+          <span>?</span> די קומענדיגע מאל וואס מען פארט אהיים איז פרשת
+        </h2>
       </div>
-      <h2 className="container text-center mt-5">
-        <span>?</span> די קומענדיגע מאל וואס מען פארט אהיים איז
-      </h2>
 
-      <div className="container text-center mt-5 btn_div">
+      <div>
         <button
           onClick={() => toggleVisibility("info")}
           className="btn btn-outline-primary btn-lg w-25"
-          style={{ height: "150px" }}
+          style={{ height: "150px", fontFamily: "OYoelTovia" }}
         >
           {visibility.info ? "Hide student detail" : "בחורים אינפארמאציע"}
         </button>
@@ -52,7 +49,7 @@ const Buttons = ({ cityCounts }) => {
         {visibility.form && <FirstName />}
       </div>
 
-      <div className="container text-center">
+      <div className="">
         <button
           onClick={() => toggleVisibility("wili")}
           className="btn btn-outline-primary btn-lg w-25"
