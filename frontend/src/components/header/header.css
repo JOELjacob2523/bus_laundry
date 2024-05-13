@@ -14,12 +14,10 @@
     display: flex;
     flex-direction: row;
     height: 100px;
-    width: 250px;
     filter: drop-shadow(3px 3px 3px gray);
 }
 
 .KY_symbol_img {
-    height: 100px;
     width: 250px;
 }
 
@@ -36,6 +34,7 @@
 
 .profile_btn{
     height: fit-content;
+    border: 0;
     background-color: lightgray;
 }
 

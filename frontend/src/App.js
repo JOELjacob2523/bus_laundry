@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CityTotal from "./components/city_total";
 import PageHeader from "./components/header/header";
 import Sidebar from "./components/sidebar/sidebar";
-import MainPage from "./components/mainPage2/main_page";
+import MainPage2 from "./components/mainPage2/main_page2";
 import PageFooter from "./components/footer/footer";
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
       <div className="sidebar">
         <Sidebar />
         <div className="main_page_container">
-          <MainPage />
+          <MainPage2 />
         </div>
       </div>
       {/* <div>

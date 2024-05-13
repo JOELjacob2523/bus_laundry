@@ -1,10 +1,10 @@
-import "./main_page.css";
+import "./main_page2.css";
 import React, { useState } from "react";
 import FirstName from "../user_info";
 import FullInfo from "../full_name";
 import MonseyStudents from "../monsey_students";
 
-const MainPage = ({ cityCounts }) => {
+const MainPage2 = ({ cityCounts }) => {
   const [visibility, setVisibility] = useState({
     form: false,
     info: false,
@@ -29,4 +29,4 @@ const MainPage = ({ cityCounts }) => {
   );
 };
 
-export default MainPage;
+export default MainPage2;

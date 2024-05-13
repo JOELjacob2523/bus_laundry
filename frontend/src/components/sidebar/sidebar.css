@@ -8,3 +8,8 @@
 .sider{
     width: 100%;
 }
+
+.sidebar_menu{
+    width: 250px;
+    background-color: aliceblue;
+}
