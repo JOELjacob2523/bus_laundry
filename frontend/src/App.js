@@ -5,6 +5,7 @@ import PageHeader from "./components/header/header";
 import Sidebar from "./components/sidebar/sidebar";
 import MainPage2 from "./components/mainPage2/main_page2";
 import PageFooter from "./components/footer/footer";
+import Buses from "./components/buses/buses";
 
 function App() {
   return (
@@ -15,17 +16,14 @@ function App() {
       <div className="sidebar">
         <Sidebar />
         <div className="main_page_container">
-          <MainPage2 />
+          <Routes>
+            <Route path="/" exact element={<MainPage2 />} />
+            <Route path="/buses" exact element={<Buses />} />
+          </Routes>
         </div>
       </div>
-      {/* <div>
-        <Router>
-          <Routes>
-            <Route path="/" exact element={<CityTotal />} />
-          </Routes>
-        </Router>
-      </div> */}
-      <div>
+
+      <div className="footer">
         <PageFooter />
       </div>
     </div>

@@ -1,9 +1,10 @@
 import "./header.css";
 import KYSymbol from "../../images/KYSymbol.png";
-import { CgProfile } from "react-icons/cg";
+import items from "./headerItems";
 import React from "react";
 import HebrewDate from "../hebrewDate/hebrewDate";
-import { Button } from "antd";
+import { Avatar, Dropdown } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 
 const PageHeader = () => (
   <div className="header_container">
@@ -16,9 +17,14 @@ const PageHeader = () => (
       <HebrewDate />
     </div>
     <div className="profile_container">
-      <Button className="profile_btn">
-        <CgProfile className="profile" />
-      </Button>
+      <Dropdown
+        menu={{
+          items,
+        }}
+        placement="bottomLeft"
+      >
+        <Avatar size={48} icon={<UserOutlined />} className="profile" />
+      </Dropdown>
     </div>
   </div>
 );

@@ -1,25 +1,37 @@
 import "./sidebar.css";
+import React, { useState } from "react";
 import items from "./sideBarItems";
 import Sider from "antd/es/layout/Sider";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
 
 const Sidebar = () => {
-  // const onClick = (e) => console.log("click ", e);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const onItemClick = (key) => {
+    setSelectedItem(key);
+  };
+
   return (
     <div className="sider_container">
       <Sider className="sider">
         <Menu
-          // onClick={onClick}
           className="sidebar_menu"
-          items={items.map((item) => ({
-            key: item.key,
-            label: item.label,
-            icon: item.icon,
-            path: <Link to={item.path}>{item.path}</Link>,
-          }))}
-        />
+          mode="inline"
+          defaultSelectedKeys={["1"]}
+          onSelect={({ key }) => onItemClick(key)}
+        >
+          {items.map((item) => (
+            <Menu.Item key={item.key} icon={item.icon}>
+              <Link to={item.path} style={{ textDecoration: "none" }}>
+                {item.label}
+              </Link>
+            </Menu.Item>
+          ))}
+        </Menu>
       </Sider>
+      {selectedItem &&
+        items.find((item) => item.key === selectedItem)?.component}
     </div>
   );
 };
