@@ -24,16 +24,3 @@
     /* padding: 2px 5px 2px 5px; */
     color: rgb(154, 154, 154);
 }
-
-.add_btn_container{
-    display: flex;
-    justify-content: center;
-    padding: 25px 50px 0 0;
-    height: 10%;
-}
-
-.add_btn{
-    height: 50%;
-    width: 100%;
-    font-size: larger;
-}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getUserInfo } from "./servers";
-import Buttons from "../components/mainPage/main_page";
+import Buttons from "./mainPage2/main_page2";
 import MonseyStudents from "./monsey_students";
 
 const CityTotal = () => {
@@ -36,13 +36,15 @@ const CityTotal = () => {
 
   cityData.forEach((cityItem) => {
     const cityName = cityItem.city;
-    cityCounts[cityName] += 1;
+    if (cityCounts[cityName] !== undefined) {
+      cityCounts[cityName] += 1;
+    }
   });
 
   return (
     <>
       {cityCounts && <Buttons cityCounts={cityCounts} />}
-      {userInfo.length > 0 && <MonseyStudents monseyStudents={userInfo} />}
+      {/* {userInfo.length > 0 && <MonseyStudents monseyStudents={userInfo} />} */}
     </>
   );
 };

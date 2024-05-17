@@ -17,7 +17,7 @@ function App() {
         <Sidebar />
         <div className="main_page_container">
           <Routes>
-            <Route path="/" exact element={<MainPage2 />} />
+            <Route path="/" exact element={<CityTotal />} />
             <Route path="/buses" exact element={<Buses />} />
           </Routes>
         </div>

@@ -1,6 +1,6 @@
 import "./main_page.css";
 import React, { useState } from "react";
-import FirstName from "../user_info";
+import FirstName from "../addUser/addUser";
 import FullInfo from "../full_name";
 import MonseyStudents from "../monsey_students";
 import Sidebar from "../sidebar/sidebar";

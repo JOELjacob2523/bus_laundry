@@ -7,6 +7,7 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import React, { useState, useEffect } from "react";
+import AddUser from "../addUser/newUserBtn";
 
 const Buses = () => {
   const [userInfo, setUserInfo] = useState([]);
@@ -22,18 +23,6 @@ const Buses = () => {
     };
     fetchData();
   }, []);
-
-  const data = userInfo.map((user) => ({
-    // user_id: user.user_id,
-    // first_name: user.first_name,
-    // last_name: user.last_name,
-    // age: user.age,
-    // address1: user.address1,
-    // address2: user.address2,
-    // city: user.city,
-    // state: user.state,
-    // zip_code: user.zip_code,
-  }));
 
   return (
     <div className="main_buses_container">
@@ -90,11 +79,7 @@ const Buses = () => {
           </Row>
         </div>
       </div>
-      <div className="add_btn_container">
-        <Button type="primary" className="add_btn">
-          Add New User
-        </Button>
-      </div>
+      <AddUser />
     </div>
   );
 };
