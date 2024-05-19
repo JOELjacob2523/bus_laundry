@@ -1,16 +1,18 @@
-import "./buses.css";
-import { getUserInfo } from "../servers";
-import { Button, Card, Col, Row } from "antd";
+import React, { useState, useEffect } from "react";
+import { Card, Col, Row, Pagination } from "antd";
 import {
   EditOutlined,
   EllipsisOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import React, { useState, useEffect } from "react";
+import "./buses.css";
+import { getUserInfo } from "../servers";
 import AddUser from "../addUser/newUserBtn";
 
 const Buses = () => {
   const [userInfo, setUserInfo] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(8); // Number of cards per page
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,21 +26,32 @@ const Buses = () => {
     fetchData();
   }, []);
 
+  const handlePageChange = (page, pageSize) => {
+    setCurrentPage(page);
+    setPageSize(pageSize);
+  };
+
+  // Calculate the cards to display on the current page
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const currentData = userInfo.slice(startIndex, endIndex);
+
   return (
     <div className="main_buses_container">
       <div className="content_container">
-        <div>
+        <div className="add_user_container">
+          <AddUser />
+        </div>
+        <div className="scrollable_cards">
           <Row gutter={16} className="row">
-            {userInfo.map((user) => (
+            {currentData.map((user) => (
               <Col
                 key={user.user_id}
                 xs={24}
                 sm={12}
                 md={8}
                 lg={6}
-                style={{
-                  margin: "5px",
-                }}
+                style={{ margin: "5px" }}
               >
                 <Card
                   title={`${user.first_name} ${user.last_name}`}
@@ -77,9 +90,18 @@ const Buses = () => {
               </Col>
             ))}
           </Row>
+          <div className="pagination">
+            <Pagination
+              current={currentPage}
+              pageSize={pageSize}
+              total={userInfo.length}
+              onChange={handlePageChange}
+              showSizeChanger
+              pageSizeOptions={["8", "16", "24", "32"]}
+            />
+          </div>
         </div>
       </div>
-      <AddUser />
     </div>
   );
 };

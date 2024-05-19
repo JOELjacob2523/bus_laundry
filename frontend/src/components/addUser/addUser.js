@@ -93,7 +93,6 @@ const FirstName = () => {
               type: "number",
               min: 10,
               max: 99,
-              required: true,
             },
           ]}
         >

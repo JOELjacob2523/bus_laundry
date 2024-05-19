@@ -5,6 +5,7 @@ import PageHeader from "./components/header/header";
 import Sidebar from "./components/sidebar/sidebar";
 import MainPage2 from "./components/mainPage2/main_page2";
 import PageFooter from "./components/footer/footer";
+// import Buses1 from "./components/buses/buses1";
 import Buses from "./components/buses/buses";
 
 function App() {

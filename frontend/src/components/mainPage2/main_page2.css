@@ -17,6 +17,10 @@
     font-family: "OYoelTovia";
 }
 
+.header2_card{
+    width: 80%;
+}
+
 .total_income_container{
     display: flex;
     flex-direction: row;
@@ -24,7 +28,13 @@
 }
 
 .total_income_card{
-    width: 40%;
+    width: 50%;
+}
+
+.total_income{
+    width: 100%;
+    text-align: center;
+    font-family: "OYoelTovia";
 }
 
 .student_amount_container{

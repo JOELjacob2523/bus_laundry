@@ -2,6 +2,7 @@ import "./main_page2.css";
 import React, { useState, useEffect } from "react";
 import { getUserInfo } from "../servers";
 import { Card } from "antd";
+import IncomeProgress from "../imcomeProgress/incomeProgress";
 
 const MainPage2 = ({ cityCounts }) => {
   const [userInfo, setUserInfo] = useState(null);
@@ -21,7 +22,7 @@ const MainPage2 = ({ cityCounts }) => {
   return (
     <div className="main_container">
       <div className="main_page_header_container">
-        <Card className="total_income_card">
+        <Card className="header2_card">
           <h2 className="header2">
             <span>?</span> די קומענדיגע מאל וואס מען פארט אהיים איז פרשת
           </h2>
@@ -29,10 +30,13 @@ const MainPage2 = ({ cityCounts }) => {
       </div>
       <div className="total_income_container">
         <Card title="Total income" className="total_income_card">
-          <div>
-            עס דארף זיין $? פאר זמן ה?, עס איז דא $?, עס דארף נאך אריינקומען $?
-            .
+          <div className="total_income">
+            <h4>
+              עס דארף זיין $? פאר זמן ה?, עס איז דא $?, עס דארף נאך אריינקומען
+              $? .
+            </h4>
           </div>
+          <IncomeProgress />
         </Card>
       </div>
 
