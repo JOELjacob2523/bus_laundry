@@ -1,23 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { Card, Col, Row, Pagination } from "antd";
-import {
-  EditOutlined,
-  EllipsisOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
 import "./buses.css";
-import { getUserInfo } from "../servers";
+import React, { useState, useEffect } from "react";
+import { Card, Col, Row, Pagination, Button } from "antd";
+import { EditOutlined, EllipsisOutlined } from "@ant-design/icons";
+import { getAllUserInfo } from "../../servers/getRequest";
 import AddUser from "../addUser/newUserBtn";
+import EditUser from "../editUser/editUserBtn";
 
 const Buses = () => {
   const [userInfo, setUserInfo] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(8); // Number of cards per page
+  const [pageSize, setPageSize] = useState(8);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getUserInfo();
+        const data = await getAllUserInfo();
         setUserInfo(data);
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -40,6 +37,7 @@ const Buses = () => {
     <div className="main_buses_container">
       <div className="content_container">
         <div className="add_user_container">
+          <div>Search</div>
           <AddUser />
         </div>
         <div className="scrollable_cards">
@@ -56,11 +54,7 @@ const Buses = () => {
                 <Card
                   title={`${user.first_name} ${user.last_name}`}
                   bordered={false}
-                  actions={[
-                    <SettingOutlined key="setting" />,
-                    <EditOutlined key="edit" />,
-                    <EllipsisOutlined key="ellipsis" />,
-                  ]}
+                  actions={[<EditUser />, <EllipsisOutlined key="ellipsis" />]}
                 >
                   <div className="user_info_container">
                     <div>Age</div>

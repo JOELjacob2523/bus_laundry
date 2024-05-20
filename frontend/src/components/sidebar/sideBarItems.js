@@ -24,7 +24,7 @@ const items = [
     key: "4",
     label: "דעטאלן",
     icon: <TbListDetails />,
-    path: "/mainPage2",
+    path: "/details",
   },
 ];
 

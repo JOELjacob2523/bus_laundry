@@ -20,14 +20,3 @@ export const userInfo = async (formData) => {
     throw err;
   }
 };
-
-//get user info
-export const getUserInfo = async () => {
-  try {
-    const response = await axios.get(`${URL}/get_user_info`);
-    const data = response.data;
-    return data;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
-};

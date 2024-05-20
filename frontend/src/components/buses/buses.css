@@ -15,7 +15,9 @@
 
   .add_user_container{
     display: flex;
-    justify-content: right;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
   }
   
   .scrollable_cards {

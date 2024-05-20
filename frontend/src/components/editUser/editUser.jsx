@@ -1,9 +1,8 @@
-import "bootstrap/dist/css/bootstrap.css";
+import "./editUser.css";
 import { Button, Form, Input, InputNumber, message } from "antd";
-import { userInfo } from "../../servers/postRequest";
-import React from "react";
+import { getUserInfo } from "../../servers/getRequest";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./addUser.css";
 
 const layout = {
   labelCol: {
@@ -27,20 +26,28 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const FirstName = () => {
+const EditUser = () => {
   const [messageApi, contextHolder] = message.useMessage();
+  const [userInfo, setUserInfo] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getUserInfo();
+      setUserInfo(data);
+    };
+    fetchData();
+  }, []);
 
   const navigate = useNavigate();
 
-  const onFinish = async (values) => {
+  const onFinish = () => {
     try {
-      await userInfo(values);
       messageApi.open({
         type: "success",
         content: "User added successfully",
       });
       setTimeout(() => {
-        navigate("/");
+        navigate("/buses");
       }, 2000);
     } catch (error) {
       console.error("Error adding user:", error);
@@ -54,13 +61,13 @@ const FirstName = () => {
   return (
     <>
       {contextHolder}
+      {/* {userInfo.map((user, index) => (
+        <div key={index}> */}
       <Form
         {...layout}
         onFinish={onFinish}
-        className="add_user_form"
+        className="edit_user_form"
         validateMessages={validateMessages}
-        action="/user_info"
-        method="POST"
       >
         <Form.Item
           name="first_name"
@@ -71,7 +78,7 @@ const FirstName = () => {
             },
           ]}
         >
-          <Input />
+          <Input disabled={true} />
         </Form.Item>
         <Form.Item
           name="last_name"
@@ -82,7 +89,7 @@ const FirstName = () => {
             },
           ]}
         >
-          <Input />
+          <Input disabled={true} />
         </Form.Item>
         <Form.Item
           name="age"
@@ -170,8 +177,10 @@ const FirstName = () => {
           </Button>
         </Form.Item>
       </Form>
+      {/* </div>
+      ))} */}
     </>
   );
 };
 
-export default FirstName;
+export default EditUser;

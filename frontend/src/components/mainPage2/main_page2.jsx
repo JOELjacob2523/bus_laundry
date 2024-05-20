@@ -1,6 +1,6 @@
 import "./main_page2.css";
 import React, { useState, useEffect } from "react";
-import { getUserInfo } from "../servers";
+import { getAllUserInfo } from "../../servers/getRequest";
 import { Card } from "antd";
 import IncomeProgress from "../imcomeProgress/incomeProgress";
 
@@ -9,7 +9,7 @@ const MainPage2 = ({ cityCounts }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getUserInfo();
+      const data = await getAllUserInfo();
       setUserInfo(data);
     };
     fetchData();

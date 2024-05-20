@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getUserInfo } from "./servers";
+import { getAllUserInfo } from "../servers/getRequest";
 import Buttons from "./mainPage2/main_page2";
 import MonseyStudents from "./monsey_students";
 
@@ -10,7 +10,7 @@ const CityTotal = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getUserInfo();
+        const data = await getAllUserInfo();
         setUserInfo(data);
       } catch (err) {
         console.error("Error fetching data:", err);
