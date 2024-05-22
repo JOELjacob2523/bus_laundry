@@ -16,8 +16,16 @@
   .add_user_container{
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    width: 100%;
+    padding: 0 100px 0 100px;
+  }
+
+  .add_user_inner{
+    padding-left: 100px;
+  }
+
+  .search_inner{
+    padding-left: 100px;
+    width: 70%;
   }
   
   .scrollable_cards {

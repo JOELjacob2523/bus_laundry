@@ -12,13 +12,20 @@ export const getAllUserInfo = async () => {
   }
 };
 
-//get user info
-export const getUserInfo = async () => {
+//get user info by ID
+export const getUserInfoById = async (userId, token) => {
   try {
-    const response = await axios.get(`${URL}/get_user_info`);
-    const data = response.data;
-    return data;
+    const response = await axios.get(`${URL}/get_user_info`, {
+      params: {
+        user_id: userId,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
+    throw error;
   }
 };

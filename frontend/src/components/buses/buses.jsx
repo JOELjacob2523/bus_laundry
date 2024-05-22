@@ -1,15 +1,15 @@
 import "./buses.css";
 import React, { useState, useEffect } from "react";
-import { Card, Col, Row, Pagination, Button } from "antd";
-import { EditOutlined, EllipsisOutlined } from "@ant-design/icons";
+import { Row, Col, Pagination } from "antd";
 import { getAllUserInfo } from "../../servers/getRequest";
 import AddUser from "../addUser/newUserBtn";
-import EditUser from "../editUser/editUserBtn";
+import UserCard from "../editUser/userCard";
+import SearchBar from "../search/search";
 
 const Buses = () => {
   const [userInfo, setUserInfo] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(8);
+  const [pageSize, setPageSize] = useState(32);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,11 +36,15 @@ const Buses = () => {
   return (
     <div className="main_buses_container">
       <div className="content_container">
-        <div className="add_user_container">
-          <div>Search</div>
-          <AddUser />
-        </div>
         <div className="scrollable_cards">
+          <div className="add_user_container">
+            <div className="search_inner">
+              <SearchBar />
+            </div>
+            <div className="add_user_inner">
+              <AddUser />
+            </div>
+          </div>
           <Row gutter={16} className="row">
             {currentData.map((user) => (
               <Col
@@ -51,36 +55,7 @@ const Buses = () => {
                 lg={6}
                 style={{ margin: "5px" }}
               >
-                <Card
-                  title={`${user.first_name} ${user.last_name}`}
-                  bordered={false}
-                  actions={[<EditUser />, <EllipsisOutlined key="ellipsis" />]}
-                >
-                  <div className="user_info_container">
-                    <div>Age</div>
-                    <div>{user.age}</div>
-                  </div>
-                  <div className="user_info_container">
-                    <div>Address 1</div>
-                    <div>{user.address1}</div>
-                  </div>
-                  <div className="user_info_container">
-                    <div>Address 2</div>
-                    <div>{user.address2}</div>
-                  </div>
-                  <div className="user_info_container">
-                    <div>City</div>
-                    <div>{user.city}</div>
-                  </div>
-                  <div className="user_info_container">
-                    <div>State</div>
-                    <div>{user.state}</div>
-                  </div>
-                  <div className="user_info_container">
-                    <div>Zip Code</div>
-                    <div>{user.zip_code}</div>
-                  </div>
-                </Card>
+                <UserCard user={user} />
               </Col>
             ))}
           </Row>
@@ -91,7 +66,7 @@ const Buses = () => {
               total={userInfo.length}
               onChange={handlePageChange}
               showSizeChanger
-              pageSizeOptions={["8", "16", "24", "32"]}
+              pageSizeOptions={["32", "50", "100", "200"]}
             />
           </div>
         </div>

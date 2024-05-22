@@ -40,7 +40,7 @@ const FirstName = () => {
         content: "User added successfully",
       });
       setTimeout(() => {
-        navigate("/");
+        navigate(0);
       }, 2000);
     } catch (error) {
       console.error("Error adding user:", error);

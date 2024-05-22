@@ -1,8 +1,9 @@
 import "./editUser.css";
-import { Button, Form, Input, InputNumber, message } from "antd";
-import { getUserInfo } from "../../servers/getRequest";
+import { Button, Form, Input, InputNumber, message, Spin, Modal } from "antd";
+import { getUserInfoById } from "../../servers/getRequest";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { updateUserInfo } from "../../servers/postRequest";
 
 const layout = {
   labelCol: {
@@ -26,49 +27,77 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const EditUser = () => {
+const EditUser = ({ userId, token }) => {
   const [messageApi, contextHolder] = message.useMessage();
-  const [userInfo, setUserInfo] = useState([]);
+  const [userInfo, setUserInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getUserInfo();
-      setUserInfo(data);
+      // if (!userId || !token) {
+      //   console.error("Missing userId or token");
+      //   setLoading(false);
+      //   return;
+      // }
+      try {
+        const data = await getUserInfoById(userId, token);
+        if (data && data.user_id) {
+          setUserInfo(data);
+        } else {
+          console.error("Invalid user data:", data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchData();
-  }, []);
+  }, [userId, token]);
 
-  const navigate = useNavigate();
-
-  const onFinish = () => {
+  const onFinish = async (values) => {
     try {
-      messageApi.open({
-        type: "success",
-        content: "User added successfully",
+      await updateUserInfo(values);
+      Modal.success({
+        title: "This is an success message",
+        content: "User updated successfully",
+        footer: null,
       });
       setTimeout(() => {
-        navigate("/buses");
+        navigate(0);
       }, 2000);
     } catch (error) {
-      console.error("Error adding user:", error);
-      messageApi.open({
-        type: "error",
-        content: "Failed to add user",
+      console.error("Error updating user:", error);
+      Modal.error({
+        title: "This is an error message",
+        content: "Failed to update user",
+        footer: null,
       });
     }
   };
 
+  if (loading) {
+    return <Spin fullscreen={true} tip="Loading..." />;
+  }
+
+  if (!userInfo) return <div>User not found</div>;
+
   return (
     <>
       {contextHolder}
-      {/* {userInfo.map((user, index) => (
-        <div key={index}> */}
       <Form
         {...layout}
         onFinish={onFinish}
         className="edit_user_form"
         validateMessages={validateMessages}
+        initialValues={userInfo}
+        action="/update_user_info"
+        method="POST"
       >
+        <Form.Item name="user_id" hidden={true}>
+          <Input />
+        </Form.Item>
         <Form.Item
           name="first_name"
           label="First Name"
@@ -177,8 +206,6 @@ const EditUser = () => {
           </Button>
         </Form.Item>
       </Form>
-      {/* </div>
-      ))} */}
     </>
   );
 };
