@@ -1,8 +1,8 @@
-import "./editUser.css";
 import { Card, Modal } from "antd";
-import { EditOutlined, EllipsisOutlined } from "@ant-design/icons";
+import { EditOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import EditUser from "../editUser/editUser";
+import PaymentOptions from "../payments/payments";
 
 const UserCard = ({ user }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -24,10 +24,7 @@ const UserCard = ({ user }) => {
       <Card
         title={`${user.first_name} ${user.last_name}`}
         bordered={false}
-        actions={[
-          <EditOutlined onClick={showModal} />,
-          <EllipsisOutlined key="ellipsis" />,
-        ]}
+        actions={[<EditOutlined onClick={showModal} />, <PaymentOptions />]}
       >
         <div className="user_info_container">
           <div>Age</div>

@@ -1,5 +1,6 @@
 import React from "react";
 import { Flex, Progress } from "antd";
+
 const twoColors = {
   "0%": "#108ee9",
   "100%": "#87d068",
@@ -26,6 +27,9 @@ const IncomeProgress = () => (
         trailColor="rgba(0, 0, 0, 0.06)"
         strokeWidth={10}
       />
+      <div>באסעס איז שוין אריינגעקומען?</div>
+      <div>וואשן איז שוין אריינגעקומען?</div>
+      <div>ס"ה דארף נאך אריינקומען ?</div>
     </Flex>
   </Flex>
 );

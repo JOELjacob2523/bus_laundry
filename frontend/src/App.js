@@ -3,11 +3,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CityTotal from "./components/city_total";
 import PageHeader from "./components/header/header";
 import Sidebar from "./components/sidebar/sidebar";
-import MainPage2 from "./components/mainPage2/main_page2";
 import PageFooter from "./components/footer/footer";
-// import Buses1 from "./components/buses/buses1";
 import Buses from "./components/buses/buses";
-import EditUser from "./components/editUser/editUserBtn";
 import Details from "./components/details/details";
 
 function App() {
@@ -22,7 +19,6 @@ function App() {
           <Routes>
             <Route path="/" exact element={<CityTotal />} />
             <Route path="/buses" exact element={<Buses />} />
-            {/* <Route path="/editUser" exact element={<EditUser />} /> */}
             <Route path="/details" exact element={<Details />} />
           </Routes>
         </div>

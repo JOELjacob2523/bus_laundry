@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { getAllUserInfo } from "../servers/getRequest";
 import Buttons from "./mainPage2/main_page2";
-import MonseyStudents from "./monsey_students";
 
 const CityTotal = () => {
   const [userInfo, setUserInfo] = useState([]);
@@ -41,12 +40,7 @@ const CityTotal = () => {
     }
   });
 
-  return (
-    <>
-      {cityCounts && <Buttons cityCounts={cityCounts} />}
-      {/* {userInfo.length > 0 && <MonseyStudents monseyStudents={userInfo} />} */}
-    </>
-  );
+  return <>{cityCounts && <Buttons cityCounts={cityCounts} />}</>;
 };
 
 export default CityTotal;

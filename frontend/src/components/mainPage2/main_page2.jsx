@@ -31,10 +31,7 @@ const MainPage2 = ({ cityCounts }) => {
       <div className="total_income_container">
         <Card title="Total income" className="total_income_card">
           <div className="total_income">
-            <h4>
-              עס דארף זיין $? פאר זמן ה?, עס איז דא $?, עס דארף נאך אריינקומען
-              $? .
-            </h4>
+            <h4>עס דארף אריינגעקומען $? פאר זמן ה?</h4>
           </div>
           <IncomeProgress />
         </Card>
