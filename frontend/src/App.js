@@ -6,6 +6,7 @@ import Sidebar from "./components/sidebar/sidebar";
 import PageFooter from "./components/footer/footer";
 import Buses from "./components/buses/buses";
 import Details from "./components/details/details";
+import Payments from "./components/payments/payments";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/" exact element={<CityTotal />} />
             <Route path="/buses" exact element={<Buses />} />
             <Route path="/details" exact element={<Details />} />
+            <Route path="/payBuses" exact element={<Payments />} />
           </Routes>
         </div>
       </div>

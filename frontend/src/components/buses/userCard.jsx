@@ -1,22 +1,36 @@
+import "./buses.css";
 import { Card, Modal } from "antd";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, DollarOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import EditUser from "../editUser/editUser";
-import PaymentOptions from "../payments/payments";
+import PaymentOptions from "../paymentsOptions/paymentsOptions";
 
 const UserCard = ({ user }) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
 
-  const showModal = () => {
-    setIsModalVisible(true);
+  const showEditModal = () => {
+    setIsEditModalVisible(true);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
+  const handleEditOk = () => {
+    setIsEditModalVisible(false);
   };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
+  const handleEditCancel = () => {
+    setIsEditModalVisible(false);
+  };
+
+  const showPaymentModal = () => {
+    setIsPaymentModalVisible(true);
+  };
+
+  const handlePaymentOk = () => {
+    setIsPaymentModalVisible(false);
+  };
+
+  const handlePaymentCancel = () => {
+    setIsPaymentModalVisible(false);
   };
 
   return (
@@ -24,7 +38,10 @@ const UserCard = ({ user }) => {
       <Card
         title={`${user.first_name} ${user.last_name}`}
         bordered={false}
-        actions={[<EditOutlined onClick={showModal} />, <PaymentOptions />]}
+        actions={[
+          <EditOutlined onClick={showEditModal} />,
+          <DollarOutlined onClick={showPaymentModal} />,
+        ]}
       >
         <div className="user_info_container">
           <div>Age</div>
@@ -54,12 +71,21 @@ const UserCard = ({ user }) => {
       <div className="edit_modal_container">
         <Modal
           title="Edit User"
-          open={isModalVisible}
-          onOk={handleOk}
-          onCancel={handleCancel}
+          open={isEditModalVisible}
+          onOk={handleEditOk}
+          onCancel={handleEditCancel}
           footer={null}
         >
           <EditUser userId={user.user_id} token={user.token} />
+        </Modal>
+        <Modal
+          title="Payment Options"
+          open={isPaymentModalVisible}
+          onOk={handlePaymentOk}
+          onCancel={handlePaymentCancel}
+          footer={null}
+        >
+          <PaymentOptions userId={user.user_id} token={user.token} />
         </Modal>
       </div>
     </div>
