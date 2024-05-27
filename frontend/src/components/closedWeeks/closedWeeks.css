@@ -1,0 +1,9 @@
+.closed_weeks_container{
+    display: flex;
+    flex-direction: row;
+    padding: 15px;
+}
+
+.closed_weeks_card{
+    height: min-content;
+}

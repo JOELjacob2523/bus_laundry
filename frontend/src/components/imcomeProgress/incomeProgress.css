@@ -1,0 +1,19 @@
+.round_progress{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 16px;
+}
+
+.awaiting_income_container{
+    padding-left: 80px;
+}
+
+.dot_beofre::before{
+    content: '\2022';
+    font-size: 2em;
+    line-height: 1;
+    margin-right: 10px;
+    vertical-align: middle;
+    color: #0d6efd;
+}

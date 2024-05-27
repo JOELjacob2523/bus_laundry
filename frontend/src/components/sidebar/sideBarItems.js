@@ -10,15 +10,15 @@ const items = [
   },
   {
     key: "2",
-    label: "באס און וואשן",
-    icon: <TbBus />,
-    path: "/buses",
-  },
-  {
-    key: "3",
     label: "דעטאלן",
     icon: <TbListDetails />,
     path: "/details",
+  },
+  {
+    key: "3",
+    label: "באס און וואשן",
+    icon: <TbBus />,
+    path: "/buses",
   },
 ];
 

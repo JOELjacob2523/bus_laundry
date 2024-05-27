@@ -39,6 +39,7 @@ const validateMessages = {
 
 const EditUser = ({ userId, token }) => {
   const [messageApi, contextHolder] = message.useMessage();
+  const [value, setValue] = useState(1);
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -66,20 +67,25 @@ const EditUser = ({ userId, token }) => {
       await updateUserInfo(values);
       Modal.success({
         title: "This is an success message",
-        content: "User updated successfully",
+        content: "Payment added successfully",
         footer: null,
       });
       setTimeout(() => {
         navigate(0);
       }, 2000);
     } catch (error) {
-      console.error("Error updating user:", error);
+      console.error("Error adding payment:", error);
       Modal.error({
         title: "This is an error message",
-        content: "Failed to update user",
+        content: "Failed to add payment",
         footer: null,
       });
     }
+  };
+
+  const onRadioChange = (e) => {
+    console.log("redio checked", e.target.value);
+    setValue(e.target.value);
   };
 
   if (loading) {
@@ -90,7 +96,7 @@ const EditUser = ({ userId, token }) => {
 
   return (
     <>
-      {contextHolder}
+      {/* {contextHolder} */}
       <Form
         {...layout}
         onFinish={onFinish}
@@ -124,6 +130,20 @@ const EditUser = ({ userId, token }) => {
           <Input disabled={true} />
         </Form.Item>
 
+        <div className="payment_group_container">
+          <Divider>Payment towards</Divider>
+
+          <Radio.Group
+            name="radio_group"
+            value={value}
+            onChange={onRadioChange}
+          >
+            <Radio value={1}>באס</Radio>
+            <Radio value={2}>וואשן</Radio>
+            <Radio value={3}>באס און וואשן</Radio>
+          </Radio.Group>
+        </div>
+
         <Form.Item name="cash" label="Cash">
           <Input
             className="cash_input"
@@ -148,17 +168,7 @@ const EditUser = ({ userId, token }) => {
           />
         </Form.Item>
 
-        <div className="payment_group_container">
-          <Divider>Payment towards</Divider>
-
-          <Radio.Group name="radiogroup" defaultValue={1}>
-            <Radio value={1}>באס</Radio>
-            <Radio value={2}>וואשן</Radio>
-            <Radio value={3}>באס און וואשן</Radio>
-          </Radio.Group>
-
-          <Divider></Divider>
-        </div>
+        <Divider></Divider>
 
         <Form.Item label="Total amount paid">
           <Input value={`?`} className="total_input" />

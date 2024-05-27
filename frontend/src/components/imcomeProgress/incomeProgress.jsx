@@ -1,5 +1,8 @@
+import "./incomeProgress.css";
 import React from "react";
-import { Flex, Progress } from "antd";
+import { Flex, Progress, Space, Typography } from "antd";
+
+const { Paragraph } = Typography;
 
 const twoColors = {
   "0%": "#108ee9",
@@ -13,13 +16,7 @@ const conicColors = {
 const IncomeProgress = () => (
   <Flex vertical gap="middle">
     <Progress percent={50} strokeColor={twoColors} />
-    <Flex
-      wrap
-      gap="middle"
-      style={{
-        marginTop: 16,
-      }}
-    >
+    <Flex wrap gap="middle" className="round_progress">
       <Progress
         type="dashboard"
         steps={8}
@@ -27,9 +24,27 @@ const IncomeProgress = () => (
         trailColor="rgba(0, 0, 0, 0.06)"
         strokeWidth={10}
       />
-      <div>באסעס איז שוין אריינגעקומען?</div>
-      <div>וואשן איז שוין אריינגעקומען?</div>
-      <div>ס"ה דארף נאך אריינקומען ?</div>
+      <div className="awaiting_income_container">
+        <Space>
+          <Space.Compact direction="vertical">
+            <div>
+              <Paragraph className="dot_beofre">
+                באסעס איז שוין אריינגעקומען?
+              </Paragraph>
+            </div>
+            <div>
+              <Paragraph className="dot_beofre">
+                וואשן איז שוין אריינגעקומען?
+              </Paragraph>
+            </div>
+            <div>
+              <Paragraph className="dot_beofre">
+                ס"ה דארף נאך אריינקומען ?
+              </Paragraph>
+            </div>
+          </Space.Compact>
+        </Space>
+      </div>
     </Flex>
   </Flex>
 );
