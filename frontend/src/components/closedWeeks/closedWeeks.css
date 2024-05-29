@@ -2,8 +2,9 @@
     display: flex;
     flex-direction: row;
     padding: 15px;
+    width: 50%;
 }
 
 .closed_weeks_card{
-    height: min-content;
+    width: 100%;
 }

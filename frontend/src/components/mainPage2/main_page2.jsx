@@ -28,6 +28,7 @@ const MainPage2 = ({ cityCounts }) => {
           </h2>
         </Card>
       </div>
+      <div>how many weeks we still have in the zman</div>
       <div className="total_income_container">
         <Card title="Total income" className="total_income_card">
           <div className="total_income">

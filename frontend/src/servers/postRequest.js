@@ -40,3 +40,22 @@ export const updateUserInfo = async (formData) => {
     throw err;
   }
 };
+
+export const paymentForm = async (formData) => {
+  try {
+    const response = await axios.post(`${URL}/submit_cc_form`, formData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status === 200) {
+      console.log("Filled Success!!");
+    } else {
+      console.error(`Error: ${response.status} - ${response.statusText}`);
+    }
+  } catch (err) {
+    console.error("Error:", err.message);
+    throw err;
+  }
+};

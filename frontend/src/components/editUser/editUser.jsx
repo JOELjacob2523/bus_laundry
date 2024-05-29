@@ -202,7 +202,7 @@ const EditUser = ({ userId, token }) => {
           }}
         >
           <Button type="primary" htmlType="submit">
-            Submit
+            Update
           </Button>
         </Form.Item>
       </Form>

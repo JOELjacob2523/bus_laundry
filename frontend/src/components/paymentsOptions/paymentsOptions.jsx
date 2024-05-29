@@ -12,7 +12,7 @@ import {
 import { BsCurrencyDollar } from "react-icons/bs";
 import { getUserInfoById } from "../../servers/getRequest";
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { updateUserInfo } from "../../servers/postRequest";
 
 const layout = {
@@ -37,12 +37,14 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const EditUser = ({ userId, token }) => {
+const PaymentOptions = ({ userId, token }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [value, setValue] = useState(1);
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  // let pay = "https://secure.cardknox.com/congmesivta";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -171,7 +173,12 @@ const EditUser = ({ userId, token }) => {
         <Divider></Divider>
 
         <Form.Item label="Total amount paid">
-          <Input value={`?`} className="total_input" />
+          <Input
+            value={``}
+            className="total_input"
+            disabled={true}
+            prefix={<BsCurrencyDollar />}
+          />
         </Form.Item>
 
         <Form.Item
@@ -189,4 +196,4 @@ const EditUser = ({ userId, token }) => {
   );
 };
 
-export default EditUser;
+export default PaymentOptions;
