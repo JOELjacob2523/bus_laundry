@@ -34,7 +34,7 @@ const MainPage2 = ({ cityCounts }) => {
           <div className="total_income">
             <h4>עס דארף אריינגעקומען $? פאר זמן ה?</h4>
           </div>
-          <IncomeProgress />
+          <IncomeProgress currentAmount={6381} goalAmount={10000} />
         </Card>
       </div>
 

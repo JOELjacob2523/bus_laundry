@@ -9,6 +9,7 @@ module.exports = {
   getAllUserInfo,
   getUserInfoById,
   updateUserInfo,
+  deleteUser,
 };
 
 async function insertUserInfo(userInfo) {
@@ -66,4 +67,8 @@ async function updateUserInfo(user) {
     state,
     zip_code,
   });
+}
+
+async function deleteUser(id) {
+  return await knex("users").where("user_id", id).del();
 }

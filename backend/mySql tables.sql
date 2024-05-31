@@ -13,8 +13,8 @@ CREATE TABLE users (
   PRIMARY KEY (user_id)
 );
 
-CREATE TABLE products (
-  productId BIGINT NOT NULL AUTO_INCREMENT,
+CREATE TABLE payments (
+  paymentId BIGINT NOT NULL AUTO_INCREMENT,
   description VARCHAR(255),
   perCase VARCHAR (255) NULL,
   price VARCHAR (255) NULL,

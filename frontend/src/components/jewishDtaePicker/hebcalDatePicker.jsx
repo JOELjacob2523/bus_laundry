@@ -1,57 +1,68 @@
-import React, { useState, useEffect } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import axios from "axios";
+import React, { useState } from "react";
+import {
+  ReactJewishDatePicker,
+  BasicJewishDateRange,
+} from "react-jewish-datepicker";
+import "react-jewish-datepicker/dist/index.css";
+import { JewishMonth } from "jewish-dates-core";
 
-const HebcalDatePicker = () => {
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [jewishHolidays, setJewishHolidays] = useState([]);
+const HebrewDatePicker = () => {
+  const [dateRange, setDateRange] = useState({
+    startDate: null,
+    endDate: null,
+  });
 
-  useEffect(() => {
-    const fetchJewishHolidays = async () => {
-      try {
-        const response = await axios.get(
-          `https://www.hebcal.com/hebcal?v=1&year=${new Date().getFullYear()}&month=x&maj=on&min=on&mod=on&nx=on&mf=on&ss=on&c=on&geo=geoname`
-        );
-        const dates = response.data.items.map((item) => new Date(item.date));
-        setJewishHolidays(dates);
-      } catch (error) {
-        console.error("Error fetching Jewish holidays:", error);
-      }
-    };
+  // const [startDay, setStartDay] =
+  //   (React.useState < BasicJewishDay) | (undefined > undefined);
+  // const [endDay, setEndDay] =
+  //   (React.useState < BasicJewishDay) | (undefined > undefined);
+  // const basicJewishDateRange = {
+  //   startDate: {
+  //     day: 13,
+  //     monthName: JewishMonth.Elul,
+  //     year: 5788,
+  //   },
+  //   endDate: {
+  //     day: 18,
+  //     monthName: JewishMonth.Elul,
+  //     year: 5788,
+  //   },
+  // };
 
-    fetchJewishHolidays();
-  }, []);
-
-  const isJewishHoliday = (date) => {
-    return jewishHolidays.some((d) => d.getTime() === date.getTime());
+  const handleDateChange = (start, end) => {
+    console.log("Selected dates:", start, end);
+    setDateRange({
+      startDate: start,
+      endDate: end,
+    });
   };
-
-  const highlightDates = {
-    "react-datepicker__day--highlighted-custom-1": jewishHolidays,
-  };
-
+  console.log("dateRange:", dateRange);
   return (
     <div>
-      <DatePicker
-        selected={selectedDate}
-        onChange={(date) => setSelectedDate(date)}
-        highlightDates={highlightDates}
-        dayClassName={(date) =>
-          isJewishHoliday(date) ? "highlight" : undefined
-        }
-        inline
+      <ReactJewishDatePicker
+        value={dateRange}
+        isHebrew
+        rangePicker
+        // onClick={(startDay: BasicJewishDay, endDay: BasicJewishDay) => {
+        //   setStartDay(startDay);
+        //   setEndDay(endDay);
+        // }}
+        onClick={handleDateChange}
       />
-      <style>
-        {`
-          .highlight.react-datepicker__day--highlighted-custom-1 {
-            background-color: #ffb3b3;
-            color: #000;
-          }
-        `}
-      </style>
+      <p>
+        Selected Date Range:{" "}
+        {dateRange && dateRange.startDate && dateRange.endDate ? (
+          <>
+            {dateRange.startDate.day} {dateRange.startDate.monthName}{" "}
+            {dateRange.startDate.year} - {dateRange.endDate.day}{" "}
+            {dateRange.endDate.monthName} {dateRange.endDate.year}
+          </>
+        ) : (
+          "Please select a date range"
+        )}
+      </p>
     </div>
   );
 };
 
-export default HebcalDatePicker;
+export default HebrewDatePicker;

@@ -60,7 +60,7 @@ const EditUser = ({ userId, token }) => {
     try {
       await updateUserInfo(values);
       Modal.success({
-        title: "This is an success message",
+        title: "Success",
         content: "User updated successfully",
         footer: null,
       });
@@ -70,7 +70,7 @@ const EditUser = ({ userId, token }) => {
     } catch (error) {
       console.error("Error updating user:", error);
       Modal.error({
-        title: "This is an error message",
+        title: "Error",
         content: "Failed to update user",
         footer: null,
       });
@@ -78,7 +78,7 @@ const EditUser = ({ userId, token }) => {
   };
 
   if (loading) {
-    return <Spin fullscreen={true} tip="Loading..." />;
+    return <Spin spinning="loading" tip="Loading..." />;
   }
 
   if (!userInfo) return <div>User not found</div>;

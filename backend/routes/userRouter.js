@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const CONTORLLER = require("../controller/info");
+const CONTORLLER = require("../controller/userInfo");
 const multer = require("multer");
 const upload = multer();
 const { Builder, By, until } = require("selenium-webdriver");
@@ -53,67 +53,20 @@ router.post("/update_user_info", upload.fields([]), async (req, res, next) => {
   }
 });
 
-// router.post("/submit_cc_form", async (req, res) => {
-//   const {
-//     cardNumber,
-//     expirationDate,
-//     cvv,
-//     cardholderName,
-//     cardholderStreet,
-//     cardholderZip,
-//     description,
-//     amount,
-//   } = req.body;
-
-//   let options = new chrome.Options();
-//   options.addArguments("headless");
-//   options.addArguments("disable-gpu");
-
-//   // Set up Selenium WebDriver
-//   let driver = await new Builder()
-//     .forBrowser("chrome")
-//     .setChromeOptions(options)
-//     .build();
-
-//   try {
-//     await driver.get("https://secure.cardknox.com/congmesivta");
-
-//     const fields = [
-//       { name: "Card Number", value: cardNumber },
-//       { name: "Expiration", value: expirationDate },
-//       { name: "CVV", value: cvv },
-//       { name: "Bill Name", value: cardholderName },
-//       { name: "Bill Street", value: cardholderStreet },
-//       { name: "Zip", value: cardholderZip },
-//       { name: "Description", value: description },
-//       { name: "Amount", value: amount },
-//     ];
-
-//     for (const field of fields) {
-//       const element = await driver.wait(
-//         until.elementLocated(By.name(field.name)),
-//         10000
-//       );
-//       await driver.wait(until.elementIsVisible(element), 10000);
-//       await element.sendKeys(field.value);
-//       console.log(`Filled ${field.name} with ${field.value}`);
-//     }
-
-//     // Optionally, submit the form if needed
-//     // await driver.findElement(By.name('submit_button_name')).click();
-
-//     res.json({ message: "Payment information submitted successfully!" });
-//   } catch (error) {
-//     console.error("An error occurred:", error);
-//     res.status(500).json({
-//       error: "An error occurred while submitting the payment information.",
-//     });
-//   } finally {
-//     if (driver) {
-//       await driver.quit();
-//     }
-//   }
-// });
+// router to delete a user
+router.post("/delete_user", async (req, res, next) => {
+  try {
+    const { user_id } = req.body;
+    await CONTORLLER.deleteUser(user_id);
+    // req.session.user_id = user_id;
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting user credentials:", err);
+    res
+      .status(500)
+      .json({ message: "Error deleting user", error: err.message });
+  }
+});
 
 router.post("/submit_cc_form", async (req, res) => {
   const {
@@ -174,17 +127,9 @@ router.post("/submit_cc_form", async (req, res) => {
     await driver.wait(until.elementLocated(By.id("xAmount")), 10000);
     await driver.findElement(By.id("xAmount")).sendKeys(amount);
 
-    // Optionally, submit the form if needed
-    // await driver.findElement(By.name('submit_button_name')).click();
-
-    // await driver.wait(until.elementLocated(By.name("submit")), 50000);
-    // await driver.wait(
-    //   until.elementIsEnabled(driver.findElement(By.name("submit"))),
-    //   50000
-    // );
-    // await driver.findElement(By.name("submit")).click();
-
     console.log("Form filled out successfully");
+
+    // await driver.sleep(300000);
 
     res.json({ message: "Payment information submitted successfully!" });
   } catch (error) {

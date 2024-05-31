@@ -1,22 +1,17 @@
 import "./buses.css";
-import { Card, Modal, Checkbox, Popconfirm } from "antd";
-import {
-  EditOutlined,
-  DollarOutlined,
-  QuestionCircleOutlined,
-} from "@ant-design/icons";
+import { Card, Modal } from "antd";
+import { EditOutlined, DollarOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import EditUser from "../editUser/editUser";
 import PaymentOptions from "../paymentsOptions/paymentsOptions";
 import { TbCreditCardPay } from "react-icons/tb";
 import PaymentForm from "../payments/paymentForm";
+import DeleteUser from "../deleteUser/deleteUser";
 
 const UserCard = ({ user }) => {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
   const [isCCModalVisible, setIsCCModalVisible] = useState(false);
-  const [isDeleteVisible, setIsDeleteVisible] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
 
   const showEditModal = () => {
     setIsEditModalVisible(true);
@@ -54,28 +49,8 @@ const UserCard = ({ user }) => {
     setIsCCModalVisible(false);
   };
 
-  const onCheckboxChange = (e) => {
-    setIsDeleteVisible(true);
-    setIsChecked(e.target.checked);
-  };
-
-  const handleDeleteOk = () => {
-    setIsDeleteVisible(false);
-    setIsChecked(false);
-  };
-
-  const handleDeleteCancel = () => {
-    setIsDeleteVisible(false);
-    setIsChecked(false);
-  };
-
-  const setVisible = (visible) => {
-    setIsDeleteVisible(visible);
-    setIsChecked(false);
-  };
-
   return (
-    <div>
+    <div className="main_card_container">
       <Card
         title={
           <div className="title_container">
@@ -83,27 +58,7 @@ const UserCard = ({ user }) => {
               {user.first_name} {user.last_name}
             </div>
             <div>
-              <Checkbox checked={isChecked} onChange={onCheckboxChange}>
-                Delete
-              </Checkbox>
-
-              <Popconfirm
-                visible={isDeleteVisible}
-                onVisibleChange={setVisible}
-                onOk={handleDeleteOk}
-                onCancel={handleDeleteCancel}
-                okText="Delete"
-                placement="topRight"
-                title="Delete the user"
-                description="Are you sure you want to delete this user?"
-                icon={
-                  <QuestionCircleOutlined
-                    style={{
-                      color: "red",
-                    }}
-                  />
-                }
-              ></Popconfirm>
+              <DeleteUser user={user} />
             </div>
           </div>
         }

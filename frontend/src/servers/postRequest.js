@@ -41,6 +41,7 @@ export const updateUserInfo = async (formData) => {
   }
 };
 
+//get cc data into cardnox site
 export const paymentForm = async (formData) => {
   try {
     const response = await axios.post(`${URL}/submit_cc_form`, formData, {
@@ -53,6 +54,31 @@ export const paymentForm = async (formData) => {
       console.log("Filled Success!!");
     } else {
       console.error(`Error: ${response.status} - ${response.statusText}`);
+    }
+  } catch (err) {
+    console.error("Error:", err.message);
+    throw err;
+  }
+};
+
+//delete user info
+export const deleteUserInfo = async (id) => {
+  try {
+    console.log(`Sending request to delete user with id: ${id}`);
+    const response = await axios.post(
+      `${URL}/delete_user`,
+      { user_id: id },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      console.log("Deleted Success!!");
+    } else {
+      console.log(`Error deleting! ${response.data}`);
     }
   } catch (err) {
     console.error("Error:", err.message);
