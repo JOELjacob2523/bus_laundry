@@ -59,16 +59,16 @@ const Buses = () => {
           ) : (
             <>
               <Row gutter={16} className="row">
-                {currentData.map((user) => (
+                {currentData.map((student) => (
                   <Col
-                    key={user.user_id}
+                    key={student.student_id}
                     xs={24}
                     sm={12}
                     md={8}
                     lg={6}
                     style={{ margin: "5px" }}
                   >
-                    <UserCard user={user} />
+                    <UserCard student={student} />
                   </Col>
                 ))}
               </Row>

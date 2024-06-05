@@ -6,31 +6,34 @@ import { CgDanger } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
 import { deleteUserInfo } from "../../servers/postRequest";
 
-const DeleteUser = ({ user }) => {
+const DeleteUser = ({ student }) => {
   const [visible, setVisible] = useState(false);
 
   const navigate = useNavigate();
 
   const handleDelete = async () => {
-    console.log("Delete confirmed for user:", user.user_id);
+    console.log("Delete confirmed for student:", student.student_id);
     try {
-      await deleteUserInfo(user.user_id);
+      await deleteUserInfo(student.student_id);
       Modal.success({
         title: "Success",
-        content: "User deleted successfully",
+        content: "Student deleted successfully",
         footer: null,
       });
-      console.log(`User with ${user.user_id} deleted successfully`);
+      console.log(`Student with ${student.student_id} deleted successfully`);
       setTimeout(() => {
         navigate(0);
       }, 2000);
     } catch (error) {
-      console.error("Failed to delete user:", error);
+      console.error("Failed to delete student:", error);
       Modal.error({
         title: "Error",
-        content: "Failed to delete user",
+        content: "Failed to delete student",
         footer: null,
       });
+      setTimeout(() => {
+        navigate(0);
+      }, 2000);
     }
   };
 
@@ -58,7 +61,8 @@ const DeleteUser = ({ user }) => {
         ]}
       >
         <p>
-          Are you sure you want to delete '{user.first_name} {user.last_name}' ?
+          Are you sure you want to delete '{student.first_name}{" "}
+          {student.last_name}' ?
         </p>
       </Modal>
     </div>

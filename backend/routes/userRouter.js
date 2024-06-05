@@ -31,8 +31,8 @@ router.get("/get_all_user_info", async (req, res, next) => {
 
 router.get("/get_user_info", async (req, res, next) => {
   try {
-    const { user_id } = req.query;
-    const userInfo = await CONTORLLER.getUserInfoById(user_id);
+    const { student_id } = req.query;
+    const userInfo = await CONTORLLER.getUserInfoById(student_id);
     res.status(200).json(userInfo);
   } catch (err) {
     console.error("Error inserting user credentials:", err);
@@ -42,8 +42,9 @@ router.get("/get_user_info", async (req, res, next) => {
 
 router.post("/update_user_info", upload.fields([]), async (req, res, next) => {
   try {
-    let { user_id } = await CONTORLLER.updateUserInfo(req.body);
-    req.session.user_id = user_id;
+    console.log(req.body);
+    let { student_id } = await CONTORLLER.updateUserInfo(req.body);
+    req.session.student_id = student_id;
     res
       .status(200)
       .json({ message: "User updated successfully", token: req.session.token });
@@ -56,8 +57,8 @@ router.post("/update_user_info", upload.fields([]), async (req, res, next) => {
 // router to delete a user
 router.post("/delete_user", async (req, res, next) => {
   try {
-    const { user_id } = req.body;
-    await CONTORLLER.deleteUser(user_id);
+    const { student_id } = req.body;
+    await CONTORLLER.deleteUser(student_id);
     // req.session.user_id = user_id;
     res.status(200).json({ message: "User deleted successfully" });
   } catch (err) {

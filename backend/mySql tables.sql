@@ -1,6 +1,6 @@
 /* This is for MySQL */
-CREATE TABLE users (
-  user_id BIGINT NOT NULL AUTO_INCREMENT,
+CREATE TABLE students (
+  student_id BIGINT NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(255) NULL,
   last_name VARCHAR(255) NULL,
   age VARCHAR(255) NULL,
@@ -10,17 +10,23 @@ CREATE TABLE users (
   state VARCHAR(255) NULL,
   zip_code VARCHAR(255) NULL,
   token TEXT NULL,
-  PRIMARY KEY (user_id)
+  PRIMARY KEY (student_id)
 );
 
 CREATE TABLE payments (
-  paymentId BIGINT NOT NULL AUTO_INCREMENT,
-  description VARCHAR(255),
-  perCase VARCHAR (255) NULL,
-  price VARCHAR (255) NULL,
+  payment_id BIGINT NOT NULL AUTO_INCREMENT,
+  zman VARCHAR(255),
+  zman_starts_ends VARCHAR (255) NULL,
+  closed_weeks VARCHAR (255) NULL,
+  bus_price VARCHAR (255) NULL,
+  wash_price VARCHAR (255) NULL,
+  total_zman_weeks VARCHAR (255) NULL,
+  total_zman_goal VARCHAR (255) NULL,
+  total_bus_goal VARCHAR (255) NULL,
+  total_wash_goal VARCHAR (255) NULL,
   vendorId BIGINT,
   FOREIGN KEY(vendorId) REFERENCES vendors(vendorId),
-  PRIMARY KEY (productId)
+  PRIMARY KEY (payment_id)
 );
 
 CREATE TABLE vendors (

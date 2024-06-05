@@ -1,10 +1,5 @@
-.closed_weeks_container{
+.submit_goal_form_btn{
     display: flex;
-    flex-direction: row;
-    padding: 15px;
+    justify-content: center;
     width: 50%;
-}
-
-.closed_weeks_card{
-    width: 100%;
 }

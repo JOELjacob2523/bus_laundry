@@ -67,7 +67,7 @@ export const deleteUserInfo = async (id) => {
     console.log(`Sending request to delete user with id: ${id}`);
     const response = await axios.post(
       `${URL}/delete_user`,
-      { user_id: id },
+      { student_id: id },
       {
         headers: {
           "Content-Type": "application/json",

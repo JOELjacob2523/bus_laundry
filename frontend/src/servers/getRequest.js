@@ -13,11 +13,11 @@ export const getAllUserInfo = async () => {
 };
 
 //get user info by ID
-export const getUserInfoById = async (userId, token) => {
+export const getUserInfoById = async (studentId, token) => {
   try {
     const response = await axios.get(`${URL}/get_user_info`, {
       params: {
-        user_id: userId,
+        student_id: studentId,
       },
       headers: {
         Authorization: `Bearer ${token}`,

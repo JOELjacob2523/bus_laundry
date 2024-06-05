@@ -1,10 +1,8 @@
 import "./zmanGoal.css";
 import React, { useState } from "react";
-import { Button, Card, DatePicker, Divider, Form, Input, Select } from "antd";
+import { Button, Card, Divider, Form, Input, InputNumber, Select } from "antd";
 import { BsCurrencyDollar } from "react-icons/bs";
-import JewishDatePicker from "../jewishDtaePicker/jewishDatePicker";
-
-const { RangePicker } = DatePicker;
+import HebrewDatePicker from "../jewishDtaePicker/hebcalDatePicker";
 
 const formItemLayout = {
   labelCol: {
@@ -30,25 +28,14 @@ const ZmanGoal = () => {
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
+
   return (
     <div className="zman_goal_container">
-      <Card
-        title="Zman information form"
-        className="zman_goal_card"
-        style={{
-          maxWidth: 600,
-        }}
-      >
-        <Form
-          {...formItemLayout}
-          variant="filled"
-          style={{
-            maxWidth: 600,
-          }}
-        >
+      <Card title="Zman information form" className="zman_goal_card">
+        <Form {...formItemLayout} variant="filled" className="zman_goal_form">
           <Form.Item
             label="Choose Zman"
-            name="zman_name"
+            name="zman"
             rules={[
               {
                 required: true,
@@ -81,12 +68,7 @@ const ZmanGoal = () => {
               },
             ]}
           >
-            <RangePicker
-              placeholder={["zman start...", "zman ends..."]}
-              variant="outlined"
-              format={"MM/DD/YYYY"}
-            />
-            <JewishDatePicker />
+            <HebrewDatePicker />
           </Form.Item>
 
           <Form.Item
@@ -120,6 +102,7 @@ const ZmanGoal = () => {
             <Input
               prefix={<BsCurrencyDollar />}
               placeholder="Enter bus round trip price..."
+              value="hello"
             />
           </Form.Item>
 
@@ -142,8 +125,21 @@ const ZmanGoal = () => {
           <Divider>Total</Divider>
 
           <Form.Item
+            label="Zman Weeks"
+            name="total_zman_weeks"
+            rules={[
+              {
+                // required: true,
+                message: "Please input!",
+              },
+            ]}
+          >
+            <InputNumber disabled={true} />
+          </Form.Item>
+
+          <Form.Item
             label="Zman Goal"
-            name="zman_goal"
+            name="total_zman_goal"
             rules={[
               {
                 // required: true,
@@ -156,7 +152,7 @@ const ZmanGoal = () => {
 
           <Form.Item
             label="Bus Goal"
-            name="bus_goal"
+            name="total_bus_goal"
             rules={[
               {
                 // required: true,
@@ -169,7 +165,7 @@ const ZmanGoal = () => {
 
           <Form.Item
             label="Wash Goal"
-            name="wash_goal"
+            name="total_wash_goal"
             rules={[
               {
                 // required: true,

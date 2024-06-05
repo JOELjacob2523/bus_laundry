@@ -14,7 +14,7 @@ module.exports = {
 
 async function insertUserInfo(userInfo) {
   try {
-    const [userId] = await knex("users").insert({
+    const [studentId] = await knex("students").insert({
       first_name: userInfo.first_name,
       last_name: userInfo.last_name,
       age: userInfo.age,
@@ -25,12 +25,12 @@ async function insertUserInfo(userInfo) {
       zip_code: userInfo.zip_code,
     });
 
-    const token = jwt.sign({ user_id: userId }, SECRET_KEY, {
+    const token = jwt.sign({ student_id: studentId }, SECRET_KEY, {
       expiresIn: "1h",
     });
-    await knex("users").where({ user_id: userId }).update({ token });
+    await knex("students").where({ student_id: studentId }).update({ token });
 
-    return { userId, token };
+    return { studentId, token };
   } catch (error) {
     console.error("Error inserting user info:", error);
     throw error;
@@ -38,16 +38,16 @@ async function insertUserInfo(userInfo) {
 }
 
 async function getAllUserInfo() {
-  return await knex("users").select();
+  return await knex("students").select();
 }
 
 async function getUserInfoById(id) {
-  return await knex("users").select().where("user_id", id).first();
+  return await knex("students").select().where("student_id", id).first();
 }
 
-async function updateUserInfo(user) {
+async function updateUserInfo(student) {
   const {
-    user_id,
+    student_id,
     first_name,
     last_name,
     age,
@@ -56,8 +56,8 @@ async function updateUserInfo(user) {
     city,
     state,
     zip_code,
-  } = user;
-  return knex("users").where({ user_id, user_id }).update({
+  } = student;
+  return knex("students").where("student_id", student_id).update({
     first_name,
     last_name,
     age,
@@ -70,5 +70,5 @@ async function updateUserInfo(user) {
 }
 
 async function deleteUser(id) {
-  return await knex("users").where("user_id", id).del();
+  return await knex("students").where("student_id", id).del();
 }

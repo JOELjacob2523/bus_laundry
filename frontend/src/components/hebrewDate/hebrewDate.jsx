@@ -37,15 +37,12 @@ const HebrewDate = () => {
     6: "שבת קודש",
   };
 
-  //Hebcal.HDate().locale = "he";
-
   const hd = new HDate(new Date());
   const ev = new HebrewDateEvent(hd);
 
   const hebrewDate = ev.render("he-x-NoNikud");
   const day = Hebcal.HDate(new Date()).getDay();
   const sedra = Hebcal.HDate(new Date()).getSedra("h");
-  //"he-x-NoNikud"
 
   return (
     <>

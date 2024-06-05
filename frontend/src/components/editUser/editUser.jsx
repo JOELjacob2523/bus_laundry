@@ -1,9 +1,9 @@
 import "./editUser.css";
 import { Button, Form, Input, InputNumber, message, Spin, Modal } from "antd";
 import { getUserInfoById } from "../../servers/getRequest";
+import { updateUserInfo } from "../../servers/postRequest";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { updateUserInfo } from "../../servers/postRequest";
 
 const layout = {
   labelCol: {
@@ -27,7 +27,7 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const EditUser = ({ userId, token }) => {
+const EditUser = ({ studentId, token }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -41,8 +41,8 @@ const EditUser = ({ userId, token }) => {
       //   return;
       // }
       try {
-        const data = await getUserInfoById(userId, token);
-        if (data && data.user_id) {
+        const data = await getUserInfoById(studentId, token);
+        if (data && data.student_id) {
           setUserInfo(data);
         } else {
           console.error("Invalid user data:", data);
@@ -54,7 +54,7 @@ const EditUser = ({ userId, token }) => {
       }
     };
     fetchData();
-  }, [userId, token]);
+  }, [studentId, token]);
 
   const onFinish = async (values) => {
     try {
@@ -78,7 +78,7 @@ const EditUser = ({ userId, token }) => {
   };
 
   if (loading) {
-    return <Spin spinning="loading" tip="Loading..." />;
+    return <Spin spinning="loading" tip="Loading..." fullscreen={true} />;
   }
 
   if (!userInfo) return <div>User not found</div>;
@@ -95,7 +95,7 @@ const EditUser = ({ userId, token }) => {
         action="/update_user_info"
         method="POST"
       >
-        <Form.Item name="user_id" hidden={true}>
+        <Form.Item name="student_id" hidden={true}>
           <Input />
         </Form.Item>
         <Form.Item

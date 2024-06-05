@@ -8,7 +8,7 @@ import { TbCreditCardPay } from "react-icons/tb";
 import PaymentForm from "../payments/paymentForm";
 import DeleteUser from "../deleteUser/deleteUser";
 
-const UserCard = ({ user }) => {
+const UserCard = ({ student }) => {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
   const [isCCModalVisible, setIsCCModalVisible] = useState(false);
@@ -55,10 +55,10 @@ const UserCard = ({ user }) => {
         title={
           <div className="title_container">
             <div>
-              {user.first_name} {user.last_name}
+              {student.first_name} {student.last_name}
             </div>
             <div>
-              <DeleteUser user={user} />
+              <DeleteUser student={student} />
             </div>
           </div>
         }
@@ -71,27 +71,27 @@ const UserCard = ({ user }) => {
       >
         <div className="user_info_container">
           <div>Age</div>
-          <div>{user.age}</div>
+          <div>{student.age}</div>
         </div>
         <div className="user_info_container">
           <div>Address 1</div>
-          <div>{user.address1}</div>
+          <div>{student.address1}</div>
         </div>
         <div className="user_info_container">
           <div>Address 2</div>
-          <div>{user.address2}</div>
+          <div>{student.address2}</div>
         </div>
         <div className="user_info_container">
           <div>City</div>
-          <div>{user.city}</div>
+          <div>{student.city}</div>
         </div>
         <div className="user_info_container">
           <div>State</div>
-          <div>{user.state}</div>
+          <div>{student.state}</div>
         </div>
         <div className="user_info_container">
           <div>Zip Code</div>
-          <div>{user.zip_code}</div>
+          <div>{student.zip_code}</div>
         </div>
       </Card>
       <div className="edit_modal_container">
@@ -102,7 +102,7 @@ const UserCard = ({ user }) => {
           onCancel={handleEditCancel}
           footer={null}
         >
-          <EditUser userId={user.user_id} token={user.token} />
+          <EditUser studentId={student.student_id} token={student.token} />
         </Modal>
         <Modal
           title="Payment Options"
@@ -111,7 +111,7 @@ const UserCard = ({ user }) => {
           onCancel={handlePaymentCancel}
           footer={null}
         >
-          <PaymentOptions userId={user.user_id} token={user.token} />
+          <PaymentOptions userId={student.user_id} token={student.token} />
         </Modal>
         <Modal
           title="Payment Options"

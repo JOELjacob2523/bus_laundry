@@ -2,10 +2,12 @@
     display: flex;
     flex-direction: column;
     padding: 15px;
+    width: 100%;
 }
 
 .main_detials_inner{
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: row;    
+    width: 100%;
+    /* justify-content: space-between; */
 }
