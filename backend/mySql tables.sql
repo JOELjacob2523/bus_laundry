@@ -13,20 +13,18 @@ CREATE TABLE students (
   PRIMARY KEY (student_id)
 );
 
-CREATE TABLE payments (
-  payment_id BIGINT NOT NULL AUTO_INCREMENT,
+CREATE TABLE zman_goal (
+  zman_goal_id BIGINT NOT NULL AUTO_INCREMENT,
   zman VARCHAR(255),
-  zman_starts_ends VARCHAR (255) NULL,
-  closed_weeks VARCHAR (255) NULL,
+  zman_starts_ends JSON NULL,
+  closed_weeks JSON NULL,
   bus_price VARCHAR (255) NULL,
   wash_price VARCHAR (255) NULL,
   total_zman_weeks VARCHAR (255) NULL,
   total_zman_goal VARCHAR (255) NULL,
   total_bus_goal VARCHAR (255) NULL,
   total_wash_goal VARCHAR (255) NULL,
-  vendorId BIGINT,
-  FOREIGN KEY(vendorId) REFERENCES vendors(vendorId),
-  PRIMARY KEY (payment_id)
+  PRIMARY KEY (zman_goal_id)
 );
 
 CREATE TABLE vendors (

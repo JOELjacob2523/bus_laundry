@@ -37,7 +37,7 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const PaymentOptions = ({ userId, token }) => {
+const PaymentOptions = ({ studentId, token }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [value, setValue] = useState(1);
   const [userInfo, setUserInfo] = useState(null);
@@ -49,8 +49,8 @@ const PaymentOptions = ({ userId, token }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getUserInfoById(userId, token);
-        if (data && data.user_id) {
+        const data = await getUserInfoById(studentId, token);
+        if (data && data.student_id) {
           setUserInfo(data);
         } else {
           console.error("Invalid user data:", data);
@@ -62,13 +62,13 @@ const PaymentOptions = ({ userId, token }) => {
       }
     };
     fetchData();
-  }, [userId, token]);
+  }, [studentId, token]);
 
   const onFinish = async (values) => {
     try {
-      await updateUserInfo(values);
+      // await updateUserInfo(values);
       Modal.success({
-        title: "This is an success message",
+        title: "Success",
         content: "Payment added successfully",
         footer: null,
       });
@@ -78,7 +78,7 @@ const PaymentOptions = ({ userId, token }) => {
     } catch (error) {
       console.error("Error adding payment:", error);
       Modal.error({
-        title: "This is an error message",
+        title: "Error",
         content: "Failed to add payment",
         footer: null,
       });

@@ -111,7 +111,10 @@ const UserCard = ({ student }) => {
           onCancel={handlePaymentCancel}
           footer={null}
         >
-          <PaymentOptions userId={student.user_id} token={student.token} />
+          <PaymentOptions
+            studentId={student.student_id}
+            token={student.token}
+          />
         </Modal>
         <Modal
           title="Payment Options"

@@ -29,3 +29,14 @@ export const getUserInfoById = async (studentId, token) => {
     throw error;
   }
 };
+
+//get zman goal info
+export const getAllZmanGoalInfo = async () => {
+  try {
+    const response = await axios.get(`${URL}/get_zman_goal`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};

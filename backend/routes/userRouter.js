@@ -5,20 +5,23 @@ const upload = multer();
 const { Builder, By, until } = require("selenium-webdriver");
 const chrome = require("selenium-webdriver/chrome");
 
+// router to create a new student
 router.post("/user_info", upload.fields([]), async (req, res, next) => {
   try {
     await CONTORLLER.insertUserInfo(req.body);
-    res
-      .status(200)
-      .json({ message: "User created successfully", token: req.session.token });
+    res.status(200).json({
+      message: "Student created successfully",
+      token: req.session.token,
+    });
   } catch (err) {
-    console.error("Error inserting user credentials:", err);
+    console.error("Error inserting student credentials:", err);
     res
       .status(500)
-      .json({ message: "Error creating user", error: err.message });
+      .json({ message: "Error creating student", error: err.message });
   }
 });
 
+// router get all student info
 router.get("/get_all_user_info", async (req, res, next) => {
   try {
     let userInfo = await CONTORLLER.getAllUserInfo();
@@ -29,6 +32,7 @@ router.get("/get_all_user_info", async (req, res, next) => {
   }
 });
 
+// router get student info by ID
 router.get("/get_user_info", async (req, res, next) => {
   try {
     const { student_id } = req.query;
@@ -40,6 +44,7 @@ router.get("/get_user_info", async (req, res, next) => {
   }
 });
 
+// router to update a student
 router.post("/update_user_info", upload.fields([]), async (req, res, next) => {
   try {
     console.log(req.body);
@@ -54,7 +59,7 @@ router.post("/update_user_info", upload.fields([]), async (req, res, next) => {
   }
 });
 
-// router to delete a user
+// router to delete a student
 router.post("/delete_user", async (req, res, next) => {
   try {
     const { student_id } = req.body;
@@ -66,6 +71,31 @@ router.post("/delete_user", async (req, res, next) => {
     res
       .status(500)
       .json({ message: "Error deleting user", error: err.message });
+  }
+});
+
+// router to create the zman goal
+router.post("/zman_goal", upload.fields([]), async (req, res, next) => {
+  try {
+    await CONTORLLER.insertZmanGoalInfo(req.body);
+    res.status(200).json({ message: "Zman goal created successfully" });
+  } catch (err) {
+    console.error("Error inserting zman goal credentials:", err);
+    res
+      .status(500)
+      .json({ message: "Error inserting zman goal", error: err.message });
+  }
+});
+
+// router get all zman goal info
+router.get("/get_zman_goal", async (req, res, next) => {
+  try {
+    let zmanGoal = await CONTORLLER.getAllZmanGoalInfo();
+    console.log("Zman goal data:", zmanGoal);
+    res.status(200).json(zmanGoal);
+  } catch (err) {
+    console.error("Error getting zman goal credentials:", err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 

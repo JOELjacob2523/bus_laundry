@@ -21,7 +21,7 @@ export const userInfo = async (formData) => {
   }
 };
 
-//update user info
+//update student info
 export const updateUserInfo = async (formData) => {
   try {
     const response = await axios.post(`${URL}/update_user_info`, formData, {
@@ -79,6 +79,26 @@ export const deleteUserInfo = async (id) => {
       console.log("Deleted Success!!");
     } else {
       console.log(`Error deleting! ${response.data}`);
+    }
+  } catch (err) {
+    console.error("Error:", err.message);
+    throw err;
+  }
+};
+
+//add zman goal info
+export const zmanGoalInfo = async (formData) => {
+  try {
+    const response = await axios.post(`${URL}/zman_goal`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    if (response.status === 200) {
+      console.log("Success!!");
+    } else {
+      console.log(`Error inserting! ${response.data}`);
     }
   } catch (err) {
     console.error("Error:", err.message);

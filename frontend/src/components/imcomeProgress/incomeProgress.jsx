@@ -42,11 +42,6 @@ const IncomeProgress = ({ currentAmount, goalAmount }) => {
             <Space.Compact direction="vertical">
               <div>
                 <Paragraph className="dot_beofre">
-                  עס דארף אריינקומען ${formatNumber(goalAmount)}
-                </Paragraph>
-              </div>
-              <div>
-                <Paragraph className="dot_beofre">
                   באסעס איז שוין אריינגעקומען?
                 </Paragraph>
               </div>

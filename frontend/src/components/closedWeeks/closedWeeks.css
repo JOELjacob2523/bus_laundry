@@ -1,3 +1,9 @@
+.zman_goal_container_inner{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 .submit_goal_form_btn{
     display: flex;
     justify-content: center;
