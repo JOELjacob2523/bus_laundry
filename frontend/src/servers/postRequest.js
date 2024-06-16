@@ -105,3 +105,23 @@ export const zmanGoalInfo = async (formData) => {
     throw err;
   }
 };
+
+//get cc data into cardnox site
+export const payments = async (formData) => {
+  try {
+    const response = await axios.post(`${URL}/payments`, formData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status === 200) {
+      console.log("Payment Added Success!!");
+    } else {
+      console.error(`Error: ${response.status} - ${response.statusText}`);
+    }
+  } catch (err) {
+    console.error("Error:", err.message);
+    throw err;
+  }
+};

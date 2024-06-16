@@ -13,6 +13,8 @@ module.exports = {
   deleteUser,
   insertZmanGoalInfo,
   getAllZmanGoalInfo,
+  insertPaymentInfo,
+  getAllPaymentInfo,
 };
 
 async function insertUserInfo(userInfo) {
@@ -97,4 +99,41 @@ async function insertZmanGoalInfo(zmanInfo) {
 
 async function getAllZmanGoalInfo() {
   return await knex("zman_goal").select();
+}
+
+async function insertPaymentInfo(paymentInfo) {
+  try {
+    const paymentTypes = {
+      bus: paymentInfo.payment_type === "bus",
+      wash: paymentInfo.payment_type === "wash",
+      bus_wash: paymentInfo.payment_type === "bus_wash",
+    };
+
+    const [payment_id] = await knex("payments").insert({
+      first_name: paymentInfo.first_name,
+      last_name: paymentInfo.last_name,
+      bus: paymentTypes.bus,
+      wash: paymentTypes.wash,
+      bus_wash: paymentTypes.bus_wash,
+      cash: paymentInfo.cash,
+      checks: paymentInfo.checks,
+      credit_card: paymentInfo.credit_card,
+      total_paid: paymentInfo.total_paid,
+      student_id: paymentInfo.student_id,
+    });
+
+    const token = jwt.sign({ payment_id: payment_id }, SECRET_KEY, {
+      expiresIn: "1h",
+    });
+    await knex("payments").where({ payment_id: payment_id }).update({ token });
+
+    return { payment_id, token };
+  } catch (error) {
+    console.error("Error inserting user info:", error);
+    throw error;
+  }
+}
+
+async function getAllPaymentInfo() {
+  return await knex("payments").select();
 }

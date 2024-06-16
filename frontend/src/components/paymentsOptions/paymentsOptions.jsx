@@ -13,7 +13,7 @@ import { BsCurrencyDollar } from "react-icons/bs";
 import { getUserInfoById } from "../../servers/getRequest";
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { updateUserInfo } from "../../servers/postRequest";
+import { payments } from "../../servers/postRequest";
 
 const layout = {
   labelCol: {
@@ -38,8 +38,9 @@ const validateMessages = {
 /* eslint-enable no-template-curly-in-string */
 
 const PaymentOptions = ({ studentId, token }) => {
+  const [form] = Form.useForm();
   const [messageApi, contextHolder] = message.useMessage();
-  const [value, setValue] = useState(1);
+  const [value, setValue] = useState("bus");
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -64,9 +65,20 @@ const PaymentOptions = ({ studentId, token }) => {
     fetchData();
   }, [studentId, token]);
 
+  const handleFormChange = (_, allValues) => {
+    const cashInput = Number(allValues.cash) || 0;
+    const checkInput = Number(allValues.checks) || 0;
+    const creditCardInput = Number(allValues.credit_card) || 0;
+
+    form.setFieldsValue({
+      total_paid: cashInput + checkInput + creditCardInput,
+    });
+  };
+
   const onFinish = async (values) => {
     try {
-      // await updateUserInfo(values);
+      const formData = { ...values, payment_type: value };
+      await payments(formData);
       Modal.success({
         title: "Success",
         content: "Payment added successfully",
@@ -82,6 +94,9 @@ const PaymentOptions = ({ studentId, token }) => {
         content: "Failed to add payment",
         footer: null,
       });
+      setTimeout(() => {
+        navigate(0);
+      }, 2000);
     }
   };
 
@@ -101,12 +116,14 @@ const PaymentOptions = ({ studentId, token }) => {
       {/* {contextHolder} */}
       <Form
         {...layout}
+        form={form}
+        onValuesChange={handleFormChange}
         onFinish={onFinish}
         className="edit_user_form"
         validateMessages={validateMessages}
         initialValues={userInfo}
       >
-        <Form.Item name="user_id" hidden={true}>
+        <Form.Item name="student_id" hidden={true}>
           <Input />
         </Form.Item>
         <Form.Item
@@ -140,9 +157,9 @@ const PaymentOptions = ({ studentId, token }) => {
             value={value}
             onChange={onRadioChange}
           >
-            <Radio value={1}>באס</Radio>
-            <Radio value={2}>וואשן</Radio>
-            <Radio value={3}>באס און וואשן</Radio>
+            <Radio value="bus">באס</Radio>
+            <Radio value="wash">וואשן</Radio>
+            <Radio value="bus_wash">באס און וואשן</Radio>
           </Radio.Group>
         </div>
 
@@ -154,7 +171,7 @@ const PaymentOptions = ({ studentId, token }) => {
           />
         </Form.Item>
 
-        <Form.Item name="check" label="Check">
+        <Form.Item name="checks" label="Check">
           <Input
             className="check_input"
             prefix={<BsCurrencyDollar />}
@@ -172,7 +189,7 @@ const PaymentOptions = ({ studentId, token }) => {
 
         <Divider></Divider>
 
-        <Form.Item label="Total amount paid">
+        <Form.Item label="Total amount paid" name="total_paid">
           <Input
             value={``}
             className="total_input"

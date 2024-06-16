@@ -40,3 +40,14 @@ export const getAllZmanGoalInfo = async () => {
     console.error("Error fetching data:", error);
   }
 };
+
+//get payment info
+export const getAllPaymentInfo = async () => {
+  try {
+    const response = await axios.get(`${URL}/payments`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};

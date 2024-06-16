@@ -22,44 +22,51 @@ const IncomeProgress = ({ currentAmount, goalAmount }) => {
   const percentage = (currentAmount / goalAmount) * 100;
 
   return (
-    <Flex vertical gap="middle">
-      <Progress
-        percent={percentage}
-        strokeColor={twoColors}
-        format={(percent) => `${percent.toFixed(0)}%`}
-      />
-      <Flex wrap gap="middle" className="round_progress">
+    <div className="main_progress_container">
+      <Flex vertical gap="middle">
         <Progress
-          type="dashboard"
-          steps={8}
           percent={percentage}
+          strokeColor={twoColors}
           format={(percent) => `${percent.toFixed(0)}%`}
-          trailColor="rgba(0, 0, 0, 0.06)"
-          strokeWidth={10}
         />
-        <div className="awaiting_income_container">
-          <Space>
-            <Space.Compact direction="vertical">
-              <div>
-                <Paragraph className="dot_beofre">
-                  באסעס איז שוין אריינגעקומען?
-                </Paragraph>
-              </div>
-              <div>
-                <Paragraph className="dot_beofre">
-                  וואשן איז שוין אריינגעקומען?
-                </Paragraph>
-              </div>
-              <div>
-                <Paragraph className="dot_beofre">
-                  ס"ה דארף נאך אריינקומען ?
-                </Paragraph>
-              </div>
-            </Space.Compact>
-          </Space>
-        </div>
+        <Flex wrap gap="middle" className="round_progress">
+          <Progress
+            type="dashboard"
+            steps={8}
+            percent={percentage}
+            format={(percent) => `${percent.toFixed(0)}%`}
+            trailColor="rgba(0, 0, 0, 0.06)"
+            strokeWidth={10}
+          />
+          <div className="awaiting_income_container">
+            <Space>
+              <Space.Compact direction="vertical">
+                <div>
+                  <Paragraph className="dot_beofre">
+                    עס דארף אריינקומען ${formatNumber(goalAmount)}
+                  </Paragraph>
+                </div>
+                <div>
+                  <Paragraph className="dot_beofre">
+                    באסעס איז שוין אריינגעקומען?
+                  </Paragraph>
+                </div>
+                <div>
+                  <Paragraph className="dot_beofre">
+                    וואשן איז שוין אריינגעקומען?
+                  </Paragraph>
+                </div>
+                <div>
+                  <Paragraph className="dot_beofre">
+                    ס"ה דארף נאך אריינקומען ?
+                  </Paragraph>
+                </div>
+              </Space.Compact>
+            </Space>
+          </div>
+        </Flex>
       </Flex>
-    </Flex>
+    </div>
   );
 };
 export default IncomeProgress;

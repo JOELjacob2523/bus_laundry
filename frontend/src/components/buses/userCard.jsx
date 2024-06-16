@@ -1,5 +1,5 @@
 import "./buses.css";
-import { Card, Modal } from "antd";
+import { Card, Divider, Modal } from "antd";
 import { EditOutlined, DollarOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import EditUser from "../editUser/editUser";
@@ -8,7 +8,7 @@ import { TbCreditCardPay } from "react-icons/tb";
 import PaymentForm from "../payments/paymentForm";
 import DeleteUser from "../deleteUser/deleteUser";
 
-const UserCard = ({ student }) => {
+const UserCard = ({ student, payment }) => {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
   const [isCCModalVisible, setIsCCModalVisible] = useState(false);
@@ -48,6 +48,11 @@ const UserCard = ({ student }) => {
   const handleCCCancel = () => {
     setIsCCModalVisible(false);
   };
+
+  const totalPayments = payment.reduce(
+    (acc, pay) => acc + parseFloat(pay.total_paid),
+    0
+  );
 
   return (
     <div className="main_card_container">
@@ -92,6 +97,14 @@ const UserCard = ({ student }) => {
         <div className="user_info_container">
           <div>Zip Code</div>
           <div>{student.zip_code}</div>
+        </div>
+        <Divider orientation="left">Balance</Divider>
+        <div className="payment_info_container">
+          {payment.length === 0 ? (
+            <div>No payments found</div>
+          ) : (
+            <div>${totalPayments}</div>
+          )}
         </div>
       </Card>
       <div className="edit_modal_container">

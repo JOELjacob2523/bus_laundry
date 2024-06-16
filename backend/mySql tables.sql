@@ -27,14 +27,21 @@ CREATE TABLE zman_goal (
   PRIMARY KEY (zman_goal_id)
 );
 
-CREATE TABLE vendors (
-  vendorId BIGINT NOT NULL AUTO_INCREMENT,
-  vendorname VARCHAR (255) NULL,
-  companyname VARCHAR (255) NULL,
-  vendoremail VARCHAR (255) NULL,
-  phone VARCHAR (255) NULL,
+CREATE TABLE payments (
+  payment_id BIGINT NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR (255) NULL,
+  last_name VARCHAR (255) NULL,
+  bus VARCHAR (255) NULL,
+  wash VARCHAR (255) NULL,
+  bus_wash VARCHAR (255) NULL,
+  cash VARCHAR (255) NULL,
+  checks VARCHAR (255) NULL,
+  credit_card VARCHAR (255) NULL,
+  total_paid VARCHAR (255) NULL,
   token TEXT NULL,
-  PRIMARY KEY (vendorId)
+  student_id BIGINT,
+  FOREIGN KEY(student_id) REFERENCES students(student_id),
+  PRIMARY KEY (payment_id)
 );
 
 CREATE TABLE orders (

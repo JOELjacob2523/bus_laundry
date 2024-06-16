@@ -74,6 +74,29 @@ router.post("/delete_user", async (req, res, next) => {
   }
 });
 
+// router to post payment info
+router.post("/payments", async (req, res, next) => {
+  try {
+    let payments = await CONTORLLER.insertPaymentInfo(req.body);
+    res.status(200).json(payments);
+  } catch (err) {
+    console.error("Error inserting payments credentials:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// router to get payment info
+router.get("/payments", async (req, res, next) => {
+  try {
+    let payments = await CONTORLLER.getAllPaymentInfo();
+    console.log(payments);
+    res.status(200).json(payments);
+  } catch (err) {
+    console.error("Error getting payments credentials:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // router to create the zman goal
 router.post("/zman_goal", upload.fields([]), async (req, res, next) => {
   try {
@@ -91,7 +114,6 @@ router.post("/zman_goal", upload.fields([]), async (req, res, next) => {
 router.get("/get_zman_goal", async (req, res, next) => {
   try {
     let zmanGoal = await CONTORLLER.getAllZmanGoalInfo();
-    console.log("Zman goal data:", zmanGoal);
     res.status(200).json(zmanGoal);
   } catch (err) {
     console.error("Error getting zman goal credentials:", err);

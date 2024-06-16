@@ -55,6 +55,11 @@ const MainPage2 = ({ cityCounts }) => {
           title={
             <div className="main_title_container">
               <div>{<UpdateClosedWeeks />}</div>
+              {zmanGoal.map((goal, index) => (
+                <div key={index} className="zman_name">
+                  זמן ה{goal.zman}
+                </div>
+              ))}
               <div>זמן אינפארמאציע</div>
             </div>
           }
@@ -71,11 +76,11 @@ const MainPage2 = ({ cityCounts }) => {
                   די קומענדיגע מאל וואס מען פארט אהיים איז פרשת{" "}
                   <strong>{goal.closed_weeks[1]}</strong>
                 </h4>
-                <h4 className="header2">
+                {/* <h4 className="header2">
                   עס דארף אריינגעקומען{" "}
                   <span className="sub_total_zman_goal">$</span>
                   {goal.total_zman_goal * userInfo.length} פאר זמן ה{goal.zman}
-                </h4>
+                </h4> */}
                 <IncomeProgress
                   currentAmount={4691}
                   goalAmount={goal.total_zman_goal * userInfo.length}

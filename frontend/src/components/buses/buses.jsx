@@ -1,13 +1,14 @@
 import "./buses.css";
 import React, { useState, useEffect } from "react";
 import { Row, Col, Pagination, Empty } from "antd";
-import { getAllUserInfo } from "../../servers/getRequest";
+import { getAllPaymentInfo, getAllUserInfo } from "../../servers/getRequest";
 import AddUser from "../addUser/newUserBtn";
 import UserCard from "./userCard";
 import SearchBar from "../search/search";
 
 const Buses = () => {
   const [userInfo, setUserInfo] = useState([]);
+  const [paymentInfo, setPaymentInfo] = useState({});
   const [filteredUserInfo, setFilteredUserInfo] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(32);
@@ -16,7 +17,20 @@ const Buses = () => {
     const fetchData = async () => {
       try {
         const data = await getAllUserInfo();
+        const payments = await getAllPaymentInfo();
+        console.log("Fetched payment data:", payments);
+
+        const paymentMap = payments.reduce((acc, payment) => {
+          const { student_id } = payment;
+          if (!acc[student_id]) {
+            acc[student_id] = [];
+          }
+          acc[student_id].push(payment);
+          return acc;
+        }, {});
+
         setUserInfo(data);
+        setPaymentInfo(paymentMap);
         setFilteredUserInfo(data);
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -68,7 +82,10 @@ const Buses = () => {
                     lg={6}
                     style={{ margin: "5px" }}
                   >
-                    <UserCard student={student} />
+                    <UserCard
+                      student={student}
+                      payment={paymentInfo[student.student_id] || []}
+                    />
                   </Col>
                 ))}
               </Row>

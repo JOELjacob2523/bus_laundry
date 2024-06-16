@@ -1,12 +1,21 @@
+/* .main_progress_container{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+} */
+
 .round_progress{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     margin-top: 16px;
+    width: 100%;
 }
 
 .awaiting_income_container{
-    padding-left: 80px;
+   width: 20%;
+   text-align: center;
 }
 
 .dot_beofre::before{
