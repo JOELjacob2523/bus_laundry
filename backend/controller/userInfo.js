@@ -103,23 +103,16 @@ async function getAllZmanGoalInfo() {
 
 async function insertPaymentInfo(paymentInfo) {
   try {
-    const paymentTypes = {
-      bus: paymentInfo.payment_type === "bus",
-      wash: paymentInfo.payment_type === "wash",
-      bus_wash: paymentInfo.payment_type === "bus_wash",
-    };
-
     const [payment_id] = await knex("payments").insert({
       first_name: paymentInfo.first_name,
       last_name: paymentInfo.last_name,
-      bus: paymentTypes.bus,
-      wash: paymentTypes.wash,
-      bus_wash: paymentTypes.bus_wash,
+      payment_type: paymentInfo.payment_type,
       cash: paymentInfo.cash,
       checks: paymentInfo.checks,
       credit_card: paymentInfo.credit_card,
       total_paid: paymentInfo.total_paid,
       student_id: paymentInfo.student_id,
+      pay_date: new Date(),
     });
 
     const token = jwt.sign({ payment_id: payment_id }, SECRET_KEY, {

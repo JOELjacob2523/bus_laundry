@@ -3,7 +3,6 @@ import { Button, Form, Input, Select, Modal, Spin } from "antd";
 import { paymentForm } from "../../servers/postRequest";
 import { useNavigate } from "react-router-dom";
 import { BsCurrencyDollar } from "react-icons/bs";
-import { formatCardNumber, formatExpirationDate } from "./formatters";
 
 const { Option } = Select;
 
@@ -216,7 +215,7 @@ const PaymentForm = () => {
     try {
       await paymentForm(values);
       Modal.success({
-        title: "This is a success message",
+        title: "Success",
         content: "Form filled out successfully",
         footer: null,
       });
@@ -226,7 +225,7 @@ const PaymentForm = () => {
     } catch (error) {
       console.error("Error adding form data:", error);
       Modal.error({
-        title: "This is an error message",
+        title: "Error",
         content: "Failed to fill out form",
         footer: null,
       });

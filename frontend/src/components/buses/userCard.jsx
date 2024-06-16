@@ -7,6 +7,8 @@ import PaymentOptions from "../paymentsOptions/paymentsOptions";
 import { TbCreditCardPay } from "react-icons/tb";
 import PaymentForm from "../payments/paymentForm";
 import DeleteUser from "../deleteUser/deleteUser";
+import StudentBalance from "../balance/balance";
+import StudentBalanceInfo from "../studentBalanceInfo/studentBalanceInfo";
 
 const UserCard = ({ student, payment }) => {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
@@ -48,11 +50,6 @@ const UserCard = ({ student, payment }) => {
   const handleCCCancel = () => {
     setIsCCModalVisible(false);
   };
-
-  const totalPayments = payment.reduce(
-    (acc, pay) => acc + parseFloat(pay.total_paid),
-    0
-  );
 
   return (
     <div className="main_card_container">
@@ -99,12 +96,13 @@ const UserCard = ({ student, payment }) => {
           <div>{student.zip_code}</div>
         </div>
         <Divider orientation="left">Balance</Divider>
-        <div className="payment_info_container">
-          {payment.length === 0 ? (
-            <div>No payments found</div>
-          ) : (
-            <div>${totalPayments}</div>
-          )}
+        <div className="balance_container">
+          <div>
+            <StudentBalance payment={payment} />
+          </div>
+          <div>
+            <StudentBalanceInfo payment={payment} />
+          </div>
         </div>
       </Card>
       <div className="edit_modal_container">

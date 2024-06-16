@@ -61,16 +61,15 @@
     color: rgb(154, 154, 154);
   }
 
-  .payment_info_container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    font-weight: bold;
-  }
-
   .pagination{
     display: flex;
     justify-content: right;
     padding: 50px 50px 20px 0;
   }
   
+  .balance_container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 10px 0 10px;
+  }

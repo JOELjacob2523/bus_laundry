@@ -31,6 +31,7 @@ CREATE TABLE payments (
   payment_id BIGINT NOT NULL AUTO_INCREMENT,
   first_name VARCHAR (255) NULL,
   last_name VARCHAR (255) NULL,
+  payment_type VARCHAR (255) NULL,
   bus VARCHAR (255) NULL,
   wash VARCHAR (255) NULL,
   bus_wash VARCHAR (255) NULL,

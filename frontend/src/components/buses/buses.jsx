@@ -18,7 +18,6 @@ const Buses = () => {
       try {
         const data = await getAllUserInfo();
         const payments = await getAllPaymentInfo();
-        console.log("Fetched payment data:", payments);
 
         const paymentMap = payments.reduce((acc, payment) => {
           const { student_id } = payment;

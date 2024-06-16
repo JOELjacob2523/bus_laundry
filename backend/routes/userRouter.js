@@ -89,7 +89,6 @@ router.post("/payments", async (req, res, next) => {
 router.get("/payments", async (req, res, next) => {
   try {
     let payments = await CONTORLLER.getAllPaymentInfo();
-    console.log(payments);
     res.status(200).json(payments);
   } catch (err) {
     console.error("Error getting payments credentials:", err);

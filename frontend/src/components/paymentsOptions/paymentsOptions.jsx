@@ -12,7 +12,7 @@ import {
 import { BsCurrencyDollar } from "react-icons/bs";
 import { getUserInfoById } from "../../servers/getRequest";
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { payments } from "../../servers/postRequest";
 
 const layout = {
@@ -44,8 +44,6 @@ const PaymentOptions = ({ studentId, token }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
-  // let pay = "https://secure.cardknox.com/congmesivta";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -124,6 +122,9 @@ const PaymentOptions = ({ studentId, token }) => {
         initialValues={userInfo}
       >
         <Form.Item name="student_id" hidden={true}>
+          <Input />
+        </Form.Item>
+        <Form.Item name="pay_date" hidden={true}>
           <Input />
         </Form.Item>
         <Form.Item
