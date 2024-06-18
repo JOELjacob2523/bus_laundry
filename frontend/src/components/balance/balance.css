@@ -4,3 +4,7 @@
     justify-content: space-between;
     font-weight: bold;
   }
+
+  .no_payment{
+    color: lightgray;
+  }

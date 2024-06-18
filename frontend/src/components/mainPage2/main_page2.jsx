@@ -2,21 +2,24 @@ import "./main_page2.css";
 import React, { useState, useEffect } from "react";
 import { getAllUserInfo } from "../../servers/getRequest";
 import { getAllZmanGoalInfo } from "../../servers/getRequest";
+import { getAllPaymentInfo } from "../../servers/getRequest";
 import { Card, Spin } from "antd";
 import IncomeProgress from "../imcomeProgress/incomeProgress";
-import UpdateClosedWeeks from "../updateZmanInfo/updateZmanInfo";
 
 const MainPage2 = ({ cityCounts }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [zmanGoal, setZmanGoal] = useState(null);
+  const [paymentInfo, setPaymentInfo] = useState(null);
   const [restWeeks, setRestWeeks] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       const userData = await getAllUserInfo();
       const zmanGoalData = await getAllZmanGoalInfo();
+      const paymentInfoData = await getAllPaymentInfo();
       setUserInfo(userData);
       setZmanGoal(zmanGoalData);
+      setPaymentInfo(paymentInfoData);
     };
     fetchData();
   }, []);
@@ -40,6 +43,10 @@ const MainPage2 = ({ cityCounts }) => {
     }
   }, [zmanGoal]);
 
+  const total = Array.isArray(paymentInfo)
+    ? paymentInfo.reduce((acc, pay) => acc + parseFloat(pay.total_paid), 0)
+    : 0;
+
   if (!userInfo || !zmanGoal) {
     return (
       <div>
@@ -54,13 +61,11 @@ const MainPage2 = ({ cityCounts }) => {
         <Card
           title={
             <div className="main_title_container">
-              <div>{<UpdateClosedWeeks />}</div>
               {zmanGoal.map((goal, index) => (
                 <div key={index} className="zman_name">
-                  זמן ה{goal.zman}
+                  זמן אינפארמאציע פאר זמן ה{goal.zman}
                 </div>
               ))}
-              <div>זמן אינפארמאציע</div>
             </div>
           }
           className="header2_card"
@@ -76,13 +81,9 @@ const MainPage2 = ({ cityCounts }) => {
                   די קומענדיגע מאל וואס מען פארט אהיים איז פרשת{" "}
                   <strong>{goal.closed_weeks[1]}</strong>
                 </h4>
-                {/* <h4 className="header2">
-                  עס דארף אריינגעקומען{" "}
-                  <span className="sub_total_zman_goal">$</span>
-                  {goal.total_zman_goal * userInfo.length} פאר זמן ה{goal.zman}
-                </h4> */}
                 <IncomeProgress
-                  currentAmount={4691}
+                  paymentInfo={paymentInfo}
+                  currentAmount={total}
                   goalAmount={goal.total_zman_goal * userInfo.length}
                 />{" "}
               </div>

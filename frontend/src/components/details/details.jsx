@@ -1,14 +1,46 @@
 import "./details.css";
-import { Link } from "react-router-dom";
 import ClosedWeeks from "../closedWeeks/closedWeeks";
-import ZmanGoal from "../zmanGoal/zmanGoal";
+import { Button, Drawer, Card } from "antd";
+import { useState } from "react";
+import Meta from "antd/es/card/Meta";
 
 const Details = () => {
+  const [zmanGoalOpen, setZmanGoalOpen] = useState(false);
+
+  const showDrawer = () => {
+    setZmanGoalOpen(true);
+  };
+  const onClose = () => {
+    setZmanGoalOpen(false);
+  };
+
   return (
     <div className="main_details_container">
       <div className="main_detials_inner">
-        <ClosedWeeks />
-        {/* <ZmanGoal /> */}
+        <Card
+          title={<div className="modal_title">זמן אינפארמאציע</div>}
+          className="zman_goal_card"
+        >
+          <div className="zman_goal_description">
+            דרוק דא אריינצולייגן זמן אינפארמאציע
+          </div>
+          <Button onClick={showDrawer} className="add_zman_goal_btn">
+            +
+          </Button>
+        </Card>
+
+        <div>
+          <Drawer
+            title={<div className="modal_title">זמן אינפארמאציע</div>}
+            width={800}
+            open={zmanGoalOpen}
+            onClose={onClose}
+            footer={null}
+            className="zman_goal_drawer"
+          >
+            <ClosedWeeks />
+          </Drawer>
+        </div>
       </div>
     </div>
   );

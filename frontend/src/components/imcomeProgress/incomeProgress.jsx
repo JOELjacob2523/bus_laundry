@@ -18,8 +18,12 @@ const formatNumber = (number) => {
   return new Intl.NumberFormat("en-US").format(number);
 };
 
-const IncomeProgress = ({ currentAmount, goalAmount }) => {
+const IncomeProgress = ({ currentAmount, goalAmount, paymentInfo }) => {
   const percentage = (currentAmount / goalAmount) * 100;
+
+  const totalBuses = Array.isArray(paymentInfo)
+    ? paymentInfo.reduce((acc, pay) => acc + parseFloat(pay.total_paid), 0)
+    : 0;
 
   return (
     <div className="main_progress_container">

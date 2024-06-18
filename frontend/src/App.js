@@ -6,6 +6,7 @@ import Sidebar from "./components/sidebar/sidebar";
 import PageFooter from "./components/footer/footer";
 import Buses from "./components/buses/buses";
 import Details from "./components/details/details";
+import Error500 from "./components/error/error";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/" exact element={<CityTotal />} />
             <Route path="/buses" exact element={<Buses />} />
             <Route path="/details" exact element={<Details />} />
+            <Route path="/error500" exact element={<Error500 />} />
           </Routes>
         </div>
       </div>

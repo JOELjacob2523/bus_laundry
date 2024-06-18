@@ -3,6 +3,7 @@ const { knex } = require("../db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { json } = require("body-parser");
+const { HDate, HebrewDateEvent } = require("@hebcal/core");
 const SECRET_KEY = process.env.SECRET_KEY;
 
 module.exports = {
@@ -102,6 +103,10 @@ async function getAllZmanGoalInfo() {
 }
 
 async function insertPaymentInfo(paymentInfo) {
+  const hd = new HDate(new Date());
+  const ev = new HebrewDateEvent(hd);
+
+  const hebrewDate = ev.render("he-x-NoNikud");
   try {
     const [payment_id] = await knex("payments").insert({
       first_name: paymentInfo.first_name,
@@ -112,7 +117,8 @@ async function insertPaymentInfo(paymentInfo) {
       credit_card: paymentInfo.credit_card,
       total_paid: paymentInfo.total_paid,
       student_id: paymentInfo.student_id,
-      pay_date: new Date(),
+      // pay_date: new Date(),
+      pay_date: hebrewDate,
     });
 
     const token = jwt.sign({ payment_id: payment_id }, SECRET_KEY, {

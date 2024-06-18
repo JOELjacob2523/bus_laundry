@@ -127,7 +127,7 @@ const ClosedWeeks = () => {
 
   return (
     <div className="zman_goal_container">
-      <Card title="Zman information form" className="zman_goal_card">
+      <Card className="zman_goal_card">
         <div className="zman_goal_container_inner">
           <Form
             {...formItemLayout}
@@ -251,7 +251,7 @@ const ClosedWeeks = () => {
 
             <Form.Item
               wrapperCol={{
-                offset: 9,
+                offset: 16,
               }}
             >
               <Button

@@ -23,8 +23,7 @@ const StudentBalanceInfo = ({ payment }) => {
       acc.checks += parseValue(pay.checks);
       acc.credit_card += parseValue(pay.credit_card);
       acc.payment_type = formatPaymentType(pay.payment_type);
-      acc.pay_date =
-        acc.pay_date || new Date(pay.pay_date).toLocaleString() || "N/A";
+      acc.pay_date = acc.pay_date || pay.pay_date || "N/A";
       acc.total_paid += parseValue(pay.total_paid);
       return acc;
     },

@@ -74,6 +74,7 @@ const EditUser = ({ studentId, token }) => {
         content: "Failed to update user",
         footer: null,
       });
+      navigate("/error500");
     }
   };
 

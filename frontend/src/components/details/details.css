@@ -1,13 +1,33 @@
 .main_details_container{
     display: flex;
     flex-direction: column;
-    padding: 15px;
+    padding: 35px;
     width: 100%;
 }
 
 .main_detials_inner{
     display: flex;
-    flex-direction: row;    
+    flex-direction: row;
     width: 100%;
-    /* justify-content: space-between; */
+}
+
+.zman_goal_card{
+    padding: 0 20px 20px 20px;
+    text-align: center;
+}
+
+.zman_goal_description{
+    padding-bottom: 30px;
+}
+
+.add_zman_goal_btn{
+    width: 100px;
+    height: 100px;
+    font-size: xx-large;
+    border-radius: 50%;
+    color: rgb(179, 179, 179);
+}
+
+.modal_title{
+    text-align: right;
 }
