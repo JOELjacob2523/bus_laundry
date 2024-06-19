@@ -107,10 +107,19 @@ async function insertPaymentInfo(paymentInfo) {
   const ev = new HebrewDateEvent(hd);
 
   const hebrewDate = ev.render("he-x-NoNikud");
+
+  const paymentTypes = {
+    bus: paymentInfo.payment_type === "bus",
+    wash: paymentInfo.payment_type === "wash",
+    bus_wash: paymentInfo.payment_type === "bus_wash",
+  };
   try {
     const [payment_id] = await knex("payments").insert({
       first_name: paymentInfo.first_name,
       last_name: paymentInfo.last_name,
+      bus: paymentTypes.bus,
+      wash: paymentTypes.wash,
+      bus_wash: paymentTypes.bus_wash,
       payment_type: paymentInfo.payment_type,
       cash: paymentInfo.cash,
       checks: paymentInfo.checks,

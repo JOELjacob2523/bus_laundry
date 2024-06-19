@@ -16,30 +16,24 @@ import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import HebrewDatePicker from "../jewishDtaePicker/hebcalDatePicker";
 import { zmanGoalInfo } from "../../servers/postRequest";
 import { useNavigate } from "react-router-dom";
+import SedraSelect from "../sedraSelect/sedraSelect";
+import Error500 from "../error/error";
 
 const formItemLayout = {
   labelCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 6,
-    },
+    xs: { span: 24 },
+    sm: { span: 6 },
   },
   wrapperCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 14,
-    },
+    xs: { span: 24 },
+    sm: { span: 14 },
   },
 };
 
 const ClosedWeeks = () => {
   const [form] = Form.useForm();
-  const [closedWeeks, setClosedWeeks] = useState([""]);
-  const [loading, setLoading] = useState(true);
+  const [selectedSedras, setSelectedSedras] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -54,7 +48,7 @@ const ClosedWeeks = () => {
   const handleFormChange = (_, allValues) => {
     const busPrice = Number(allValues.bus_price) || 0;
     const washPrice = Number(allValues.wash_price) || 0;
-    const closedWeeksCount = closedWeeks.length;
+    const closedWeeksCount = selectedSedras.length;
 
     let totalZmanWeeks = 0;
     if (
@@ -79,50 +73,44 @@ const ClosedWeeks = () => {
     });
   };
 
+  const handleAddSedra = () => {
+    setSelectedSedras([...selectedSedras, ""]);
+  };
+
+  const handleRemoveSedra = (index) => {
+    const updatedSedras = [...selectedSedras];
+    updatedSedras.splice(index, 1);
+    setSelectedSedras(updatedSedras);
+    form.setFieldsValue({ closed_weeks: updatedSedras });
+  };
+
+  const handleDateChange = (dateRange) => {
+    form.setFieldsValue({ zman_starts_ends: dateRange });
+  };
+
   const handleSubmit = async (values) => {
     try {
+      setLoading(true);
       await zmanGoalInfo(values);
-      console.log("Zman goal added successfully", values);
       Modal.success({
         title: "Success",
         content: "Zman goal added successfully",
-        footer: null,
+        onOk: () => navigate("/buses"),
       });
-      setTimeout(() => {
-        navigate("/buses");
-      }, 2000);
     } catch (error) {
       console.error("Error adding zman goal:", error);
       Modal.error({
         title: "Error",
         content: "Failed to add zman goal",
-        footer: null,
       });
-      setTimeout(() => {
-        navigate(0);
-      }, 2000);
+      <Error500 />;
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleAdd = () => {
-    setClosedWeeks([...closedWeeks, ""]);
-  };
-
-  const handleRemove = (index) => {
-    const newClosedWeeks = closedWeeks.filter((_, i) => i !== index);
-    setClosedWeeks(newClosedWeeks);
-    form.setFieldsValue({ closed_weeks: newClosedWeeks });
-  };
-
-  const handleInputChange = (index, event) => {
-    const newClosedWeeks = [...closedWeeks];
-    newClosedWeeks[index] = event.target.value;
-    setClosedWeeks(newClosedWeeks);
-    form.setFieldsValue({ closed_weeks: newClosedWeeks });
-  };
-
-  const handleDateChange = (dateRange) => {
-    form.setFieldsValue({ zman_starts_ends: dateRange });
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
   };
 
   return (
@@ -132,34 +120,30 @@ const ClosedWeeks = () => {
           <Form
             {...formItemLayout}
             form={form}
+            onFinish={handleSubmit}
+            onFinishFailed={onFinishFailed}
             variant="filled"
             className="zman_goal_form"
             onValuesChange={handleFormChange}
-            onFinish={handleSubmit}
             action="/zman_goal"
             method="POST"
           >
             <Form.Item
-              label="Choose Zman"
+              label="זמן"
               name="zman"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input!",
-                },
-              ]}
+              rules={[{ required: true, message: "Please select Zman!" }]}
             >
               <Select
                 options={[
                   { value: "חורף", label: "חורף" },
                   { value: "קיץ", label: "קיץ" },
                 ]}
-                allowClear
                 placeholder="Choose zman"
               />
             </Form.Item>
+
             <Form.Item
-              label="Zman starts/ends"
+              label="אנפאנג / סןף זמן"
               name="zman_starts_ends"
               rules={[
                 {
@@ -171,41 +155,47 @@ const ClosedWeeks = () => {
               <HebrewDatePicker onChange={handleDateChange} />
             </Form.Item>
 
-            <Form.Item label="Closed Weeks" required>
-              {closedWeeks.map((week, index) => (
-                <Space key={index} align="baseline">
-                  <Form.Item
-                    name={["closed_weeks", index]}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input!",
-                      },
-                    ]}
-                  >
-                    <Input
-                      value={week}
-                      onChange={(e) => handleInputChange(index, e)}
-                      placeholder="Enter closed weeks..."
+            <Form.Item label="סדרה" name="closed_weeks" required>
+              <Space direction="vertical" style={{ width: "100%" }}>
+                {selectedSedras.map((sedra, index) => (
+                  <Space key={index} align="baseline">
+                    <SedraSelect
+                      style={{ width: "200px" }}
+                      placeholder="Search to Select"
+                      onChange={(value) => {
+                        console.log(value);
+                        const updatedSedras = [...selectedSedras];
+                        updatedSedras[index] = value;
+                        setSelectedSedras(updatedSedras);
+                        form.setFieldsValue({ closed_weeks: updatedSedras });
+                      }}
                     />
-                  </Form.Item>
-                  {closedWeeks.length > 1 && (
-                    <MinusCircleOutlined onClick={() => handleRemove(index)} />
-                  )}
-                </Space>
-              ))}
-              <Button type="dashed" onClick={handleAdd} icon={<PlusOutlined />}>
-                Add Closed Week
-              </Button>
+                    {selectedSedras.length > 1 && (
+                      <MinusCircleOutlined
+                        onClick={() => handleRemoveSedra(index)}
+                        style={{ fontSize: "20px", color: "#999" }}
+                      />
+                    )}
+                  </Space>
+                ))}
+                <Button
+                  type="dashed"
+                  onClick={handleAddSedra}
+                  icon={<PlusOutlined />}
+                  style={{ width: "100%", marginTop: "10px" }}
+                >
+                  Add Sedra
+                </Button>
+              </Space>
             </Form.Item>
 
             <Form.Item
-              label="Bus Round Trip Price"
+              label="ראונד טריפ פרייז"
               name="bus_price"
               rules={[
                 {
                   required: true,
-                  message: "Please input!",
+                  message: "Please input bus round trip price!",
                 },
               ]}
             >
@@ -216,48 +206,45 @@ const ClosedWeeks = () => {
             </Form.Item>
 
             <Form.Item
-              label="Wash Bag Price"
+              label="וואשן פרייז"
               name="wash_price"
               rules={[
                 {
                   required: true,
-                  message: "Please input!",
+                  message: "Please input wash bag price!",
                 },
               ]}
             >
               <Input
                 prefix={<BsCurrencyDollar />}
-                placeholder="Enter wash price..."
+                placeholder="Enter wash bag price..."
               />
             </Form.Item>
 
             <Divider>Total</Divider>
 
             <Form.Item label="Zman Weeks" name="total_zman_weeks">
-              <Input disabled={true} />
+              <Input disabled />
             </Form.Item>
 
             <Form.Item label="Zman Goal" name="total_zman_goal">
-              <Input prefix={<BsCurrencyDollar />} disabled={true} />
+              <Input prefix={<BsCurrencyDollar />} disabled />
             </Form.Item>
 
             <Form.Item label="Bus Goal" name="total_bus_goal">
-              <Input prefix={<BsCurrencyDollar />} disabled={true} />
+              <Input prefix={<BsCurrencyDollar />} disabled />
             </Form.Item>
 
             <Form.Item label="Wash Goal" name="total_wash_goal">
-              <Input prefix={<BsCurrencyDollar />} disabled={true} />
+              <Input prefix={<BsCurrencyDollar />} disabled />
             </Form.Item>
 
-            <Form.Item
-              wrapperCol={{
-                offset: 16,
-              }}
-            >
+            <Form.Item wrapperCol={{ offset: 16 }}>
               <Button
                 type="primary"
                 htmlType="submit"
                 className="submit_goal_form_btn"
+                loading={loading}
               >
                 Submit
               </Button>

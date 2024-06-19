@@ -5,35 +5,42 @@ import { getAllZmanGoalInfo } from "../../servers/getRequest";
 import { getAllPaymentInfo } from "../../servers/getRequest";
 import { Card, Spin } from "antd";
 import IncomeProgress from "../imcomeProgress/incomeProgress";
+import Error500 from "../error/error";
 
 const MainPage2 = ({ cityCounts }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [zmanGoal, setZmanGoal] = useState(null);
   const [paymentInfo, setPaymentInfo] = useState(null);
   const [restWeeks, setRestWeeks] = useState(0);
+  const [nextSedra, setNextSedra] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const userData = await getAllUserInfo();
-      const zmanGoalData = await getAllZmanGoalInfo();
-      const paymentInfoData = await getAllPaymentInfo();
-      setUserInfo(userData);
-      setZmanGoal(zmanGoalData);
-      setPaymentInfo(paymentInfoData);
+      try {
+        const userData = await getAllUserInfo();
+        const zmanGoalData = await getAllZmanGoalInfo();
+        const paymentInfoData = await getAllPaymentInfo();
+        setUserInfo(userData);
+        setZmanGoal(zmanGoalData);
+        setPaymentInfo(paymentInfoData);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        <Error500 />;
+      }
     };
     fetchData();
   }, []);
 
   useEffect(() => {
     if (zmanGoal && Array.isArray(zmanGoal) && zmanGoal.length > 0) {
-      const zmanEndDate = zmanGoal[0].zman_starts_ends.end.date;
+      const zmanEndDate = zmanGoal[0].zman_starts_ends?.end?.date;
     }
   }, [zmanGoal]);
 
   useEffect(() => {
     let now = new Date();
     if (zmanGoal && Array.isArray(zmanGoal) && zmanGoal.length > 0) {
-      let zmanEnd = new Date(zmanGoal[0].zman_starts_ends.end.date);
+      let zmanEnd = new Date(zmanGoal[0].zman_starts_ends?.end?.date);
 
       let differenceInMilliseconds = zmanEnd - now;
       let differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
@@ -46,6 +53,35 @@ const MainPage2 = ({ cityCounts }) => {
   const total = Array.isArray(paymentInfo)
     ? paymentInfo.reduce((acc, pay) => acc + parseFloat(pay.total_paid), 0)
     : 0;
+
+  useEffect(() => {
+    const fetchNextSedra = () => {
+      try {
+        if (zmanGoal && Array.isArray(zmanGoal) && zmanGoal.length > 0) {
+          const sedras = zmanGoal[0].closed_weeks;
+          const currentDate = new Date();
+
+          let nextSedraFound = false;
+
+          for (let i = 0; i < sedras.length; i++) {
+            const sedraDate = new Date(sedras[i].date);
+            if (sedraDate >= currentDate) {
+              setNextSedra(sedras[i]);
+              nextSedraFound = true;
+              break;
+            }
+          }
+          if (!nextSedraFound) {
+            setNextSedra(null);
+          }
+        }
+      } catch (error) {
+        console.error("Error getting next sedra:", error);
+        throw error;
+      }
+    };
+    fetchNextSedra();
+  }, [zmanGoal]);
 
   if (!userInfo || !zmanGoal) {
     return (
@@ -79,9 +115,10 @@ const MainPage2 = ({ cityCounts }) => {
                 </h3>
                 <h4 key={index} className="header2">
                   די קומענדיגע מאל וואס מען פארט אהיים איז פרשת{" "}
-                  <strong>{goal.closed_weeks[1]}</strong>
+                  <strong>{nextSedra && nextSedra.sedra}</strong>
                 </h4>
                 <IncomeProgress
+                  zmanGoal={zmanGoal}
                   paymentInfo={paymentInfo}
                   currentAmount={total}
                   goalAmount={goal.total_zman_goal * userInfo.length}
