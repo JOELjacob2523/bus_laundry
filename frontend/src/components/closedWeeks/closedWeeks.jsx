@@ -143,7 +143,7 @@ const ClosedWeeks = () => {
             </Form.Item>
 
             <Form.Item
-              label="אנפאנג / סןף זמן"
+              label="אנפאנג / סוף זמן"
               name="zman_starts_ends"
               rules={[
                 {
@@ -223,19 +223,19 @@ const ClosedWeeks = () => {
 
             <Divider>Total</Divider>
 
-            <Form.Item label="Zman Weeks" name="total_zman_weeks">
+            <Form.Item label='ס"ה וואכן' name="total_zman_weeks">
               <Input disabled />
             </Form.Item>
 
-            <Form.Item label="Zman Goal" name="total_zman_goal">
+            <Form.Item label='ס"ה זמן פרייז' name="total_zman_goal">
               <Input prefix={<BsCurrencyDollar />} disabled />
             </Form.Item>
 
-            <Form.Item label="Bus Goal" name="total_bus_goal">
+            <Form.Item label='ס"ה באס פרייז' name="total_bus_goal">
               <Input prefix={<BsCurrencyDollar />} disabled />
             </Form.Item>
 
-            <Form.Item label="Wash Goal" name="total_wash_goal">
+            <Form.Item label='ס"ה וואשן פרייז' name="total_wash_goal">
               <Input prefix={<BsCurrencyDollar />} disabled />
             </Form.Item>
 

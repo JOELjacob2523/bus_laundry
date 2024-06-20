@@ -1,4 +1,14 @@
 /* This is for MySQL */
+CREATE TABLE users (
+  user_id BIGINT NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR(255) NULL,
+  last_name VARCHAR(255) NULL,
+  email VARCHAR(255) NULL,
+  password VARCHAR(255) NULL,
+  token TEXT NULL,
+  PRIMARY KEY (user_id)
+);
+
 CREATE TABLE students (
   student_id BIGINT NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(255) NULL,

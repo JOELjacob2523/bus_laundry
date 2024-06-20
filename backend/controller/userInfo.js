@@ -3,145 +3,63 @@ const { knex } = require("../db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { json } = require("body-parser");
-const { HDate, HebrewDateEvent } = require("@hebcal/core");
 const SECRET_KEY = process.env.SECRET_KEY;
 
 module.exports = {
-  insertUserInfo,
-  getAllUserInfo,
-  getUserInfoById,
-  updateUserInfo,
-  deleteUser,
-  insertZmanGoalInfo,
-  getAllZmanGoalInfo,
-  insertPaymentInfo,
-  getAllPaymentInfo,
+  createUser,
+  confirmUser,
 };
 
-async function insertUserInfo(userInfo) {
-  try {
-    const [studentId] = await knex("students").insert({
-      first_name: userInfo.first_name,
-      last_name: userInfo.last_name,
-      age: userInfo.age,
-      address1: userInfo.address1,
-      address2: userInfo.address2,
-      city: userInfo.city,
-      state: userInfo.state,
-      zip_code: userInfo.zip_code,
-    });
-
-    const token = jwt.sign({ student_id: studentId }, SECRET_KEY, {
-      expiresIn: "1h",
-    });
-    await knex("students").where({ student_id: studentId }).update({ token });
-
-    return { studentId, token };
-  } catch (error) {
-    console.error("Error inserting user info:", error);
-    throw error;
+// create user
+async function createUser(first_name, last_name, email, password) {
+  const user = await knex("users").where("email", email).first();
+  if (user) {
+    throw new Error("Username already exists");
   }
-}
 
-async function getAllUserInfo() {
-  return await knex("students").select();
-}
+  const hashedPassword = await bcrypt.hash(password, 8);
 
-async function getUserInfoById(id) {
-  return await knex("students").select().where("student_id", id).first();
-}
-
-async function updateUserInfo(student) {
-  const {
-    student_id,
+  const payload = {
+    first_name: first_name,
+    last_name: last_name,
+    email: email,
+    password: hashedPassword,
+  };
+  const token = jwt.sign(payload, SECRET_KEY);
+  await knex("users").insert({
     first_name,
     last_name,
-    age,
-    address1,
-    address2,
-    city,
-    state,
-    zip_code,
-  } = student;
-  return knex("students").where("student_id", student_id).update({
-    first_name,
-    last_name,
-    age,
-    address1,
-    address2,
-    city,
-    state,
-    zip_code,
+    email,
+    password: hashedPassword,
+    token,
   });
 }
 
-async function deleteUser(id) {
-  return await knex("students").where("student_id", id).del();
-}
-
-async function insertZmanGoalInfo(zmanInfo) {
-  try {
-    await knex("zman_goal").insert({
-      zman: zmanInfo.zman,
-      zman_starts_ends: JSON.stringify(zmanInfo.zman_starts_ends),
-      closed_weeks: JSON.stringify(zmanInfo.closed_weeks),
-      bus_price: zmanInfo.bus_price,
-      wash_price: zmanInfo.wash_price,
-      total_zman_weeks: zmanInfo.total_zman_weeks,
-      total_zman_goal: zmanInfo.total_zman_goal,
-      total_bus_goal: zmanInfo.total_bus_goal,
-      total_wash_goal: zmanInfo.total_wash_goal,
-    });
-  } catch (error) {
-    console.error("Error inserting zman goal info:", error);
-    throw error;
+// confirm user
+async function confirmUser(first_name, last_name, email, password) {
+  const user = await knex("users").where("email", email).first();
+  if (!user) {
+    throw new Error("Invalid username or password");
   }
-}
-
-async function getAllZmanGoalInfo() {
-  return await knex("zman_goal").select();
-}
-
-async function insertPaymentInfo(paymentInfo) {
-  const hd = new HDate(new Date());
-  const ev = new HebrewDateEvent(hd);
-
-  const hebrewDate = ev.render("he-x-NoNikud");
-
-  const paymentTypes = {
-    bus: paymentInfo.payment_type === "bus",
-    wash: paymentInfo.payment_type === "wash",
-    bus_wash: paymentInfo.payment_type === "bus_wash",
+  const passwordMatch = await bcrypt.compare(password, user.password);
+  if (!passwordMatch) {
+    throw new Error("Invalid username or password");
+  }
+  const hashedPassword = await bcrypt.hash(password, 8);
+  const id = user.user_id;
+  const payload = {
+    user_id: id,
+    first_name: first_name,
+    last_name: last_name,
+    email: email,
+    password: hashedPassword,
+    role: "user",
   };
-  try {
-    const [payment_id] = await knex("payments").insert({
-      first_name: paymentInfo.first_name,
-      last_name: paymentInfo.last_name,
-      bus: paymentTypes.bus,
-      wash: paymentTypes.wash,
-      bus_wash: paymentTypes.bus_wash,
-      payment_type: paymentInfo.payment_type,
-      cash: paymentInfo.cash,
-      checks: paymentInfo.checks,
-      credit_card: paymentInfo.credit_card,
-      total_paid: paymentInfo.total_paid,
-      student_id: paymentInfo.student_id,
-      // pay_date: new Date(),
-      pay_date: hebrewDate,
-    });
+  const token = jwt.sign(payload, SECRET_KEY);
+  await knex("users").where("user_id", id).update({ token });
 
-    const token = jwt.sign({ payment_id: payment_id }, SECRET_KEY, {
-      expiresIn: "1h",
-    });
-    await knex("payments").where({ payment_id: payment_id }).update({ token });
+  const decodedToken = jwt.verify(token, SECRET_KEY);
+  const userId = decodedToken.user_id;
 
-    return { payment_id, token };
-  } catch (error) {
-    console.error("Error inserting user info:", error);
-    throw error;
-  }
-}
-
-async function getAllPaymentInfo() {
-  return await knex("payments").select();
+  return { user, userId };
 }

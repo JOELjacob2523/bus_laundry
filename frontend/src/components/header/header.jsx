@@ -22,6 +22,7 @@ const PageHeader = () => (
           items,
         }}
         placement="bottomLeft"
+        className="dropdown"
       >
         <Avatar size={48} icon={<UserOutlined />} className="profile" />
       </Dropdown>

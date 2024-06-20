@@ -1,10 +1,10 @@
 import axios from "axios";
 let URL = `http://localhost:3001`;
 
-//add user info
+//add student info
 export const userInfo = async (formData) => {
   try {
-    const response = await axios.post(`${URL}/user_info`, formData, {
+    const response = await axios.post(`${URL}/student_info`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

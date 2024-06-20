@@ -1,6 +1,9 @@
 import "./incomeProgress.css";
 import React, { useEffect, useState } from "react";
 import { Flex, Progress, Space, Typography } from "antd";
+import { GoGoal } from "react-icons/go";
+import { GiBus, GiWashingMachine } from "react-icons/gi";
+import { MdDoNotDisturbOnTotalSilence } from "react-icons/md";
 
 const { Paragraph } = Typography;
 
@@ -100,27 +103,31 @@ const IncomeProgress = ({
           <Space>
             <Space.Compact direction="vertical">
               <div>
-                <Paragraph className="dot_beofre">
+                <Paragraph>
                   עס דארף אריינקומען{" "}
-                  <strong> ${formatNumber(goalAmount)}</strong>
+                  <strong> ${formatNumber(goalAmount)}</strong>{" "}
+                  <GoGoal className="goal_icon" />
                 </Paragraph>
               </div>
               <div>
-                <Paragraph className="dot_beofre">
+                <Paragraph>
                   באסעס איז שוין אריינגעקומען{" "}
                   <strong> ${formatNumber(bus)}</strong>
+                  <GiBus className="bus_goal_icon" />
                 </Paragraph>
               </div>
               <div>
-                <Paragraph className="dot_beofre">
+                <Paragraph>
                   וואשן איז שוין אריינגעקומען{" "}
                   <strong> ${formatNumber(wash)}</strong>
+                  <GiWashingMachine className="wash_goal_icon" />
                 </Paragraph>
               </div>
               <div>
-                <Paragraph className="dot_beofre">
+                <Paragraph>
                   ס"ה דארף נאך אריינקומען{" "}
                   <strong>${formatNumber(goalAmount - (bus + wash))}</strong>
+                  <MdDoNotDisturbOnTotalSilence className="total_goal_icon" />
                 </Paragraph>
               </div>
             </Space.Compact>

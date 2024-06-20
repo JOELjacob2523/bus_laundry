@@ -6,7 +6,7 @@ const items = [
     key: "1",
     label: "היים",
     icon: <IoHome />,
-    path: "/",
+    path: "/home",
   },
   {
     key: "2",

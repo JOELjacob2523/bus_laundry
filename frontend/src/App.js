@@ -7,6 +7,8 @@ import PageFooter from "./components/footer/footer";
 import Buses from "./components/buses/buses";
 import Details from "./components/details/details";
 import Error500 from "./components/error/error";
+import UserLogin from "./userComponents/login/login";
+import UserSignup from "./userComponents/signup/signup";
 
 function App() {
   return (
@@ -18,7 +20,9 @@ function App() {
         <Sidebar />
         <div className="main_page_container">
           <Routes>
-            <Route path="/" exact element={<CityTotal />} />
+            <Route path="/" exact element={<UserLogin />} />
+            <Route path="/signup" exact element={<UserSignup />} />
+            <Route path="/home" exact element={<CityTotal />} />
             <Route path="/buses" exact element={<Buses />} />
             <Route path="/details" exact element={<Details />} />
             <Route path="/error500" exact element={<Error500 />} />

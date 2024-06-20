@@ -2,7 +2,7 @@ import "./details.css";
 import ClosedWeeks from "../closedWeeks/closedWeeks";
 import { Button, Drawer, Card } from "antd";
 import { useState } from "react";
-import Meta from "antd/es/card/Meta";
+import { FaPlus } from "react-icons/fa";
 
 const Details = () => {
   const [zmanGoalOpen, setZmanGoalOpen] = useState(false);
@@ -25,7 +25,7 @@ const Details = () => {
             דרוק דא אריינצולייגן זמן אינפארמאציע
           </div>
           <Button onClick={showDrawer} className="add_zman_goal_btn">
-            +
+            <FaPlus />
           </Button>
         </Card>
 

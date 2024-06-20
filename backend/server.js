@@ -3,7 +3,8 @@ const app = express();
 const session = require("express-session");
 const CONFIG = require("./config.json");
 const cors = require("cors");
-const userInfoRouter = require("./routes/userRouter");
+const studentInfoRouter = require("./routes/studentRouter");
+const userRouter = require("./routes/userRouter");
 const bodyParser = require("body-parser");
 
 app.use(
@@ -22,7 +23,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
 
-app.use(userInfoRouter);
+app.use(studentInfoRouter);
+app.use(userRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello world!");

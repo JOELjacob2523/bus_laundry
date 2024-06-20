@@ -28,6 +28,30 @@
   text-align: center;
 }
 
+.goal_icon{
+    color: #0d6efd;
+    margin-left: 15px;
+    font-size: large;
+}
+
+.bus_goal_icon{
+    color: #0d6efd;
+    margin-left: 15px;
+    font-size: x-large;
+}
+
+.wash_goal_icon{
+    color: #0d6efd;
+    margin-left: 15px;
+    font-size: large;
+}
+
+.total_goal_icon{
+    color: #0d6efd;
+    margin-left: 15px;
+    font-size: large;
+}
+
 .dot_beofre::before{
     content: '\2022';
     font-size: 2em;

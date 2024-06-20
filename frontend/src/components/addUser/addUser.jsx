@@ -59,7 +59,7 @@ const FirstName = () => {
         onFinish={onFinish}
         className="add_user_form"
         validateMessages={validateMessages}
-        action="/user_info"
+        action="/student_info"
         method="POST"
       >
         <Form.Item
