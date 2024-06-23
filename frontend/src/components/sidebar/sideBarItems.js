@@ -6,19 +6,19 @@ const items = [
     key: "1",
     label: "היים",
     icon: <IoHome />,
-    path: "/home",
+    path: "",
   },
   {
     key: "2",
     label: "דעטאלן",
     icon: <TbListDetails />,
-    path: "/details",
+    path: "details",
   },
   {
     key: "3",
     label: "באס און וואשן",
     icon: <TbBus />,
-    path: "/buses",
+    path: "buses",
   },
 ];
 

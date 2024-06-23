@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import items from "./sideBarItems";
 import Sider from "antd/es/layout/Sider";
 import { Menu } from "antd";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const Sidebar = () => {
   const [selectedItem, setSelectedItem] = useState(null);
@@ -23,9 +23,9 @@ const Sidebar = () => {
         >
           {items.map((item) => (
             <Menu.Item key={item.key} icon={item.icon}>
-              <Link to={item.path} style={{ textDecoration: "none" }}>
+              <NavLink to={item.path} style={{ textDecoration: "none" }}>
                 {item.label}
-              </Link>
+              </NavLink>
             </Menu.Item>
           ))}
         </Menu>

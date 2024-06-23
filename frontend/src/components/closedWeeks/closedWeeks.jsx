@@ -95,6 +95,7 @@ const ClosedWeeks = () => {
       Modal.success({
         title: "Success",
         content: "Zman goal added successfully",
+        footer: null,
         onOk: () => navigate("/buses"),
       });
     } catch (error) {
@@ -102,6 +103,7 @@ const ClosedWeeks = () => {
       Modal.error({
         title: "Error",
         content: "Failed to add zman goal",
+        footer: null,
       });
       <Error500 />;
     } finally {

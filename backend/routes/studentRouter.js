@@ -5,6 +5,14 @@ const upload = multer();
 const { Builder, By, until } = require("selenium-webdriver");
 const chrome = require("selenium-webdriver/chrome");
 
+// Protect routes with authentication middleware
+// const isAuthenticated = (req, res, next) => {
+//   if (req.session && req.session.token) {
+//     return next();
+//   }
+//   res.status(401).json({ message: "Unauthorized" });
+// };
+
 // router to create a new student
 router.post("/student_info", upload.fields([]), async (req, res, next) => {
   try {
@@ -50,9 +58,10 @@ router.post("/update_user_info", upload.fields([]), async (req, res, next) => {
     console.log(req.body);
     let { student_id } = await CONTORLLER.updateUserInfo(req.body);
     req.session.student_id = student_id;
-    res
-      .status(200)
-      .json({ message: "User updated successfully", token: req.session.token });
+    res.status(200).json({
+      message: "User updated successfully",
+      token: req.session.token,
+    });
   } catch (err) {
     console.error("Error updating user credentials:", err);
     res.status(500).json({ message: "Error updaing user", error: err.message });

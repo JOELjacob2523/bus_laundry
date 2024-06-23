@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { getAllUserInfo } from "../servers/getRequest";
 import Buttons from "./mainPage2/main_page2";
 
 const CityTotal = () => {
   const [userInfo, setUserInfo] = useState([]);
   const [cityData, setCitiData] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -13,6 +16,7 @@ const CityTotal = () => {
         setUserInfo(data);
       } catch (err) {
         console.error("Error fetching data:", err);
+        navigate("/error500");
       }
     };
 

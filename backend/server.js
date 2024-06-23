@@ -21,14 +21,16 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
+// app.use(cors());
 
-app.use(studentInfoRouter);
-app.use(userRouter);
-
-app.get("/", (req, res) => {
-  res.send("Hello world!");
-});
+app.use("/", userRouter);
+app.use("/student", studentInfoRouter);
 
 app.listen(CONFIG.PORT, () => {
   console.log(`Server listening on port ${CONFIG.PORT}`);

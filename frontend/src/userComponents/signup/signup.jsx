@@ -1,13 +1,37 @@
 import "./signup.css";
-import React from "react";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import React, { useState } from "react";
+import { UserOutlined } from "@ant-design/icons";
 import { TbPasswordUser } from "react-icons/tb";
 import { MdOutlineEmail } from "react-icons/md";
-import { Button, Checkbox, Card, Form, Input } from "antd";
+import { Button, Card, Form, Input, Modal } from "antd";
+import Error500 from "../../components/error/error";
+import { useNavigate } from "react-router-dom";
+import { userInfo } from "../../servers/userRequests/postUserRequest";
 
 const UserSignup = () => {
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+  const navigate = useNavigate();
+
+  const [isVisible, setIsVisible] = useState(true);
+
+  const onFinish = async (values) => {
+    try {
+      await userInfo(values);
+      Modal.success({
+        type: "success",
+        content: "User added successfully",
+        footer: null,
+      });
+      setIsVisible(false);
+      navigate("/");
+    } catch (error) {
+      console.error("Error adding user:", error);
+      Modal.error({
+        type: "error",
+        content: "Failed to add user",
+        footer: null,
+      });
+      <Error500 />;
+    }
   };
   return (
     <div>
@@ -16,6 +40,8 @@ const UserSignup = () => {
           <Form
             name="normal_login"
             className="login_form"
+            action="/signup"
+            method="POST"
             initialValues={{
               remember: true,
             }}

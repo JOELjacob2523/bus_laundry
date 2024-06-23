@@ -1,5 +1,5 @@
 import axios from "axios";
-let URL = `http://localhost:3001`;
+let URL = `http://localhost:3001/student`;
 
 //add student info
 export const userInfo = async (formData) => {

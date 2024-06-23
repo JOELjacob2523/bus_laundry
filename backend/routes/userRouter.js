@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const CONTORLLER = require("../controller/studentInfo");
+const CONTORLLER = require("../controller/userInfo");
 const multer = require("multer");
 const upload = multer();
 // const { Builder, By, until } = require("selenium-webdriver");
@@ -25,16 +25,21 @@ router.post("/signup", upload.fields([]), async (req, res, next) => {
   }
 });
 
+router.get("/check_auth", (req, res) => {
+  if (req.session && req.session.token) {
+    return res.status(200).json({ message: "Authenticated" });
+  }
+  res.status(401).json({ message: "Unauthorized" });
+});
+
 router.post("/login", upload.fields([]), async (req, res, next) => {
   try {
-    const { user, user_id } = await CONTORLLER.confirmUser(
-      req.body.first_name,
-      req.body.last_name,
+    const { user, token } = await CONTORLLER.confirmUser(
+      req,
       req.body.email,
       req.body.password
     );
-    req.session.token = user.token;
-    req.session.user_id = user_id;
+    // req.session.token = token;
     res.status(200).json({
       message: "User confirmed successfully",
       token: req.session.token,
@@ -44,22 +49,6 @@ router.post("/login", upload.fields([]), async (req, res, next) => {
     res
       .status(500)
       .json({ message: "Error confirming user", error: err.message });
-  }
-});
-
-// router to create a new student
-router.post("/user_info", upload.fields([]), async (req, res, next) => {
-  try {
-    await CONTORLLER.insertUserInfo(req.body);
-    res.status(200).json({
-      message: "Student created successfully",
-      token: req.session.token,
-    });
-  } catch (err) {
-    console.error("Error inserting student credentials:", err);
-    res
-      .status(500)
-      .json({ message: "Error creating student", error: err.message });
   }
 });
 

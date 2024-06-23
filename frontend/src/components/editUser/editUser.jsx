@@ -93,7 +93,7 @@ const EditUser = ({ studentId, token }) => {
         className="edit_user_form"
         validateMessages={validateMessages}
         initialValues={userInfo}
-        action="/update_user_info"
+        action="/student/update_user_info"
         method="POST"
       >
         <Form.Item name="student_id" hidden={true}>

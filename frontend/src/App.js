@@ -1,37 +1,35 @@
 import "./App.css";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import CityTotal from "./components/city_total";
-import PageHeader from "./components/header/header";
-import Sidebar from "./components/sidebar/sidebar";
-import PageFooter from "./components/footer/footer";
-import Buses from "./components/buses/buses";
-import Details from "./components/details/details";
+import React from "react";
+import { Route, Routes } from "react-router-dom";
 import Error500 from "./components/error/error";
 import UserLogin from "./userComponents/login/login";
 import UserSignup from "./userComponents/signup/signup";
+import { checkAuth } from "./servers/userRequests/getUserRequest";
+import StudentApp from "./components/studentApp/studentApp";
+import CityTotal from "./components/city_total";
+import Buses from "./components/buses/buses";
+import Details from "./components/details/details";
+import ErrorLogin from "./userComponents/errorAlert/errorLogin";
 
 function App() {
   return (
     <div className="main_root_container">
-      <div className="page_header">
-        <PageHeader />
-      </div>
-      <div className="sidebar">
-        <Sidebar />
-        <div className="main_page_container">
-          <Routes>
-            <Route path="/" exact element={<UserLogin />} />
-            <Route path="/signup" exact element={<UserSignup />} />
-            <Route path="/home" exact element={<CityTotal />} />
-            <Route path="/buses" exact element={<Buses />} />
-            <Route path="/details" exact element={<Details />} />
-            <Route path="/error500" exact element={<Error500 />} />
-          </Routes>
-        </div>
-      </div>
-
-      <div className="footer">
-        <PageFooter />
+      <div className="main_page_container">
+        <Routes>
+          <Route
+            path="/"
+            element={<UserLogin setIsAuthenticated={checkAuth} />}
+          />
+          <Route path="home" element={<StudentApp />} loader={checkAuth}>
+            <Route index element={<CityTotal />} />
+            <Route path="details" element={<Details />} />
+            <Route path="buses" element={<Buses />} />
+            <Route path="error500" element={<Error500 />} />
+          </Route>
+          <Route path="/signup" element={<UserSignup />} />
+          <Route path="/error500" element={<Error500 />} />
+          <Route path="/error_login" element={<ErrorLogin />} />
+        </Routes>
       </div>
     </div>
   );
