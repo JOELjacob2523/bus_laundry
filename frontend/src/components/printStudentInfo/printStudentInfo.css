@@ -1,0 +1,24 @@
+.print_student_info_btn{
+    width: 100px;
+    height: 100px;
+    font-size: x-large;
+    border-radius: 50%;
+    color: rgb(179, 179, 179);
+}
+
+.modal_title{
+    text-align: center;
+    font-size: larger;
+    padding-top: 15px;
+}
+
+.print_student_table_info_container{
+    display: flex;
+    justify-content: end;
+    padding: 0 60px 0 0;
+}
+
+.KY_letterhead_img_container{
+    display: flex;
+    padding: 0 0 25px 0;
+}

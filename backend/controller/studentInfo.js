@@ -16,6 +16,7 @@ module.exports = {
   getAllZmanGoalInfo,
   insertPaymentInfo,
   getAllPaymentInfo,
+  migrateOldData,
 };
 
 async function insertUserInfo(userInfo) {
@@ -143,4 +144,72 @@ async function insertPaymentInfo(paymentInfo) {
 
 async function getAllPaymentInfo() {
   return await knex("payments").select();
+}
+
+//archiving old data into old data tables
+async function migrateOldData() {
+  let payments = await knex("payments").select();
+  let students = await knex("students").select();
+  let zmanGoals = await knex("zman_goal").select();
+
+  let closedWeeks = zmanGoals[0]?.closed_weeks;
+
+  for (const name of students) {
+    const studentData = {
+      first_name: name.first_name,
+      last_name: name.last_name,
+      age: name.age,
+      address1: name.address1,
+      address2: name.address2,
+      city: name.city,
+      state: name.state,
+      zip_code: name.zip_code,
+      token: name.token,
+    };
+    await knex("old_students").insert(studentData);
+  }
+  for (const pay of payments) {
+    const paymentData = {
+      first_name: pay.first_name,
+      last_name: pay.last_name,
+      bus: pay.bus,
+      wash: pay.wash,
+      bus_wash: pay.bus_wash,
+      cash: pay.cash,
+      checks: pay.checks,
+      credit_card: pay.credit_card,
+      total_paid: pay.total_paid,
+      token: pay.token,
+      student_id: pay.student_id,
+      payment_type: pay.payment_type,
+      pay_date: pay.pay_date,
+    };
+    await knex("old_payments").insert(paymentData);
+  }
+  for (const goal of zmanGoals) {
+    const zmanGoalData = {
+      zman: goal.zman,
+      zman_starts_ends: goal.zman_starts_ends,
+      closed_weeks: JSON.stringify(closedWeeks),
+      bus_price: goal.bus_price,
+      wash_price: goal.wash_price,
+      total_zman_weeks: goal.total_zman_weeks,
+      total_zman_goal: goal.total_zman_goal,
+      total_bus_goal: goal.total_bus_goal,
+      total_wash_goal: goal.total_wash_goal,
+    };
+    await knex("old_zman_goal").insert(zmanGoalData);
+  }
+
+  //removing safty mode while deleting old data
+  await knex.transaction(async (trx) => {
+    await trx.raw("SET SQL_SAFE_UPDATES = 0");
+
+    await knex("students").del();
+    await knex("payments").del();
+    await knex("zman_goal").del();
+
+    //returning safty mode after deleting old data
+    await trx.raw("SET SQL_SAFE_UPDATES = 1");
+  });
 }

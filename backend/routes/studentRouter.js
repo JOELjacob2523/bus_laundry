@@ -5,14 +5,6 @@ const upload = multer();
 const { Builder, By, until } = require("selenium-webdriver");
 const chrome = require("selenium-webdriver/chrome");
 
-// Protect routes with authentication middleware
-// const isAuthenticated = (req, res, next) => {
-//   if (req.session && req.session.token) {
-//     return next();
-//   }
-//   res.status(401).json({ message: "Unauthorized" });
-// };
-
 // router to create a new student
 router.post("/student_info", upload.fields([]), async (req, res, next) => {
   try {
@@ -108,6 +100,7 @@ router.get("/payments", async (req, res, next) => {
 // router to create the zman goal
 router.post("/zman_goal", upload.fields([]), async (req, res, next) => {
   try {
+    await CONTORLLER.migrateOldData();
     await CONTORLLER.insertZmanGoalInfo(req.body);
     res.status(200).json({ message: "Zman goal created successfully" });
   } catch (err) {
@@ -154,12 +147,7 @@ router.post("/submit_cc_form", async (req, res) => {
     .build();
 
   try {
-    console.log("Navigating to the payment page");
-
     await driver.get("https://secure.cardknox.com/congmesivta");
-
-    // Waiting for the elements to be located and visible
-    console.log("Waiting for the submit button to be enabled");
 
     await driver.wait(until.elementLocated(By.id("xCardNum")), 10000);
     await driver.findElement(By.id("xCardNum")).sendKeys(cardNumber);
@@ -187,8 +175,6 @@ router.post("/submit_cc_form", async (req, res) => {
 
     await driver.wait(until.elementLocated(By.id("xAmount")), 10000);
     await driver.findElement(By.id("xAmount")).sendKeys(amount);
-
-    console.log("Form filled out successfully");
 
     // await driver.sleep(300000);
 

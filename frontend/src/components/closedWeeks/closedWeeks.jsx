@@ -6,10 +6,10 @@ import {
   Divider,
   Form,
   Input,
-  InputNumber,
   Select,
   Space,
   Modal,
+  Drawer,
 } from "antd";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
@@ -18,6 +18,7 @@ import { zmanGoalInfo } from "../../servers/postRequest";
 import { useNavigate } from "react-router-dom";
 import SedraSelect from "../sedraSelect/sedraSelect";
 import Error500 from "../error/error";
+import { FaPlus } from "react-icons/fa";
 
 const formItemLayout = {
   labelCol: {
@@ -34,6 +35,7 @@ const ClosedWeeks = () => {
   const [form] = Form.useForm();
   const [selectedSedras, setSelectedSedras] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [zmanGoalOpen, setZmanGoalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -115,145 +117,178 @@ const ClosedWeeks = () => {
     console.log("Failed:", errorInfo);
   };
 
+  const showZmanDrawer = () => {
+    setZmanGoalOpen(true);
+  };
+  const closeZmanDrawer = () => {
+    setZmanGoalOpen(false);
+  };
+
   return (
     <div className="zman_goal_container">
-      <Card className="zman_goal_card">
-        <div className="zman_goal_container_inner">
-          <Form
-            {...formItemLayout}
-            form={form}
-            onFinish={handleSubmit}
-            onFinishFailed={onFinishFailed}
-            variant="filled"
-            className="zman_goal_form"
-            onValuesChange={handleFormChange}
-            action="/zman_goal"
-            method="POST"
-          >
-            <Form.Item
-              label="זמן"
-              name="zman"
-              rules={[{ required: true, message: "Please select Zman!" }]}
-            >
-              <Select
-                options={[
-                  { value: "חורף", label: "חורף" },
-                  { value: "קיץ", label: "קיץ" },
-                ]}
-                placeholder="Choose zman"
-              />
-            </Form.Item>
-
-            <Form.Item
-              label="אנפאנג / סוף זמן"
-              name="zman_starts_ends"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input!",
-                },
-              ]}
-            >
-              <HebrewDatePicker onChange={handleDateChange} />
-            </Form.Item>
-
-            <Form.Item label="סדרה" name="closed_weeks" required>
-              <Space direction="vertical" style={{ width: "100%" }}>
-                {selectedSedras.map((sedra, index) => (
-                  <Space key={index} align="baseline">
-                    <SedraSelect
-                      style={{ width: "200px" }}
-                      placeholder="Search to Select"
-                      onChange={(value) => {
-                        console.log(value);
-                        const updatedSedras = [...selectedSedras];
-                        updatedSedras[index] = value;
-                        setSelectedSedras(updatedSedras);
-                        form.setFieldsValue({ closed_weeks: updatedSedras });
-                      }}
-                    />
-                    {selectedSedras.length > 1 && (
-                      <MinusCircleOutlined
-                        onClick={() => handleRemoveSedra(index)}
-                        style={{ fontSize: "20px", color: "#999" }}
-                      />
-                    )}
-                  </Space>
-                ))}
-                <Button
-                  type="dashed"
-                  onClick={handleAddSedra}
-                  icon={<PlusOutlined />}
-                  style={{ width: "100%", marginTop: "10px" }}
-                >
-                  Add Sedra
-                </Button>
-              </Space>
-            </Form.Item>
-
-            <Form.Item
-              label="ראונד טריפ פרייז"
-              name="bus_price"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input bus round trip price!",
-                },
-              ]}
-            >
-              <Input
-                prefix={<BsCurrencyDollar />}
-                placeholder="Enter bus round trip price..."
-              />
-            </Form.Item>
-
-            <Form.Item
-              label="וואשן פרייז"
-              name="wash_price"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input wash bag price!",
-                },
-              ]}
-            >
-              <Input
-                prefix={<BsCurrencyDollar />}
-                placeholder="Enter wash bag price..."
-              />
-            </Form.Item>
-
-            <Divider>Total</Divider>
-
-            <Form.Item label='ס"ה וואכן' name="total_zman_weeks">
-              <Input disabled />
-            </Form.Item>
-
-            <Form.Item label='ס"ה זמן פרייז' name="total_zman_goal">
-              <Input prefix={<BsCurrencyDollar />} disabled />
-            </Form.Item>
-
-            <Form.Item label='ס"ה באס פרייז' name="total_bus_goal">
-              <Input prefix={<BsCurrencyDollar />} disabled />
-            </Form.Item>
-
-            <Form.Item label='ס"ה וואשן פרייז' name="total_wash_goal">
-              <Input prefix={<BsCurrencyDollar />} disabled />
-            </Form.Item>
-
-            <Form.Item wrapperCol={{ offset: 16 }}>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="submit_goal_form_btn"
-                loading={loading}
+      <div>
+        <Card
+          title={<div className="modal_title">זמן אינפארמאציע</div>}
+          className="zman_goal_card"
+        >
+          <div className="zman_goal_description">
+            דרוק דא אריינצולייגן זמן אינפארמאציע
+          </div>
+          <Button onClick={showZmanDrawer} className="add_zman_goal_btn">
+            <FaPlus />
+          </Button>
+        </Card>
+      </div>
+      <div>
+        <Drawer
+          title={<div className="modal_title">זמן אינפארמאציע</div>}
+          width={800}
+          open={zmanGoalOpen}
+          onClose={closeZmanDrawer}
+          footer={null}
+          className="zman_goal_drawer"
+        >
+          <Card className="zman_goal_card">
+            <div className="zman_goal_container_inner">
+              <Form
+                {...formItemLayout}
+                form={form}
+                onFinish={handleSubmit}
+                onFinishFailed={onFinishFailed}
+                variant="filled"
+                className="zman_goal_form"
+                onValuesChange={handleFormChange}
+                action="/zman_goal"
+                method="POST"
               >
-                Submit
-              </Button>
-            </Form.Item>
-          </Form>
-        </div>
-      </Card>
+                <Form.Item
+                  label="זמן"
+                  name="zman"
+                  rules={[{ required: true, message: "Please select Zman!" }]}
+                >
+                  <Select
+                    options={[
+                      { value: "חורף", label: "חורף" },
+                      { value: "קיץ", label: "קיץ" },
+                    ]}
+                    placeholder="Choose zman"
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  label="אנפאנג / סוף זמן"
+                  name="zman_starts_ends"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input!",
+                    },
+                  ]}
+                >
+                  <HebrewDatePicker onChange={handleDateChange} />
+                </Form.Item>
+
+                <Form.Item label="סדרה" name="closed_weeks" required>
+                  <Space direction="vertical" style={{ width: "100%" }}>
+                    {selectedSedras.map((sedra, index) => (
+                      <Space key={index} align="baseline">
+                        <SedraSelect
+                          style={{ width: "200px" }}
+                          placeholder="Search to Select"
+                          onChange={(value) => {
+                            console.log(value);
+                            const updatedSedras = [...selectedSedras];
+                            updatedSedras[index] = value;
+                            setSelectedSedras(updatedSedras);
+                            form.setFieldsValue({
+                              closed_weeks: updatedSedras,
+                            });
+                          }}
+                        />
+                        {selectedSedras.length > 1 && (
+                          <MinusCircleOutlined
+                            onClick={() => handleRemoveSedra(index)}
+                            style={{ fontSize: "20px", color: "#999" }}
+                          />
+                        )}
+                      </Space>
+                    ))}
+                    <Button
+                      type="dashed"
+                      onClick={handleAddSedra}
+                      icon={<PlusOutlined />}
+                      style={{ width: "100%", marginTop: "10px" }}
+                    >
+                      Add Sedra
+                    </Button>
+                  </Space>
+                </Form.Item>
+
+                <Form.Item
+                  label="ראונד טריפ פרייז"
+                  name="bus_price"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input bus round trip price!",
+                    },
+                  ]}
+                >
+                  <Input
+                    prefix={<BsCurrencyDollar />}
+                    placeholder="Enter bus round trip price..."
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  label="וואשן פרייז"
+                  name="wash_price"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input wash bag price!",
+                    },
+                  ]}
+                >
+                  <Input
+                    prefix={<BsCurrencyDollar />}
+                    placeholder="Enter wash bag price..."
+                  />
+                </Form.Item>
+
+                <Divider>Total</Divider>
+
+                <Form.Item label='ס"ה וואכן' name="total_zman_weeks">
+                  <Input disabled />
+                </Form.Item>
+
+                <Form.Item label='ס"ה זמן פרייז' name="total_zman_goal">
+                  <Input prefix={<BsCurrencyDollar />} disabled />
+                </Form.Item>
+
+                <Form.Item label='ס"ה באס פרייז' name="total_bus_goal">
+                  <Input prefix={<BsCurrencyDollar />} disabled />
+                </Form.Item>
+
+                <Form.Item label='ס"ה וואשן פרייז' name="total_wash_goal">
+                  <Input prefix={<BsCurrencyDollar />} disabled />
+                </Form.Item>
+
+                <Form.Item wrapperCol={{ offset: 16 }}>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    className="submit_goal_form_btn"
+                    loading={loading}
+                  >
+                    Submit
+                  </Button>
+                </Form.Item>
+              </Form>
+            </div>
+          </Card>
+        </Drawer>
+      </div>
     </div>
   );
 };

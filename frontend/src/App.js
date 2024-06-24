@@ -9,7 +9,6 @@ import StudentApp from "./components/studentApp/studentApp";
 import CityTotal from "./components/city_total";
 import Buses from "./components/buses/buses";
 import Details from "./components/details/details";
-import ErrorLogin from "./userComponents/errorAlert/errorLogin";
 
 function App() {
   return (
@@ -28,7 +27,6 @@ function App() {
           </Route>
           <Route path="/signup" element={<UserSignup />} />
           <Route path="/error500" element={<Error500 />} />
-          <Route path="/error_login" element={<ErrorLogin />} />
         </Routes>
       </div>
     </div>

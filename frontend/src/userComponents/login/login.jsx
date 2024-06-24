@@ -1,47 +1,54 @@
 import "./login.css";
 import React, { useState } from "react";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { TbPasswordUser } from "react-icons/tb";
 import { MdOutlineEmail } from "react-icons/md";
-import { Button, Checkbox, Card, Form, Input, Modal } from "antd";
+import { Button, Checkbox, Card, Form, Input } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../servers/userRequests/postUserRequest";
 import ErrorLogin from "../errorAlert/errorLogin";
+import KYLetterhead from "../../images/KY_Letterhead.png";
 
 const UserLogin = ({ setIsAuthenticated }) => {
-  const [isVisible, setIsVisible] = useState(true);
-  // const [isMsgVisible, setIsMsgVisible] = useState(false);
+  const [error, setError] = useState(null);
+
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
+    console.log(values);
     const { email, password } = values;
     try {
       const response = await login(email, password);
       if (response.status === 200) {
         setIsAuthenticated(true);
-        setIsVisible(false);
         navigate("/home");
       } else {
         console.error("Login failed with status:", response.status);
-        // setIsMsgVisible(true);
+        setError("Incorrect username or password. Please try again.");
       }
     } catch (error) {
       console.error("Error adding user:", error);
+      setError("Incorrect username or password. Please try again.");
     }
   };
+
   return (
     <div>
       <div className="login_main_container">
-        {/* <div className="error_msg">
-          <ErrorLogin />
-        </div> */}
+        <div className="KY_letterhead_img_container">
+          <img
+            className="KY_letterhead_img"
+            alt="KYLetterhead"
+            src={KYLetterhead}
+          />
+        </div>
+        {error && <ErrorLogin message={error} />}
         <div className="login_card_container">
           <Card title="Login" className="login_card">
             <Form
               name="normal_login"
               className="login_form"
               initialValues={{
-                remember: true,
+                remember: false,
               }}
               onFinish={onFinish}
             >
@@ -68,33 +75,6 @@ const UserLogin = ({ setIsAuthenticated }) => {
                   },
                 ]}
                 hasFeedback
-              >
-                <Input.Password prefix={<TbPasswordUser />} />
-              </Form.Item>
-
-              <Form.Item
-                name="confirm"
-                label="Confirm Password"
-                dependencies={["password"]}
-                hasFeedback
-                rules={[
-                  {
-                    required: true,
-                    message: "Please confirm your password!",
-                  },
-                  ({ getFieldValue }) => ({
-                    validator(_, value) {
-                      if (!value || getFieldValue("password") === value) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(
-                        new Error(
-                          "The new password that you entered do not match!"
-                        )
-                      );
-                    },
-                  }),
-                ]}
               >
                 <Input.Password prefix={<TbPasswordUser />} />
               </Form.Item>
