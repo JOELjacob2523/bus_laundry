@@ -1,6 +1,6 @@
 import "./App.css";
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Error500 from "./components/error/error";
 import UserLogin from "./userComponents/login/login";
 import UserSignup from "./userComponents/signup/signup";

@@ -52,4 +52,34 @@ router.post("/login", upload.fields([]), async (req, res, next) => {
   }
 });
 
+router.post("/forgot_password", upload.fields([]), async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    await CONTORLLER.sendEmail(email);
+    res.status(200).json({
+      message: "Email send successfully",
+    });
+  } catch (err) {
+    console.error("Error confirming email sending:", err);
+    res
+      .status(500)
+      .json({ message: "Error sending email", error: err.message });
+  }
+});
+
+router.post("/reset_password", upload.fields([]), async (req, res, next) => {
+  try {
+    const { confirmationNumber, newPassword, email } = req.body;
+    await CONTORLLER.resetPassword(newPassword, email);
+    res.status(200).json({
+      message: "Password reset successfully",
+    });
+  } catch (err) {
+    console.error("Error reseting password:", err);
+    res
+      .status(500)
+      .json({ message: "Error reseting password", error: err.message });
+  }
+});
+
 module.exports = router;

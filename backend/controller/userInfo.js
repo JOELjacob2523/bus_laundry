@@ -6,10 +6,18 @@ const { json } = require("body-parser");
 const SECRET_KEY = process.env.SECRET_KEY;
 const nodemailer = require("nodemailer");
 const CONFIG = require("../config.json");
+const React = require("react");
+const ReactDOMServer = require("react-dom/server");
+require("@babel/register")({
+  presets: ["@babel/preset-react"],
+});
+const EmailTemplate = require("../emailTamplate/emailTamplate");
 
 module.exports = {
   createUser,
   confirmUser,
+  sendEmail,
+  resetPassword,
 };
 
 // create user
@@ -60,8 +68,16 @@ async function confirmUser(req, email, password) {
   }
 }
 
-// send email with confirmation number
-const sendEmail = (email, confirmationNumber) => {
+function generateConfirmationNumber() {
+  return Math.floor(100000 + Math.random() * 900000);
+}
+
+async function sendEmail(email, confirmationNumber) {
+  confirmationNumber = generateConfirmationNumber();
+
+  const emailContent = ReactDOMServer.renderToStaticMarkup(
+    React.createElement(EmailTemplate, { confirmationNumber })
+  );
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -75,7 +91,7 @@ const sendEmail = (email, confirmationNumber) => {
     from: "jsjprog4119@gmail.com",
     to: email,
     subject: "Password Reset Confirmation",
-    text: `Your confirmation number is: ${confirmationNumber}. Use this number to reset your password.`,
+    html: emailContent,
   };
 
   // Send email
@@ -86,4 +102,17 @@ const sendEmail = (email, confirmationNumber) => {
       console.log("Email sent: " + info.response);
     }
   });
-};
+}
+
+// reset password
+async function resetPassword(newPassword, email) {
+  const hashedPassword = await bcrypt.hash(newPassword, 8);
+
+  const payload = {
+    password: hashedPassword,
+  };
+  const token = jwt.sign(payload, SECRET_KEY);
+  return knex("users")
+    .where({ email: email })
+    .update({ password: hashedPassword, token });
+}

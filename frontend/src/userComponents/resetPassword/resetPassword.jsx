@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import "./resetPassword.css";
+import React from "react";
 import { resetPassword } from "../../servers/userRequests/postUserRequest";
+import { Button, Card, Form, Input } from "antd";
+import { useNavigate } from "react-router-dom";
+import { TbPasswordUser } from "react-icons/tb";
+import { MdOutlineConfirmationNumber, MdOutlineEmail } from "react-icons/md";
 
 const ResetPasswordForm = () => {
-  const [confirmationNumber, setConfirmationNumber] = useState("");
-  const [newPassword, setNewPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleReset = async (e) => {
+  const handleReset = async (values) => {
+    const { confirmationNumber, new_password, email } = values;
     try {
-      await resetPassword(confirmationNumber, newPassword);
-      alert("Password reset successfully.");
+      await resetPassword(confirmationNumber, new_password, email);
+      navigate(0);
     } catch (error) {
       console.error("Error resetting password:", error);
       alert("Failed to reset password. Please try again later.");
@@ -16,23 +21,101 @@ const ResetPasswordForm = () => {
   };
 
   return (
-    <form onSubmit={handleReset}>
-      <input
-        type="text"
-        placeholder="Confirmation number"
-        value={confirmationNumber}
-        onChange={(e) => setConfirmationNumber(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="New password"
-        value={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
-        required
-      />
-      <button type="submit">Reset Password</button>
-    </form>
+    <div>
+      <Card>
+        <div className="reset_password_head_container">
+          <div className="reset_password_inner">
+            Email sent. Please check your email for instructions!
+          </div>
+        </div>
+        <Form onFinish={handleReset}>
+          <Form.Item
+            label="Confirmation number"
+            name="confirmationNumber"
+            rules={[
+              {
+                required: true,
+                message: "Please input your Confirmation number!",
+              },
+            ]}
+          >
+            <Input
+              placeholder="Confirmation number"
+              prefix={<MdOutlineConfirmationNumber />}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              {
+                required: true,
+                type: "email",
+                message: "Please input your email!",
+              },
+            ]}
+          >
+            <Input placeholder="Enter your email" prefix={<MdOutlineEmail />} />
+          </Form.Item>
+          <Form.Item
+            label="New password"
+            name="new_password"
+            rules={[
+              {
+                required: true,
+                message: "Please input your New password!",
+              },
+            ]}
+          >
+            <Input.Password
+              placeholder="New password"
+              prefix={<TbPasswordUser />}
+            />
+          </Form.Item>
+          <Form.Item
+            name="confirm"
+            label="Confirm Password"
+            dependencies={["new_password"]}
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: "Please confirm your password!",
+              },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("new_password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error("The new password that you entered do not match!")
+                  );
+                },
+              }),
+            ]}
+          >
+            <Input.Password
+              placeholder="Confirm new password"
+              prefix={<TbPasswordUser />}
+            />
+          </Form.Item>
+
+          <Form.Item
+            wrapperCol={{
+              offset: 6,
+            }}
+          >
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="submit_reset_password_btn"
+            >
+              Reset Password
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
+    </div>
   );
 };
 

@@ -1,8 +1,10 @@
 import "./forgotPassword.css";
 import React, { useState } from "react";
 import { sendEmail } from "../../servers/userRequests/postUserRequest";
-import { Button, Card, Form, Input, message } from "antd";
+import { Button, Card, Form, Input, Modal } from "antd";
 import { useNavigate } from "react-router-dom";
+import { MdOutlineEmail } from "react-icons/md";
+import ResetPasswordForm from "../resetPassword/resetPassword";
 
 /* eslint-disable no-template-curly-in-string */
 const validateMessages = {
@@ -16,29 +18,31 @@ const validateMessages = {
   },
 };
 
-const ForgotPasswordForm = ({ onEmailSent }) => {
-  const [email, setEmail] = useState("");
-  const [messageApi, contextHolder] = message.useMessage();
-
+const ForgotPasswordForm = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (values) => {
+    const { email } = values;
     try {
       await sendEmail(email);
-      messageApi.open({
-        type: "Success",
-        content: "Email sent. Please check your email for instructions.",
-      });
-      onEmailSent();
+      setIsModalVisible(true);
     } catch (error) {
       console.error("Error sending email:", error);
       navigate("/error500");
     }
   };
 
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   return (
     <div>
-      {contextHolder}
       <Card>
         <div className="forgot_password_head_container">
           <div className="forgot_password_head_1">Forgot Password?</div>{" "}
@@ -53,15 +57,12 @@ const ForgotPasswordForm = ({ onEmailSent }) => {
             rules={[
               {
                 required: true,
+                type: "email",
                 message: "Please input your email!",
               },
             ]}
           >
-            <Input
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            <Input placeholder="Enter your email" prefix={<MdOutlineEmail />} />
           </Form.Item>
           <Form.Item
             wrapperCol={{
@@ -78,6 +79,15 @@ const ForgotPasswordForm = ({ onEmailSent }) => {
           </Form.Item>
         </Form>
       </Card>
+      <Modal
+        title="Reset Password"
+        open={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <ResetPasswordForm />
+      </Modal>
     </div>
   );
 };

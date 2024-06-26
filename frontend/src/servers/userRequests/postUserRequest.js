@@ -47,7 +47,7 @@ export const login = async (email, password) => {
 export const sendEmail = async (email) => {
   try {
     const response = await axios.post(
-      `${URL}`,
+      `${URL}/forgot_password`,
       { email },
       {
         headers: {
@@ -67,11 +67,11 @@ export const sendEmail = async (email) => {
   }
 };
 
-export const resetPassword = async (confirmationNumber, newPassword) => {
+export const resetPassword = async (confirmationNumber, newPassword, email) => {
   try {
     const response = await axios.post(
-      `${URL}`,
-      { confirmationNumber, newPassword },
+      `${URL}/reset_password`,
+      { confirmationNumber, newPassword, email },
       {
         headers: {
           "Content-Type": "application/json",
