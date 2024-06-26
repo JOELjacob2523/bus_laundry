@@ -9,11 +9,14 @@ import PaymentForm from "../payments/paymentForm";
 import DeleteUser from "../deleteUser/deleteUser";
 import StudentBalance from "../balance/balance";
 import StudentBalanceInfo from "../studentBalanceInfo/studentBalanceInfo";
+import { Link } from "react-router-dom";
 
 const UserCard = ({ student, payment }) => {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
   const [isCCModalVisible, setIsCCModalVisible] = useState(false);
+
+  const URL = "https://secure.cardknox.com/congmesivta";
 
   const showEditModal = () => {
     setIsEditModalVisible(true);

@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { json } = require("body-parser");
 const SECRET_KEY = process.env.SECRET_KEY;
+const nodemailer = require("nodemailer");
+const CONFIG = require("../config.json");
 
 module.exports = {
   createUser,
@@ -57,3 +59,31 @@ async function confirmUser(req, email, password) {
     throw err;
   }
 }
+
+// send email with confirmation number
+const sendEmail = (email, confirmationNumber) => {
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "jsjprog4119@gmail.com",
+      pass: CONFIG.EMAIL_PASS,
+    },
+  });
+
+  // Email content
+  let mailOptions = {
+    from: "jsjprog4119@gmail.com",
+    to: email,
+    subject: "Password Reset Confirmation",
+    text: `Your confirmation number is: ${confirmationNumber}. Use this number to reset your password.`,
+  };
+
+  // Send email
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};

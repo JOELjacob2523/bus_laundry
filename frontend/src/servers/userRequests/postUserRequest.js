@@ -43,3 +43,49 @@ export const login = async (email, password) => {
     throw err;
   }
 };
+
+export const sendEmail = async (email) => {
+  try {
+    const response = await axios.post(
+      `${URL}`,
+      { email },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (response.status === 200) {
+      console.log("Success!!");
+      return response;
+    } else {
+      console.log(`Error sending email! ${response.data}`);
+    }
+  } catch (err) {
+    console.error("Error:", err.message);
+    throw err;
+  }
+};
+
+export const resetPassword = async (confirmationNumber, newPassword) => {
+  try {
+    const response = await axios.post(
+      `${URL}`,
+      { confirmationNumber, newPassword },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (response.status === 200) {
+      console.log("Success!!");
+      return response;
+    } else {
+      console.log(`Error reseting password! ${response.data}`);
+    }
+  } catch (err) {
+    console.error("Error:", err.message);
+    throw err;
+  }
+};

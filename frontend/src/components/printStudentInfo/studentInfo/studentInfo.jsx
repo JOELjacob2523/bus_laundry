@@ -1,9 +1,9 @@
+import "./studentInfo.css";
 import React, { useEffect, useRef, useState, forwardRef } from "react";
 import { getAllPaymentInfo, getAllUserInfo } from "../../../servers/getRequest";
 import { Button, Input, Space, Table } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
-import KYLetterhead from "../../../images/KY_Letterhead.png";
 
 const StudentInfoToPrint = forwardRef((props, ref) => {
   const [studentInfo, setStudentInfo] = useState([]);
@@ -22,8 +22,9 @@ const StudentInfoToPrint = forwardRef((props, ref) => {
         setStudentInfo(students);
         setPaymentInfo(payments);
 
-        const merged = students.map((student) => {
+        const merged = students.map((student, index) => {
           return {
+            key: index,
             ...student,
             payment: payments.find(
               (payment) => payment.student_id === student.student_id
@@ -77,6 +78,7 @@ const StudentInfoToPrint = forwardRef((props, ref) => {
         />
         <Space>
           <Button
+            key="searchButton"
             type="primary"
             onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
             icon={<SearchOutlined />}
@@ -88,6 +90,7 @@ const StudentInfoToPrint = forwardRef((props, ref) => {
             Search
           </Button>
           <Button
+            key="resetButton"
             onClick={() => clearFilters && handleReset(clearFilters)}
             size="small"
             style={{
@@ -97,6 +100,7 @@ const StudentInfoToPrint = forwardRef((props, ref) => {
             Reset
           </Button>
           <Button
+            key="filterButton"
             type="link"
             size="small"
             onClick={() => {
@@ -110,6 +114,7 @@ const StudentInfoToPrint = forwardRef((props, ref) => {
             Filter
           </Button>
           <Button
+            key="closeButton"
             type="link"
             size="small"
             onClick={() => {
@@ -209,15 +214,14 @@ const StudentInfoToPrint = forwardRef((props, ref) => {
   ];
 
   return (
-    <div className="student_info_to_print" ref={ref}>
-      <div className="KY_letterhead_img_container">
-        <img
-          className="KY_letterhead_img"
-          alt="KYLetterhead"
-          src={KYLetterhead}
-        />
-      </div>{" "}
-      <Table columns={columns} dataSource={mergedData} pagination={false} />
+    <div ref={ref} className="student_info_to_print_container">
+      {" "}
+      <Table
+        columns={columns}
+        dataSource={mergedData}
+        pagination={false}
+        className="student_info_to_print"
+      />
     </div>
   );
 });

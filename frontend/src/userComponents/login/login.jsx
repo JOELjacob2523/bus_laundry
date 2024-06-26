@@ -2,16 +2,28 @@ import "./login.css";
 import React, { useState } from "react";
 import { TbPasswordUser } from "react-icons/tb";
 import { MdOutlineEmail } from "react-icons/md";
-import { Button, Checkbox, Card, Form, Input } from "antd";
+import { Button, Card, Form, Input, Modal } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../servers/userRequests/postUserRequest";
 import ErrorLogin from "../errorAlert/errorLogin";
 import KYLetterhead from "../../images/KY_Letterhead.png";
+import ForgotPasswordForm from "../forgotPessword/forgotPassword";
 
 const UserLogin = ({ setIsAuthenticated }) => {
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   const onFinish = async (values) => {
     console.log(values);
@@ -80,13 +92,17 @@ const UserLogin = ({ setIsAuthenticated }) => {
               </Form.Item>
 
               <Form.Item>
-                <Form.Item name="remember" valuePropName="checked" noStyle>
+                {/* <Form.Item name="remember" valuePropName="checked" noStyle>
                   <Checkbox>Remember me</Checkbox>
-                </Form.Item>
+                </Form.Item> */}
 
-                <a className="login_form_forgot" href="">
-                  Forgot password
-                </a>
+                <Button
+                  type="link"
+                  className="login_form_forgot"
+                  onClick={showModal}
+                >
+                  <div>Forgot password</div>
+                </Button>
               </Form.Item>
 
               <Form.Item>
@@ -108,6 +124,15 @@ const UserLogin = ({ setIsAuthenticated }) => {
           </Card>
         </div>
       </div>
+      <Modal
+        title="Forogt Password"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <ForgotPasswordForm />
+      </Modal>
     </div>
   );
 };

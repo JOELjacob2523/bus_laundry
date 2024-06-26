@@ -1,0 +1,8 @@
+.student_info_to_print_container{
+    padding: 15px;
+}
+
+.student_info_to_print{
+    padding: 25px 55px 55px 55px;
+    border: black 1px double;
+}

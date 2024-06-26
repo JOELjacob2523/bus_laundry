@@ -7,6 +7,7 @@ import { Button, Card, Form, Input } from "antd";
 import Error500 from "../../components/error/error";
 import { useNavigate } from "react-router-dom";
 import { userInfo } from "../../servers/userRequests/postUserRequest";
+import KYLetterhead from "../../images/KY_Letterhead.png";
 
 const UserSignup = () => {
   const navigate = useNavigate();
@@ -23,6 +24,13 @@ const UserSignup = () => {
   return (
     <div>
       <div className="signup_main_container">
+        <div className="KY_letterhead_img_container">
+          <img
+            className="KY_letterhead_img"
+            alt="KYLetterhead"
+            src={KYLetterhead}
+          />
+        </div>
         <div className="signup_card_container">
           <Card title="Signup" className="signup_card">
             <Form
