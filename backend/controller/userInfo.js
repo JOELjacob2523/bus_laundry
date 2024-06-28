@@ -72,8 +72,11 @@ function generateConfirmationNumber() {
   return Math.floor(100000 + Math.random() * 900000);
 }
 
-async function sendEmail(email, confirmationNumber) {
+let usersEmail;
+
+async function sendEmail(email) {
   confirmationNumber = generateConfirmationNumber();
+  usersEmail = email;
 
   const emailContent = ReactDOMServer.renderToStaticMarkup(
     React.createElement(EmailTemplate, { confirmationNumber })
@@ -105,7 +108,7 @@ async function sendEmail(email, confirmationNumber) {
 }
 
 // reset password
-async function resetPassword(newPassword, email) {
+async function resetPassword(newPassword, confirmationNumber) {
   const hashedPassword = await bcrypt.hash(newPassword, 8);
 
   const payload = {
@@ -113,6 +116,6 @@ async function resetPassword(newPassword, email) {
   };
   const token = jwt.sign(payload, SECRET_KEY);
   return knex("users")
-    .where({ email: email })
+    .where({ email: usersEmail })
     .update({ password: hashedPassword, token });
 }

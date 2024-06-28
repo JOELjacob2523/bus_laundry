@@ -18,7 +18,7 @@ const PrintStudentInfo = () => {
           className="zman_goal_card"
         >
           <div className="zman_goal_description">
-            דרוק דא ארויסצופרינטן די בחורים אינפארמאציע
+            דרוק דא ארויסצופרינטן אינפארמאציע
           </div>
           <Button
             onClick={() => setOpen(true)}
@@ -39,6 +39,7 @@ const PrintStudentInfo = () => {
           <ReactToPrint
             trigger={() => (
               <div className="print_student_table_info_container">
+                <div className="google_maps_container"></div>
                 <div className="KY_letterhead_img_container">
                   <img
                     className="KY_letterhead_img"

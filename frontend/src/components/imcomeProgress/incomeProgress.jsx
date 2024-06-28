@@ -105,28 +105,44 @@ const IncomeProgress = ({
               <div>
                 <Paragraph>
                   עס דארף אריינקומען{" "}
-                  <strong> ${formatNumber(goalAmount)}</strong>{" "}
+                  {goalAmount ? (
+                    <strong> ${formatNumber(goalAmount)}</strong>
+                  ) : (
+                    <strong> $0.00</strong>
+                  )}
                   <GoGoal className="goal_icon" />
                 </Paragraph>
               </div>
               <div>
                 <Paragraph>
                   באסעס איז שוין אריינגעקומען{" "}
-                  <strong> ${formatNumber(bus)}</strong>
+                  {bus ? (
+                    <strong> ${formatNumber(bus)}</strong>
+                  ) : (
+                    <strong> $0.00</strong>
+                  )}
                   <GiBus className="bus_goal_icon" />
                 </Paragraph>
               </div>
               <div>
                 <Paragraph>
                   וואשן איז שוין אריינגעקומען{" "}
-                  <strong> ${formatNumber(wash)}</strong>
+                  {wash ? (
+                    <strong> ${formatNumber(wash)}</strong>
+                  ) : (
+                    <strong> $0.00</strong>
+                  )}
                   <GiWashingMachine className="wash_goal_icon" />
                 </Paragraph>
               </div>
               <div>
                 <Paragraph>
                   ס"ה דארף נאך אריינקומען{" "}
-                  <strong>${formatNumber(goalAmount - (bus + wash))}</strong>
+                  {goalAmount - (bus + wash) ? (
+                    <strong> ${formatNumber(goalAmount - (bus + wash))}</strong>
+                  ) : (
+                    <strong> $0.00</strong>
+                  )}
                   <MdDoNotDisturbOnTotalSilence className="total_goal_icon" />
                 </Paragraph>
               </div>

@@ -17,7 +17,6 @@ import HebrewDatePicker from "../jewishDtaePicker/hebcalDatePicker";
 import { zmanGoalInfo } from "../../servers/postRequest";
 import { useNavigate } from "react-router-dom";
 import SedraSelect from "../sedraSelect/sedraSelect";
-import Error500 from "../error/error";
 import { FaPlus } from "react-icons/fa";
 
 const formItemLayout = {
@@ -94,20 +93,17 @@ const ClosedWeeks = () => {
     try {
       setLoading(true);
       await zmanGoalInfo(values);
-      Modal.success({
-        title: "Success",
-        content: "Zman goal added successfully",
-        footer: null,
-        onOk: () => navigate("/buses"),
-      });
+      setTimeout(() => {
+        Modal.success({
+          title: "Success",
+          content: "Zman goal added successfully",
+          footer: null,
+        });
+      }, 2000);
+      navigate("/buses");
     } catch (error) {
       console.error("Error adding zman goal:", error);
-      Modal.error({
-        title: "Error",
-        content: "Failed to add zman goal",
-        footer: null,
-      });
-      <Error500 />;
+      navigate("/error500");
     } finally {
       setLoading(false);
     }
@@ -229,7 +225,7 @@ const ClosedWeeks = () => {
                   name="bus_price"
                   rules={[
                     {
-                      required: true,
+                      // required: true,
                       message: "Please input bus round trip price!",
                     },
                   ]}

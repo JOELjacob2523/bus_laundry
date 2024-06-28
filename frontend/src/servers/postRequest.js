@@ -106,7 +106,7 @@ export const zmanGoalInfo = async (formData) => {
   }
 };
 
-//get cc data into cardnox site
+//add user payments into the database
 export const payments = async (formData) => {
   try {
     const response = await axios.post(`${URL}/payments`, formData, {

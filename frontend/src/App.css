@@ -4,7 +4,7 @@
   height: 100vh;
 }
 
-.page_header{
+/* .page_header{
   display: grid;
   grid-template-columns: auto;
   position: sticky;
@@ -19,7 +19,7 @@
   top: 0;
   width: 100%;
   height: 100vh;
-}
+} */
 
 .main_page_container{
   display: flex;
@@ -27,11 +27,11 @@
   flex: 1;
 }
 
-.footer{
+/* .footer{
   display: flex;
   justify-content: center;
   position: sticky;
   bottom: 0;
   z-index: 100;
   padding: 10px;
-}
+} */

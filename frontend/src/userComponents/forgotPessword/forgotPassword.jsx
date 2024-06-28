@@ -42,7 +42,7 @@ const ForgotPasswordForm = () => {
   };
 
   return (
-    <div>
+    <div className="forgot_password_main_container">
       <Card>
         <div className="forgot_password_head_container">
           <div className="forgot_password_head_1">Forgot Password?</div>{" "}

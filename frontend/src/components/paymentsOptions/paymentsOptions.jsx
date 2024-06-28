@@ -1,14 +1,5 @@
 import "./paymentsOptions.css";
-import {
-  Button,
-  Form,
-  Input,
-  message,
-  Spin,
-  Modal,
-  Radio,
-  Divider,
-} from "antd";
+import { Button, Form, Input, Spin, Modal, Radio, Divider } from "antd";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { getUserInfoById } from "../../servers/getRequest";
 import React, { useState, useEffect } from "react";
@@ -39,7 +30,6 @@ const validateMessages = {
 
 const PaymentOptions = ({ studentId, token }) => {
   const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
   const [value, setValue] = useState("bus");
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -111,7 +101,6 @@ const PaymentOptions = ({ studentId, token }) => {
 
   return (
     <>
-      {/* {contextHolder} */}
       <Form
         {...layout}
         form={form}

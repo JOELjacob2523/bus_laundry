@@ -21,7 +21,15 @@
     align-items: center;
 }
 
+.google_maps_container{
+    padding: 0 0 0 60px;
+    display: flex;
+    align-items: center;
+}
+
 .KY_letterhead_img_container{
+    display: flex;
+    justify-content: center;
     flex: 1;
     padding: 0 0 25px 0;
 }

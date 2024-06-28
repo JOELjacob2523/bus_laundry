@@ -10,9 +10,9 @@ const ResetPasswordForm = () => {
   const navigate = useNavigate();
 
   const handleReset = async (values) => {
-    const { confirmationNumber, new_password, email } = values;
+    const { confirmationNumber, new_password } = values;
     try {
-      await resetPassword(confirmationNumber, new_password, email);
+      await resetPassword(confirmationNumber, new_password);
       navigate(0);
     } catch (error) {
       console.error("Error resetting password:", error);
@@ -44,7 +44,7 @@ const ResetPasswordForm = () => {
               prefix={<MdOutlineConfirmationNumber />}
             />
           </Form.Item>
-          <Form.Item
+          {/* <Form.Item
             label="Email"
             name="email"
             rules={[
@@ -56,7 +56,7 @@ const ResetPasswordForm = () => {
             ]}
           >
             <Input placeholder="Enter your email" prefix={<MdOutlineEmail />} />
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item
             label="New password"
             name="new_password"

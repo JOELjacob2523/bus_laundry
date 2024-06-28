@@ -2,11 +2,13 @@ import "./login.css";
 import React, { useState } from "react";
 import { TbPasswordUser } from "react-icons/tb";
 import { MdOutlineEmail } from "react-icons/md";
-import { Button, Card, Form, Input, Modal } from "antd";
+import { Button, Card, Form, Input, Modal, Watermark } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../servers/userRequests/postUserRequest";
 import ErrorLogin from "../errorAlert/errorLogin";
 import KYLetterhead from "../../images/KY_Letterhead.png";
+import KYBuilding from "../../images/KYBuilding.png";
+import KYSymbolWashed from "../../images/KYSymbolWashed.png";
 import ForgotPasswordForm from "../forgotPessword/forgotPassword";
 
 const UserLogin = ({ setIsAuthenticated }) => {
@@ -44,8 +46,9 @@ const UserLogin = ({ setIsAuthenticated }) => {
   };
 
   return (
-    <div>
-      <div className="login_main_container">
+    // <Watermark height={80} width={130} image={KYSymbolWashed}>
+    <div className="login_main_container">
+      <div className="login_inner_container">
         <div className="KY_letterhead_img_container">
           <img
             className="KY_letterhead_img"
@@ -133,6 +136,7 @@ const UserLogin = ({ setIsAuthenticated }) => {
       >
         <ForgotPasswordForm />
       </Modal>
+      {/* </Watermark> */}
     </div>
   );
 };

@@ -69,8 +69,8 @@ router.post("/forgot_password", upload.fields([]), async (req, res, next) => {
 
 router.post("/reset_password", upload.fields([]), async (req, res, next) => {
   try {
-    const { confirmationNumber, newPassword, email } = req.body;
-    await CONTORLLER.resetPassword(newPassword, email);
+    const { confirmationNumber, newPassword } = req.body;
+    await CONTORLLER.resetPassword(newPassword, confirmationNumber);
     res.status(200).json({
       message: "Password reset successfully",
     });
