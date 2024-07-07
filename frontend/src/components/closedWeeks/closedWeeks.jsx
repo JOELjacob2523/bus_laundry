@@ -100,7 +100,7 @@ const ClosedWeeks = () => {
           footer: null,
         });
       }, 2000);
-      navigate("/buses");
+      navigate("/home/buses");
     } catch (error) {
       console.error("Error adding zman goal:", error);
       navigate("/error500");

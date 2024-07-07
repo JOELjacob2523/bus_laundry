@@ -23,6 +23,7 @@ function App() {
             <Route index element={<CityTotal />} />
             <Route path="details" element={<Details />} />
             <Route path="buses" element={<Buses />} />
+            <Route path="old_data" element={<Buses />} />
             <Route path="error500" element={<Error500 />} />
           </Route>
           <Route path="/signup" element={<UserSignup />} />

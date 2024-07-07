@@ -56,15 +56,15 @@ CREATE TABLE payments (
   PRIMARY KEY (payment_id)
 );
 
-CREATE TABLE orders (
-  orderId BIGINT NOT NULL AUTO_INCREMENT,
+CREATE TABLE Withdrawals (
+  Withdrawal_id BIGINT NOT NULL AUTO_INCREMENT,
+  amount VARCHAR(255) NULL,
+  Withdrawal_to VARCHAR (255) NULL,
   date DATE NULL,
-  totalboxes VARCHAR(255) NULL,
-  totalprice VARCHAR (255) NULL,
-  token TEXT NULL,
-  vendorId BIGINT,
-  FOREIGN KEY(vendorId) REFERENCES vendors(vendorId),
-  PRIMARY KEY (orderId)
+  hebrew_date VARCHAR (255) NULL,
+  user_id BIGINT,
+  FOREIGN KEY(user_id) REFERENCES users(user_id),
+  PRIMARY KEY (Withdrawal_id)
 );
 
 CREATE TABLE orderitems (

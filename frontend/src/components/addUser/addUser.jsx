@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.css";
-import { Button, Form, Input, InputNumber, message } from "antd";
+import { Button, Form, Input, InputNumber, Modal, message } from "antd";
 import { userInfo } from "../../servers/postRequest";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +29,6 @@ const validateMessages = {
 
 const FirstName = () => {
   const [messageApi, contextHolder] = message.useMessage();
-
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
@@ -37,17 +36,14 @@ const FirstName = () => {
       await userInfo(values);
       messageApi.open({
         type: "success",
-        content: "User added successfully",
+        content: "Student added successfully",
       });
       setTimeout(() => {
         navigate(0);
       }, 2000);
     } catch (error) {
       console.error("Error adding user:", error);
-      messageApi.open({
-        type: "error",
-        content: "Failed to add user",
-      });
+      navigate("/error500");
     }
   };
 

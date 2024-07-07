@@ -1,5 +1,5 @@
 import "./editUser.css";
-import { Button, Form, Input, InputNumber, message, Spin, Modal } from "antd";
+import { Button, Form, Input, InputNumber, message, Spin } from "antd";
 import { getUserInfoById } from "../../servers/getRequest";
 import { updateUserInfo } from "../../servers/postRequest";
 import React, { useState, useEffect } from "react";
@@ -59,21 +59,15 @@ const EditUser = ({ studentId, token }) => {
   const onFinish = async (values) => {
     try {
       await updateUserInfo(values);
-      Modal.success({
-        title: "Success",
+      messageApi.open({
+        title: "success",
         content: "User updated successfully",
-        footer: null,
       });
       setTimeout(() => {
         navigate(0);
       }, 2000);
     } catch (error) {
       console.error("Error updating user:", error);
-      Modal.error({
-        title: "Error",
-        content: "Failed to update user",
-        footer: null,
-      });
       navigate("/error500");
     }
   };

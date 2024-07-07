@@ -67,11 +67,11 @@ export const sendEmail = async (email) => {
   }
 };
 
-export const resetPassword = async (confirmationNumber, newPassword) => {
+export const resetPassword = async (newPassword, confirmationNumber) => {
   try {
     const response = await axios.post(
       `${URL}/reset_password`,
-      { confirmationNumber, newPassword },
+      { newPassword, confirmationNumber },
       {
         headers: {
           "Content-Type": "application/json",

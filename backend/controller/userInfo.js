@@ -78,9 +78,16 @@ async function sendEmail(email) {
   confirmationNumber = generateConfirmationNumber();
   usersEmail = email;
 
+  const token = jwt.sign({ email, confirmationNumber }, SECRET_KEY, {
+    expiresIn: "1h",
+  });
+
+  await knex("users").where({ email: email }).update({ token });
+
   const emailContent = ReactDOMServer.renderToStaticMarkup(
     React.createElement(EmailTemplate, { confirmationNumber })
   );
+
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -105,17 +112,24 @@ async function sendEmail(email) {
       console.log("Email sent: " + info.response);
     }
   });
+  return token;
 }
 
 // reset password
 async function resetPassword(newPassword, confirmationNumber) {
-  const hashedPassword = await bcrypt.hash(newPassword, 8);
+  const user = await knex("users").select().where("email", usersEmail).first();
+  const decoded = jwt.verify(user.token, SECRET_KEY);
 
-  const payload = {
-    password: hashedPassword,
-  };
-  const token = jwt.sign(payload, SECRET_KEY);
-  return knex("users")
-    .where({ email: usersEmail })
-    .update({ password: hashedPassword, token });
+  if (String(decoded.confirmationNumber) === String(confirmationNumber)) {
+    const hashedPassword = await bcrypt.hash(newPassword, 8);
+    const payload = {
+      password: hashedPassword,
+    };
+    const token = jwt.sign(payload, SECRET_KEY);
+    return knex("users")
+      .where({ email: usersEmail })
+      .update({ password: hashedPassword, token });
+  } else {
+    throw new Error("Failed to reset password: " + error.message);
+  }
 }

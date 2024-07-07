@@ -1,5 +1,14 @@
 import "./paymentsOptions.css";
-import { Button, Form, Input, Spin, Modal, Radio, Divider } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Spin,
+  Modal,
+  Radio,
+  Divider,
+  message,
+} from "antd";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { getUserInfoById } from "../../servers/getRequest";
 import React, { useState, useEffect } from "react";
@@ -29,6 +38,7 @@ const validateMessages = {
 /* eslint-enable no-template-curly-in-string */
 
 const PaymentOptions = ({ studentId, token }) => {
+  const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
   const [value, setValue] = useState("bus");
   const [userInfo, setUserInfo] = useState(null);
@@ -67,24 +77,20 @@ const PaymentOptions = ({ studentId, token }) => {
     try {
       const formData = { ...values, payment_type: value };
       await payments(formData);
-      Modal.success({
-        title: "Success",
+      messageApi.open({
+        type: "success",
         content: "Payment added successfully",
-        footer: null,
       });
       setTimeout(() => {
         navigate(0);
       }, 2000);
     } catch (error) {
       console.error("Error adding payment:", error);
-      Modal.error({
-        title: "Error",
-        content: "Failed to add payment",
-        footer: null,
-      });
-      setTimeout(() => {
-        navigate(0);
-      }, 2000);
+      // messageApi.open({
+      //   type: "error",
+      //   content: "Failed to add payment",
+      // });
+      navigate("/error500");
     }
   };
 
@@ -101,6 +107,7 @@ const PaymentOptions = ({ studentId, token }) => {
 
   return (
     <>
+      {contextHolder}
       <Form
         {...layout}
         form={form}

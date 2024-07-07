@@ -1,7 +1,7 @@
 import "./resetPassword.css";
 import React from "react";
 import { resetPassword } from "../../servers/userRequests/postUserRequest";
-import { Button, Card, Form, Input } from "antd";
+import { Button, Card, Form, Input, Modal } from "antd";
 import { useNavigate } from "react-router-dom";
 import { TbPasswordUser } from "react-icons/tb";
 import { MdOutlineConfirmationNumber, MdOutlineEmail } from "react-icons/md";
@@ -10,13 +10,17 @@ const ResetPasswordForm = () => {
   const navigate = useNavigate();
 
   const handleReset = async (values) => {
-    const { confirmationNumber, new_password } = values;
+    const { new_password, confirmationNumber } = values;
     try {
-      await resetPassword(confirmationNumber, new_password);
+      await resetPassword(new_password, confirmationNumber);
       navigate(0);
     } catch (error) {
       console.error("Error resetting password:", error);
-      alert("Failed to reset password. Please try again later.");
+      Modal.error({
+        title: "Error",
+        content: "Failed to reset password, Please try again!",
+        footer: null,
+      });
     }
   };
 

@@ -204,14 +204,14 @@ async function migrateOldData() {
 
     //removing safty mode while deleting old data
     await knex.transaction(async (trx) => {
-      await trx.raw("SET SQL_SAFE_UPDATES = 0");
+      await trx.raw("SET FOREIGN_KEY_CHECKS = 0");
 
       await knex("payments").del();
       await knex("students").del();
       await knex("zman_goal").del();
 
       //returning safty mode after deleting old data
-      await trx.raw("SET SQL_SAFE_UPDATES = 1");
+      await trx.raw("SET FOREIGN_KEY_CHECKS = 1");
     });
     console.log("Data migration completed successfully.");
   } catch (error) {
