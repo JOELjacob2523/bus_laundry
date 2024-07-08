@@ -51,3 +51,14 @@ export const getAllPaymentInfo = async () => {
     console.error("Error fetching data:", error);
   }
 };
+
+//get withdrawal info
+export const getAllWithdrawalInfo = async () => {
+  try {
+    const response = await axios.get(`${URL}/get_withdrawal`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};

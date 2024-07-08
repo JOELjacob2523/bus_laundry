@@ -105,8 +105,8 @@ const WithdrawalForm = () => {
           >
             <Select
               options={[
-                { value: "מנהל", label: "מנהל" },
-                { value: "ר' זלמן לייב", label: "ר' זלמן לייב" },
+                { value: "באס", label: "באס" },
+                { value: "וואשן", label: "וואשן" },
               ]}
               placeholder="Choose withdrawal to..."
               suffixIcon={<IoPersonSharp />}

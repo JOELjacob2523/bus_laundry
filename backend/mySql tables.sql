@@ -57,7 +57,7 @@ CREATE TABLE payments (
 );
 
 CREATE TABLE Withdrawals (
-  Withdrawal_id BIGINT NOT NULL AUTO_INCREMENT,
+  withdrawal_id BIGINT NOT NULL AUTO_INCREMENT,
   amount VARCHAR(255) NULL,
   withdrawal_to VARCHAR (255) NULL,
   date DATE NULL,

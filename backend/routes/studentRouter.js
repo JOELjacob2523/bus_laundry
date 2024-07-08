@@ -203,4 +203,15 @@ router.post("/withdrawals", upload.fields([]), async (req, res, next) => {
   }
 });
 
+// router get all withdrawal info
+router.get("/get_withdrawal", async (req, res, next) => {
+  try {
+    let withdrawal = await CONTORLLER.getAllWithdrawalInfo();
+    res.status(200).json(withdrawal);
+  } catch (err) {
+    console.error("Error getting withdrawal credentials:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 module.exports = router;

@@ -18,6 +18,7 @@ module.exports = {
   getAllPaymentInfo,
   migrateOldData,
   insertWithdrawalInfo,
+  getAllWithdrawalInfo,
 };
 
 async function insertUserInfo(userInfo) {
@@ -235,4 +236,8 @@ async function insertWithdrawalInfo(withdrawalInfo) {
     console.error("Error inserting withdarwal info:", error);
     throw error;
   }
+}
+
+async function getAllWithdrawalInfo() {
+  return await knex("withdrawals").select();
 }

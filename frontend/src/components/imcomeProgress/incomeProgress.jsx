@@ -1,11 +1,7 @@
 import "./incomeProgress.css";
 import React, { useEffect, useState } from "react";
-import { Flex, Progress, Space, Typography } from "antd";
-import { GoGoal } from "react-icons/go";
-import { GiBus, GiWashingMachine } from "react-icons/gi";
-import { MdDoNotDisturbOnTotalSilence } from "react-icons/md";
-
-const { Paragraph } = Typography;
+import { Flex, Progress, Card } from "antd";
+import TotalBalance from "../totalBalance/totalBalance";
 
 const twoColors = {
   "0%": "#108ee9",
@@ -99,56 +95,59 @@ const IncomeProgress = ({
             />
           </Flex>
         </div>
-        <div className="awaiting_income_container">
-          <Space>
-            <Space.Compact direction="vertical">
+        <Card
+          title={<div className="modal_title">ס"ה געלט ארויס</div>}
+          className="total_balance_card"
+        >
+          <TotalBalance bus={bus} wash={wash} goalAmount={goalAmount} />
+        </Card>
+        <Card
+          title={<div className="modal_title">ס"ה געלט אריין</div>}
+          className="awaiting_income_card"
+        >
+          <div className="awaiting_income_container">
+            <div className="awaiting_income_inner">
               <div>
-                <Paragraph>
-                  עס דארף אריינקומען{" "}
-                  {goalAmount ? (
-                    <strong> ${formatNumber(goalAmount)}</strong>
-                  ) : (
-                    <strong> $0.00</strong>
-                  )}
-                  <GoGoal className="goal_icon" />
-                </Paragraph>
+                {goalAmount ? (
+                  <strong> ${formatNumber(goalAmount)}</strong>
+                ) : (
+                  <strong> $0</strong>
+                )}
               </div>
-              <div>
-                <Paragraph>
-                  באסעס איז שוין אריינגעקומען{" "}
-                  {bus ? (
-                    <strong> ${formatNumber(bus)}</strong>
-                  ) : (
-                    <strong> $0.00</strong>
-                  )}
-                  <GiBus className="bus_goal_icon" />
-                </Paragraph>
+              <div>עס דארף אריינקומען</div>
+            </div>
+            <div>
+              <div className="awaiting_income_inner">
+                {bus ? (
+                  <strong> ${formatNumber(bus)}</strong>
+                ) : (
+                  <strong> $0</strong>
+                )}
+                <div>באסעס איז שוין אריינגעקומען </div>
               </div>
-              <div>
-                <Paragraph>
-                  וואשן איז שוין אריינגעקומען{" "}
-                  {wash ? (
-                    <strong> ${formatNumber(wash)}</strong>
-                  ) : (
-                    <strong> $0.00</strong>
-                  )}
-                  <GiWashingMachine className="wash_goal_icon" />
-                </Paragraph>
+            </div>
+            <div>
+              <div className="awaiting_income_inner">
+                {wash ? (
+                  <strong> ${formatNumber(wash)}</strong>
+                ) : (
+                  <strong> $0</strong>
+                )}
+                <div>וואשן איז שוין אריינגעקומען </div>
               </div>
-              <div>
-                <Paragraph>
-                  ס"ה דארף נאך אריינקומען{" "}
-                  {goalAmount - (bus + wash) ? (
-                    <strong> ${formatNumber(goalAmount - (bus + wash))}</strong>
-                  ) : (
-                    <strong> $0.00</strong>
-                  )}
-                  <MdDoNotDisturbOnTotalSilence className="total_goal_icon" />
-                </Paragraph>
+            </div>
+            <div>
+              <div className="awaiting_income_inner">
+                {goalAmount - (bus + wash) ? (
+                  <strong> ${formatNumber(goalAmount - (bus + wash))}</strong>
+                ) : (
+                  <strong> $0</strong>
+                )}
+                <div>ס"ה דארף נאך אריינקומען </div>
               </div>
-            </Space.Compact>
-          </Space>
-        </div>
+            </div>
+          </div>
+        </Card>
       </div>
     </div>
   );
