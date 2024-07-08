@@ -125,3 +125,23 @@ export const payments = async (formData) => {
     throw err;
   }
 };
+
+//insert withdrawal info
+export const withdrawalInfo = async (formData) => {
+  try {
+    const response = await axios.post(`${URL}/withdrawals`, formData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status === 200) {
+      console.log("Success!!");
+    } else {
+      console.log(`Error inserting! ${response.data}`);
+    }
+  } catch (err) {
+    console.error("Error:", err.message);
+    throw err;
+  }
+};

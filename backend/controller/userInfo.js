@@ -120,7 +120,7 @@ async function resetPassword(newPassword, confirmationNumber) {
   const user = await knex("users").select().where("email", usersEmail).first();
   const decoded = jwt.verify(user.token, SECRET_KEY);
 
-  if (String(decoded.confirmationNumber) === String(confirmationNumber)) {
+  if (Number(decoded.confirmationNumber) === Number(confirmationNumber)) {
     const hashedPassword = await bcrypt.hash(newPassword, 8);
     const payload = {
       password: hashedPassword,
@@ -130,6 +130,6 @@ async function resetPassword(newPassword, confirmationNumber) {
       .where({ email: usersEmail })
       .update({ password: hashedPassword, token });
   } else {
-    throw new Error("Failed to reset password: " + error.message);
+    throw new Error("Failed to reset password");
   }
 }

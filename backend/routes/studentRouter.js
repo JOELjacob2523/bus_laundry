@@ -47,7 +47,6 @@ router.get("/get_user_info", async (req, res, next) => {
 // router to update a student
 router.post("/update_user_info", upload.fields([]), async (req, res, next) => {
   try {
-    console.log(req.body);
     let { student_id } = await CONTORLLER.updateUserInfo(req.body);
     req.session.student_id = student_id;
     res.status(200).json({
@@ -188,6 +187,19 @@ router.post("/submit_cc_form", async (req, res) => {
     if (driver) {
       await driver.quit();
     }
+  }
+});
+
+// router to insert withdrawal info
+router.post("/withdrawals", upload.fields([]), async (req, res, next) => {
+  try {
+    await CONTORLLER.insertWithdrawalInfo(req.body);
+    res.status(200).json({ message: "Withdrawals insert successfully" });
+  } catch (err) {
+    console.error("Error inserting withdrawals credentials:", err);
+    res
+      .status(500)
+      .json({ message: "Error inserting withdrawals", error: err.message });
   }
 });
 

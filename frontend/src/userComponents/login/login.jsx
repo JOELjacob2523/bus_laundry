@@ -7,8 +7,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../servers/userRequests/postUserRequest";
 import ErrorLogin from "../errorAlert/errorLogin";
 import KYLetterhead from "../../images/KY_Letterhead.png";
-import KYBuilding from "../../images/KYBuilding.png";
-import KYSymbolWashed from "../../images/KYSymbolWashed.png";
 import ForgotPasswordForm from "../forgotPessword/forgotPassword";
 
 const UserLogin = ({ setIsAuthenticated }) => {
@@ -28,7 +26,6 @@ const UserLogin = ({ setIsAuthenticated }) => {
   };
 
   const onFinish = async (values) => {
-    console.log(values);
     const { email, password } = values;
     try {
       const response = await login(email, password);

@@ -2,6 +2,8 @@ const router = require("express").Router();
 const CONTORLLER = require("../controller/userInfo");
 const multer = require("multer");
 const upload = multer();
+const jwt = require("jsonwebtoken");
+const SECRET_KEY = process.env.SECRET_KEY;
 // const { Builder, By, until } = require("selenium-webdriver");
 // const chrome = require("selenium-webdriver/chrome");
 
@@ -27,7 +29,10 @@ router.post("/signup", upload.fields([]), async (req, res, next) => {
 
 router.get("/check_auth", (req, res) => {
   if (req.session && req.session.token) {
-    return res.status(200).json({ message: "Authenticated" });
+    const decoded = jwt.verify(req.session.token, SECRET_KEY);
+    return res
+      .status(200)
+      .json({ message: "Authenticated", user_id: Number(decoded.user_id) });
   }
   res.status(401).json({ message: "Unauthorized" });
 });
@@ -39,7 +44,6 @@ router.post("/login", upload.fields([]), async (req, res, next) => {
       req.body.email,
       req.body.password
     );
-    // req.session.token = token;
     res.status(200).json({
       message: "User confirmed successfully",
       token: req.session.token,

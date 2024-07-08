@@ -9,12 +9,9 @@ const axiosInstance = axios.create({
 export const checkAuth = async () => {
   try {
     const response = await axiosInstance.get(`/check_auth`);
-    return response;
+    return response.data;
   } catch (err) {
-    if (err.response) {
-    } else if (err.request) {
-    } else {
-    }
+    console.error("Error fetching data:", err);
     throw err;
   }
 };

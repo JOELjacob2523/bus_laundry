@@ -17,6 +17,7 @@ module.exports = {
   insertPaymentInfo,
   getAllPaymentInfo,
   migrateOldData,
+  insertWithdrawalInfo,
 };
 
 async function insertUserInfo(userInfo) {
@@ -216,6 +217,22 @@ async function migrateOldData() {
     console.log("Data migration completed successfully.");
   } catch (error) {
     console.error("Error migrating data:", error);
+    throw error;
+  }
+}
+
+//insert withdrawal data
+async function insertWithdrawalInfo(withdrawalInfo) {
+  try {
+    await knex("withdrawals").insert({
+      amount: withdrawalInfo.amount,
+      withdrawal_to: withdrawalInfo.withdrawal_to,
+      date: withdrawalInfo.date,
+      hebrew_date: withdrawalInfo.hebrew_date,
+      user_id: withdrawalInfo.user_id,
+    });
+  } catch (error) {
+    console.error("Error inserting withdarwal info:", error);
     throw error;
   }
 }

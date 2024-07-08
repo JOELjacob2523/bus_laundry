@@ -2,6 +2,7 @@ import "./withdrawals.css";
 import React, { useState } from "react";
 import { Button, Card, Drawer } from "antd";
 import { BiMoneyWithdraw } from "react-icons/bi";
+import WithdrawalForm from "./withdrawalForm";
 
 const Withdrawals = () => {
   const [open, setOpen] = useState(false);
@@ -30,13 +31,13 @@ const Withdrawals = () => {
       </div>
       <Drawer
         title={<div className="modal_title">באצאלן אינפארמאציע</div>}
-        width={800}
+        width={700}
         open={open}
         onClose={closeDrawer}
         footer={null}
         className="withdrawals_drawer"
       >
-        <div className="">hello</div>
+        <div className="withdrawal_form">{<WithdrawalForm />}</div>
       </Drawer>
     </>
   );
