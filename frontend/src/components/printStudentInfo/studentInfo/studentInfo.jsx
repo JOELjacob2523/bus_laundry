@@ -1,16 +1,13 @@
 import "./studentInfo.css";
 import React, { useEffect, useRef, useState, forwardRef } from "react";
 import { getAllPaymentInfo, getAllUserInfo } from "../../../servers/getRequest";
-import { Button, Input, Space, Table } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
-import Highlighter from "react-highlight-words";
+import { List } from "antd";
+import KYLetterhead from "../../../images/KY_Letterhead.png";
 
 const StudentInfoToPrint = forwardRef((props, ref) => {
   const [studentInfo, setStudentInfo] = useState([]);
   const [paymentInfo, setPaymentInfo] = useState([]);
   const [mergedData, setMergedData] = useState([]);
-  const [searchText, setSearchText] = useState("");
-  const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
 
   useEffect(() => {
@@ -40,188 +37,67 @@ const StudentInfoToPrint = forwardRef((props, ref) => {
     fetchData();
   }, []);
 
-  const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    setSearchText(selectedKeys[0]);
-    setSearchedColumn(dataIndex);
-  };
-  const handleReset = (clearFilters) => {
-    clearFilters();
-    setSearchText("");
-  };
-  const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-      close,
-    }) => (
-      <div
-        style={{
-          padding: 8,
-        }}
-        onKeyDown={(e) => e.stopPropagation()}
-      >
-        <Input
-          ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{
-            marginBottom: 8,
-            display: "block",
-          }}
-        />
-        <Space>
-          <Button
-            key="searchButton"
-            type="primary"
-            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Search
-          </Button>
-          <Button
-            key="resetButton"
-            onClick={() => clearFilters && handleReset(clearFilters)}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Reset
-          </Button>
-          <Button
-            key="filterButton"
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({
-                closeDropdown: false,
-              });
-              setSearchText(selectedKeys[0]);
-              setSearchedColumn(dataIndex);
-            }}
-          >
-            Filter
-          </Button>
-          <Button
-            key="closeButton"
-            type="link"
-            size="small"
-            onClick={() => {
-              close();
-            }}
-          >
-            close
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: (filtered) => (
-      <SearchOutlined
-        style={{
-          color: filtered ? "#1677ff" : undefined,
-        }}
-      />
-    ),
-    onFilter: (value, record) =>
-      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-    onFilterDropdownOpenChange: (visible) => {
-      if (visible) {
-        setTimeout(() => searchInput.current?.select(), 100);
-      }
-    },
-    render: (text) =>
-      searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{
-            backgroundColor: "#ffc069",
-            padding: 0,
-          }}
-          searchWords={[searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ""}
-        />
-      ) : (
-        text
-      ),
-  });
-
-  const columns = [
-    {
-      title: "First Name",
-      dataIndex: "first_name",
-      key: "first_name",
-      ...getColumnSearchProps("first_name"),
-      sorter: (a, b) => a.first_name.localeCompare(b.first_name),
-      sortDirections: ["descend", "ascend"],
-    },
-    {
-      title: "Last Name",
-      dataIndex: "last_name",
-      key: "last_name",
-      ...getColumnSearchProps("last_name"),
-      sorter: (a, b) => a.last_name.localeCompare(b.last_name),
-      sortDirections: ["descend", "ascend"],
-    },
-    {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
-      ...getColumnSearchProps("age"),
-    },
-    {
-      title: "Address 1",
-      dataIndex: "address1",
-      key: "address1",
-      ...getColumnSearchProps("address1"),
-    },
-    {
-      title: "Address 2",
-      dataIndex: "address2",
-      key: "address2",
-      ...getColumnSearchProps("address2"),
-    },
-    {
-      title: "City-State-Zip",
-      dataIndex: "city_state_zip",
-      key: "city_state_zip",
-      ...getColumnSearchProps("city_state_zip"),
-    },
-    {
-      title: "Balance",
-      dataIndex: ["payment", "total_paid"],
-      key: "payment.total_paid",
-      render: (payment) => (payment && payment ? payment.total_paid : "-"),
-      ...getColumnSearchProps("payment.total_paid"),
-    },
-    {
-      title: "Payment Date",
-      dataIndex: ["payment", "pay_date"],
-      key: "payment.pay_date",
-      render: (payment) => (payment && payment ? payment.pay_date : "-"),
-      ...getColumnSearchProps("payment.pay_date"),
-    },
-  ];
-
   return (
     <div ref={ref} className="student_info_to_print_container">
-      {" "}
-      <Table
-        columns={columns}
-        dataSource={mergedData}
-        pagination={false}
-        className="student_info_to_print"
-      />
+      <div className="KY_letterhead_img_container">
+        <img
+          className="KY_letterhead_img"
+          alt="KYLetterhead"
+          src={KYLetterhead}
+        />
+      </div>
+      <div className="print_main_container">
+        <List
+          itemLayout="vertical"
+          className="print_list_container"
+          dataSource={mergedData}
+          bordered
+          renderItem={(student, index) => (
+            <List.Item>
+              <List.Item.Meta
+                title={
+                  <div className="print_list_titel_container">
+                    {student.first_name} {student.last_name}{" "}
+                  </div>
+                }
+                description={
+                  <div className="print_list_data_container">
+                    <div>
+                      Age: <strong>{student.age}</strong>
+                    </div>
+                    <div>
+                      Address: <strong>{student.address1}</strong>
+                    </div>
+                    <div>
+                      City-State-Zip: <strong>{student.city_state_zip}</strong>
+                    </div>
+                    <div>
+                      Total Paid:{" "}
+                      {student.payment ? (
+                        <strong>
+                          ${student.payment && student.payment.total_paid}
+                        </strong>
+                      ) : (
+                        <strong>$0</strong>
+                      )}
+                    </div>
+                    <div>
+                      Payment Date:{" "}
+                      {student.payment ? (
+                        <strong>
+                          {student.payment && student.payment.pay_date}
+                        </strong>
+                      ) : (
+                        <strong>N/A</strong>
+                      )}
+                    </div>
+                  </div>
+                }
+              />
+            </List.Item>
+          )}
+        />
+      </div>
     </div>
   );
 });

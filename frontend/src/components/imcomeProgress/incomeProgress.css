@@ -8,6 +8,10 @@
     padding: 15px 0 15px 0;
 }
 
+.round_progress{
+    padding-top: 15px;
+}
+
 .bottom_container{
     display: flex;
     flex-direction: row;

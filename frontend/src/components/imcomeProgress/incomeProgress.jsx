@@ -84,6 +84,7 @@ const IncomeProgress = ({
       </div>
       <div className="bottom_container">
         <div>
+          <div>עס איז אריינגעקומען</div>
           <Flex wrap gap="middle" className="round_progress">
             <Progress
               type="dashboard"
