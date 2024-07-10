@@ -57,7 +57,7 @@ const UserCard = ({ student, payment }) => {
     <div className="main_card_container">
       <Card
         title={
-          <div className="title_container">
+          <div className="student_title_container">
             <div>
               {student.first_name} {student.last_name}
             </div>

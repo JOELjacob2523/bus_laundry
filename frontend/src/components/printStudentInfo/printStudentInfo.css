@@ -8,17 +8,9 @@
 
 .print_container{
     display: flex;
-    flex-direction: column;
-}
-
-.print_student_table_info_container{
-    display: flex;
     flex-direction: row;
-    justify-content: right;
 }
 
 .print_student_table_info_btn{
-    padding: 50px 60px 0 0;
-    display: flex;
-    align-items: center;
+    padding-top: 50px;
 }

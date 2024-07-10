@@ -9,6 +9,7 @@ import StudentApp from "./components/studentApp/studentApp";
 import CityTotal from "./components/city_total";
 import Buses from "./components/buses/buses";
 import Details from "./components/details/details";
+import MainOldDataPage from "./oldDataComponents/mainOldDataPage/mainOldDataPage";
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
             <Route index element={<CityTotal />} />
             <Route path="details" element={<Details />} />
             <Route path="buses" element={<Buses />} />
-            <Route path="old_data" element={<Buses />} />
+            <Route path="old_data" element={<MainOldDataPage />} />
             <Route path="error500" element={<Error500 />} />
           </Route>
           <Route path="/signup" element={<UserSignup />} />

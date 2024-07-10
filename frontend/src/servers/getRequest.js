@@ -62,3 +62,36 @@ export const getAllWithdrawalInfo = async () => {
     console.error("Error fetching data:", error);
   }
 };
+
+//get old zman goal info
+export const getOldZmanGoalInfo = async () => {
+  try {
+    const response = await axios.get(`${URL}/get_old_zman_goal`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
+//get old payments info
+export const getOldPaymentInfo = async () => {
+  try {
+    const response = await axios.get(`${URL}/get_old_payments`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
+//get old students info
+export const getOldStudentInfo = async () => {
+  try {
+    const response = await axios.get(`${URL}/get_old_students`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};

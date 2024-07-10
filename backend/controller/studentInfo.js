@@ -19,6 +19,9 @@ module.exports = {
   migrateOldData,
   insertWithdrawalInfo,
   getAllWithdrawalInfo,
+  getOldPaymentsInfo,
+  getOldStudentsInfo,
+  getOldZmanGoalInfo,
 };
 
 async function insertUserInfo(userInfo) {
@@ -238,6 +241,22 @@ async function insertWithdrawalInfo(withdrawalInfo) {
   }
 }
 
+//get withdrawal information
 async function getAllWithdrawalInfo() {
   return await knex("withdrawals").select();
+}
+
+//get old zman goal information
+async function getOldZmanGoalInfo() {
+  return await knex("old_zman_goal").select();
+}
+
+//get old payments information
+async function getOldPaymentsInfo() {
+  return await knex("old_payments").select();
+}
+
+//get old students information
+async function getOldStudentsInfo() {
+  return await knex("old_students").select();
 }

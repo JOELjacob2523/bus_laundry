@@ -11,7 +11,6 @@ export const userInfo = async (formData) => {
     });
 
     if (response.status === 200) {
-      console.log("Success!!");
     } else {
       console.log(`Error inserting! ${response.data}`);
     }
@@ -33,7 +32,6 @@ export const login = async (email, password) => {
     );
 
     if (response.status === 200) {
-      console.log("Success!!");
       return response;
     } else {
       console.log(`Error inserting! ${response.data}`);
@@ -56,7 +54,6 @@ export const sendEmail = async (email) => {
       }
     );
     if (response.status === 200) {
-      console.log("Success!!");
       return response;
     } else {
       console.log(`Error sending email! ${response.data}`);
@@ -79,7 +76,6 @@ export const resetPassword = async (newPassword, confirmationNumber) => {
       }
     );
     if (response.status === 200) {
-      console.log("Success!!");
       return response;
     } else {
       console.log(`Error reseting password! ${response.data}`);

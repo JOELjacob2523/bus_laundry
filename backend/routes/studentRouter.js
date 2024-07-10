@@ -214,4 +214,37 @@ router.get("/get_withdrawal", async (req, res, next) => {
   }
 });
 
+// router get old zman goal info
+router.get("/get_old_zman_goal", async (req, res, next) => {
+  try {
+    let oldZmanGoal = await CONTORLLER.getOldZmanGoalInfo();
+    res.status(200).json(oldZmanGoal);
+  } catch (err) {
+    console.error("Error getting old zman goal credentials:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// router get old payment info
+router.get("/get_old_payments", async (req, res, next) => {
+  try {
+    let oldPayments = await CONTORLLER.getOldPaymentsInfo();
+    res.status(200).json(oldPayments);
+  } catch (err) {
+    console.error("Error getting old payments credentials:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// router get old student info
+router.get("/get_old_students", async (req, res, next) => {
+  try {
+    let oldStudents = await CONTORLLER.getOldStudentsInfo();
+    res.status(200).json(oldStudents);
+  } catch (err) {
+    console.error("Error getting old students credentials:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 module.exports = router;

@@ -31,23 +31,27 @@ const PrintStudentInfo = () => {
         centered
         open={open}
         onCancel={() => setOpen(false)}
-        width={1700}
+        width={1300}
         footer={null}
       >
         <div className="print_container">
-          <ReactToPrint
-            trigger={() => (
-              <div className="print_student_table_info_container">
-                <div className="print_student_table_info_btn">
-                  <Button type="primary" className="print_student_table_info">
-                    Print this page
-                  </Button>
+          <div className="print_student_container">
+            <ReactToPrint
+              trigger={() => (
+                <div className="print_student_table_info_container">
+                  <div className="print_student_table_info_btn">
+                    <Button type="primary" className="print_student_table_info">
+                      Print this page
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            )}
-            content={() => componentRef.current}
-          />
-          <StudentInfoToPrint ref={componentRef} />
+              )}
+              content={() => componentRef.current}
+            />
+          </div>
+          <div className="print_student_info_container">
+            <StudentInfoToPrint ref={componentRef} />
+          </div>
         </div>
       </Modal>
     </>
