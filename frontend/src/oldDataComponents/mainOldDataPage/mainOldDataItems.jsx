@@ -1,12 +1,33 @@
-import { useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { getOldZmanGoalInfo } from "../../servers/getRequest";
 import { HDate, HebrewDateEvent } from "@hebcal/core";
-import { Select } from "antd";
+import { Radio } from "antd";
 
-const OldZmanData = ({ setItems }) => {
+const OldZmanData = ({
+  setItems,
+  setOldZmanGoal,
+  showSummerModal,
+  showWinterModal,
+}) => {
+  const [value, setValue] = useState("");
+
+  const onChange = useCallback(
+    (e) => {
+      const newValue = e.target.value;
+      setValue(newValue);
+      if (newValue === "קיץ") {
+        showSummerModal();
+      } else if (newValue === "חורף") {
+        showWinterModal();
+      }
+    },
+    [showSummerModal, showWinterModal]
+  );
+
   useEffect(() => {
     const fetchOldZmanData = async () => {
       const data = await getOldZmanGoalInfo();
+      setOldZmanGoal(data);
 
       const newItems = data.map((zmanGoal) => {
         const { day, month, year } = zmanGoal.zman_starts_ends.end.jewishDate;
@@ -18,21 +39,17 @@ const OldZmanData = ({ setItems }) => {
           key: zmanGoal.zman_goal_id,
           label: hebrewYear,
           children: (
-            <Select
-              options={[
-                { value: "חורף", label: "חורף" },
-                { value: "קיץ", label: "קיץ" },
-              ]}
-              placeholder="קלויב א זמן"
-              style={{ width: "20%" }}
-            />
+            <Radio.Group value={value} onChange={onChange}>
+              <Radio value="חורף">חורף</Radio>
+              <Radio value="קיץ">קיץ</Radio>
+            </Radio.Group>
           ),
         };
       });
       setItems(newItems);
     };
     fetchOldZmanData();
-  }, [setItems]);
+  }, [setItems, onChange, value, setOldZmanGoal]);
 
   return null;
 };
