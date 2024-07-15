@@ -1,8 +1,8 @@
 import "./mainOldDataPage.css";
-import React, { useEffect, useState } from "react";
-import { Card, Collapse, Input, Modal } from "antd";
+import React, { useCallback, useEffect, useState } from "react";
+import { Card, Collapse, Input, Modal, Radio } from "antd";
 import OldZmanData from "./mainOldDataItems";
-import OldSummerPayments from "../oldPayments/oldPayments";
+import OldSummerPayments from "../oldSummerPayments/oldSummerPayments";
 
 const MainOldDataPage = () => {
   const [items, setItems] = useState([]);
@@ -10,6 +10,7 @@ const MainOldDataPage = () => {
   const [originalItems, setOriginalItems] = useState([]);
   const [isSummerModalOpen, setIsSummerModalOpen] = useState(false);
   const [isWinterModalOpen, setIsWinterModalOpen] = useState(false);
+  const [selectedHebrewYear, setSelectedHebrewYear] = useState("");
 
   useEffect(() => {
     if (originalItems.length === 0 && items.length > 0) {
@@ -39,25 +40,31 @@ const MainOldDataPage = () => {
     }
   };
 
-  const showSummerModal = () => {
+  const showSummerModal = useCallback((hebrewYear) => {
+    setSelectedHebrewYear(hebrewYear);
     setIsSummerModalOpen(true);
-  };
-  const handleSummerOk = () => {
-    setIsSummerModalOpen(false);
-  };
-  const handleSummerCancel = () => {
-    setIsSummerModalOpen(false);
-  };
+  }, []);
 
-  const showWinterModal = () => {
+  const handleSummerOk = useCallback(() => {
+    setIsSummerModalOpen(false);
+  }, []);
+
+  const handleSummerCancel = useCallback(() => {
+    setIsSummerModalOpen(false);
+  }, []);
+
+  const showWinterModal = useCallback((hebrewYear) => {
+    setSelectedHebrewYear(hebrewYear);
     setIsWinterModalOpen(true);
-  };
-  const handleWinterOk = () => {
+  }, []);
+
+  const handleWinterOk = useCallback(() => {
     setIsWinterModalOpen(false);
-  };
-  const handleWinterCancel = () => {
+  }, []);
+
+  const handleWinterCancel = useCallback(() => {
     setIsWinterModalOpen(false);
-  };
+  }, []);
 
   return (
     <div className="main_old_data_container">
@@ -79,18 +86,41 @@ const MainOldDataPage = () => {
             placeholder="Type to search..."
           />
         </div>
-        <Collapse accordion items={items} />
+        <Collapse accordion>
+          {items.map((item) => (
+            <Collapse.Panel header={item.label} key={item.key}>
+              <Radio.Group
+                value={item.value}
+                onChange={(e) => {
+                  if (e.target.value === "קיץ") {
+                    showSummerModal(item.label);
+                  } else if (e.target.value === "חורף") {
+                    showWinterModal(item.label);
+                  }
+                }}
+              >
+                <Radio value="חורף">חורף</Radio>
+                <Radio value="קיץ">קיץ</Radio>
+              </Radio.Group>
+            </Collapse.Panel>
+          ))}
+        </Collapse>
+        {/* <Collapse accordion items={items} /> */}
         <Modal
-          title=""
+          title="זמן הקיץ"
           open={isSummerModalOpen}
           onOk={handleSummerOk}
           onCancel={handleSummerCancel}
           footer={null}
         >
-          <OldSummerPayments oldZmanGoal={oldZmanGoal} items={items} />
+          <OldSummerPayments
+            oldZmanGoal={oldZmanGoal}
+            items={items}
+            selectedHebrewYear={selectedHebrewYear}
+          />
         </Modal>
         <Modal
-          title=""
+          title="זמן החורף"
           open={isWinterModalOpen}
           onOk={handleWinterOk}
           onCancel={handleWinterCancel}

@@ -38,7 +38,7 @@ const OldZmanData = ({
         return {
           key: zmanGoal.zman_goal_id,
           label: hebrewYear,
-          children: (
+          items: (
             <Radio.Group value={value} onChange={onChange}>
               <Radio value="חורף">חורף</Radio>
               <Radio value="קיץ">קיץ</Radio>

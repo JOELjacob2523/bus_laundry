@@ -35,6 +35,7 @@ async function insertUserInfo(userInfo) {
       city: userInfo.city,
       state: userInfo.state,
       zip_code: userInfo.zip_code,
+      date: new Date(),
     });
 
     const token = jwt.sign({ student_id: studentId }, SECRET_KEY, {
@@ -133,6 +134,7 @@ async function insertPaymentInfo(paymentInfo) {
       student_id: paymentInfo.student_id,
       total_paid: paymentInfo.total_paid,
       pay_date: hebrewDate,
+      date: new Date(),
     });
 
     const token = jwt.sign({ payment_id: payment_id }, SECRET_KEY, {

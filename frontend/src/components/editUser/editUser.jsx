@@ -60,14 +60,14 @@ const EditUser = ({ studentId, token }) => {
     try {
       await updateUserInfo(values);
       messageApi.open({
-        title: "success",
-        content: "User updated successfully",
+        type: "success",
+        content: "Student updated successfully",
       });
       setTimeout(() => {
         navigate(0);
       }, 2000);
     } catch (error) {
-      console.error("Error updating user:", error);
+      console.error("Error updating student:", error);
       navigate("/error500");
     }
   };

@@ -4,9 +4,11 @@ import ReactToPrint from "react-to-print";
 import { Button, Card, Modal } from "antd";
 import { IoMdPrint } from "react-icons/io";
 import StudentInfoToPrint from "./studentInfo/studentInfo";
+import MapComponent from "../googleMapRoutes/googleMapRoutes";
 
 const PrintStudentInfo = () => {
   const [open, setOpen] = useState(false);
+  const [googleMpasModalOpen, setGoogleMpasModalOpen] = useState(false);
   const componentRef = useRef(null);
 
   return (
@@ -52,7 +54,22 @@ const PrintStudentInfo = () => {
           <div className="print_student_info_container">
             <StudentInfoToPrint ref={componentRef} />
           </div>
+
+          <div>
+            <Button type="primary" onClick={() => setGoogleMpasModalOpen(true)}>
+              Google Maps
+            </Button>
+          </div>
         </div>
+        <Modal
+          open={googleMpasModalOpen}
+          onCancel={() => setGoogleMpasModalOpen(false)}
+          footer={null}
+          width={900}
+          className="google_maps_modal"
+        >
+          <MapComponent />
+        </Modal>
       </Modal>
     </>
   );
