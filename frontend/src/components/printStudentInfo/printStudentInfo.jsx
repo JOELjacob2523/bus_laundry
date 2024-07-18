@@ -5,6 +5,7 @@ import { Button, Card, Modal } from "antd";
 import { IoMdPrint } from "react-icons/io";
 import StudentInfoToPrint from "./studentInfo/studentInfo";
 import MapComponent from "../googleMapRoutes/googleMapRoutes";
+import GoogleMaps from "../googleMapRoutes/googleMaps";
 
 const PrintStudentInfo = () => {
   const [open, setOpen] = useState(false);
@@ -65,10 +66,11 @@ const PrintStudentInfo = () => {
           open={googleMpasModalOpen}
           onCancel={() => setGoogleMpasModalOpen(false)}
           footer={null}
-          width={900}
+          width={1100}
           className="google_maps_modal"
         >
-          <MapComponent />
+          {/* <MapComponent /> */}
+          <GoogleMaps />
         </Modal>
       </Modal>
     </>

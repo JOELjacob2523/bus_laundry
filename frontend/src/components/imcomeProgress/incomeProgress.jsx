@@ -1,7 +1,9 @@
 import "./incomeProgress.css";
 import React, { useEffect, useState } from "react";
-import { Flex, Progress, Card } from "antd";
+import { Flex, Progress, Card, Modal } from "antd";
 import TotalBalance from "../totalBalance/totalBalance";
+import { TbListDetails } from "react-icons/tb";
+import WithdrawalsDetials from "../withdrawals/detailedWithdrawals";
 
 const twoColors = {
   "0%": "#108ee9",
@@ -25,6 +27,7 @@ const IncomeProgress = ({
 }) => {
   const [bus, setBus] = useState(0);
   const [wash, setWash] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const percentage = (currentAmount / goalAmount) * 100;
 
@@ -71,6 +74,16 @@ const IncomeProgress = ({
     calculateIncome();
   }, [paymentInfo, zmanGoal]);
 
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="main_progress_container">
       <div className="long_progress">
@@ -97,11 +110,17 @@ const IncomeProgress = ({
           </Flex>
         </div>
         <Card
-          title={<div className="modal_title">ס"ה געלט ארויס</div>}
+          title={
+            <div className="withdrawal_title_container">
+              <div>{<TbListDetails onClick={showModal} />}</div>
+              <div className="modal_title">ס"ה געלט ארויס</div>
+            </div>
+          }
           className="total_balance_card"
         >
           <TotalBalance bus={bus} wash={wash} goalAmount={goalAmount} />
         </Card>
+
         <Card
           title={<div className="modal_title">ס"ה געלט אריין</div>}
           className="awaiting_income_card"
@@ -149,6 +168,16 @@ const IncomeProgress = ({
             </div>
           </div>
         </Card>
+      </div>
+      <div className="withdrawal_details_container">
+        <Modal
+          open={isModalOpen}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          width={500}
+        >
+          <WithdrawalsDetials />
+        </Modal>
       </div>
     </div>
   );
