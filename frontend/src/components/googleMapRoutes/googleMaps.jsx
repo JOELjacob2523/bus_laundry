@@ -28,7 +28,7 @@ function Directions() {
   useEffect(() => {
     if (!directionsService || !directionsRenderer) return;
     const origin = "7 Karlsburg Rd, Highland Mills, NY 10930";
-    const destination = "240 Forestburgh Rd, Monticello, NY 12701";
+    const destination = "19 israel zupnick, monroe my 10950";
     directionsService
       .route({
         origin: origin,
@@ -37,10 +37,6 @@ function Directions() {
         provideRouteAlternatives: true,
       })
       .then((response) => {
-        console.log("Directions response:", response);
-        //   directionsRenderer.setDirections(response);
-        //   setRoutes(response.routes);
-        // })
         if (response.status === "OK") {
           directionsRenderer.setDirections(response);
           setRoutes(response.routes);
@@ -56,9 +52,12 @@ function Directions() {
   useEffect(() => {
     if (!directionsRenderer) return;
     directionsRenderer.setOptions({
-      directions: directionsRenderer.getDirections(),
       routeIndex: routesIndex,
     });
+    const directions = directionsRenderer.getDirections();
+    if (directions) {
+      directionsRenderer.setDirections(directions);
+    }
   }, [routesIndex, directionsRenderer]);
 
   if (!leg) return null;
@@ -67,6 +66,7 @@ function Directions() {
     <div>
       <Card
         title={selected.summary}
+        size="small"
         className="google_maps_directions_container"
       >
         <div>
@@ -102,7 +102,7 @@ const GoogleMaps = () => {
         <div className="google_maps_map_container">
           <Map
             defaultCenter={position}
-            defaultZoom={12}
+            defaultZoom={15}
             fullscreenControl={false}
           >
             <div>

@@ -22,62 +22,55 @@ const StudentBalance = ({ payment }) => {
     0
   );
 
-  // const weeklyCost = zmanGoal?.[0]?.wash_price || 0;
-  // const highWeeklyCost = zmanGoal?.[0]?.bus_price || 0;
+  const weeklyCost = zmanGoal?.[0]?.wash_price || 0;
+  const highWeeklyCost = zmanGoal?.[0]?.bus_price || 0;
 
-  // const isHighCostWeek = (week) => {
-  //   if (!zmanGoal || !zmanGoal[0] || !zmanGoal[0].closed_weeks) return false;
+  const calculateTotalCost = () => {
+    if (!zmanGoal || !zmanGoal[0]) return 0;
 
-  //   return zmanGoal[0].closed_weeks.some((closedWeek) => {
-  //     const closedDate = new Date(closedWeek.date);
-  //     return (
-  //       closedDate.getFullYear() === week.getFullYear() &&
-  //       closedDate.getMonth() === week.getMonth() &&
-  //       closedDate.getDate() === week.getDate()
-  //     );
-  //   });
-  // };
+    const startDate = new Date(zmanGoal[0].zman_starts_ends.start.date);
+    const endDate = new Date(zmanGoal[0].zman_starts_ends.end.date);
+    const currentDate = new Date();
 
-  // // Calculate the total cost up to the current date
-  // const calculateTotalCost = () => {
-  //   if (!zmanGoal || !zmanGoal[0]) return 0;
+    let totalCost = 0;
+    let highCostWeeksTotal = 0;
 
-  //   const startDate = new Date(zmanGoal[0].zman_starts_ends.start.date);
-  //   const endDate = new Date(zmanGoal[0].zman_starts_ends.end.date);
-  //   const currentDate = new Date();
+    const numberOfWeeks = Math.floor(
+      (Math.min(currentDate, endDate) - startDate) / (7 * 24 * 60 * 60 * 1000)
+    );
 
-  //   let totalCost = 0;
-  //   let week = new Date(startDate);
+    for (let i = 0; i <= numberOfWeeks; i++) {
+      const currentWeek = new Date(startDate);
+      currentWeek.setDate(currentWeek.getDate() + i * 7);
+      currentWeek.setHours(0, 0, 0, 0);
+      totalCost += Number(weeklyCost);
+    }
 
-  //   while (week <= endDate && week <= currentDate) {
-  //     let weekCost = weeklyCost;
+    // Calculate high-cost weeks that have passed
+    zmanGoal[0].closed_weeks.forEach((closedWeek) => {
+      const closedDate = new Date(closedWeek.date);
+      closedDate.setHours(0, 0, 0, 0);
 
-  //     if (isHighCostWeek(week)) {
-  //       weekCost += highWeeklyCost;
-  //     }
+      if (closedDate < currentDate) {
+        // Check if the closed week has passed
+        highCostWeeksTotal += Number(highWeeklyCost);
+      }
+    });
 
-  //     totalCost += weekCost;
+    totalCost += highCostWeeksTotal;
 
-  //     // Move to the next week
-  //     week.setDate(week.getDate() + 7);
-  //   }
+    return totalCost;
+  };
 
-  //   return totalCost;
-  // };
+  const totalCost = calculateTotalCost();
+  const balance = totalPayments - totalCost;
 
-  // const totalCost = calculateTotalCost();
-  // const balance = totalPayments - totalCost;
-
-  // console.log("Total Payments:", totalPayments);
-  // console.log("Total Cost:", totalCost);
-  // console.log("Balance:", balance);
-
-  let balance = totalPayments;
   let balanceColor;
-  if (zmanGoal && zmanGoal[0] && balance < zmanGoal[0].total_zman_goal) {
-    balanceColor = "red";
-  } else if (zmanGoal && zmanGoal[0] && balance > zmanGoal[0].total_zman_goal) {
+
+  if (balance >= totalCost) {
     balanceColor = "green";
+  } else if (balance < zmanGoal?.[0]?.total_zman_goal) {
+    balanceColor = "red";
   } else {
     balanceColor = "black";
   }

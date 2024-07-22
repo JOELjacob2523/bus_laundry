@@ -106,6 +106,8 @@ const WithdrawalForm = () => {
             <Select
               options={[
                 { value: "באס", label: "באס" },
+                { value: "ספרינטער", label: "ספרינטער" },
+                { value: "קאר/מיני ווען", label: "קאר/מיני ווען" },
                 { value: "וואשן", label: "וואשן" },
               ]}
               placeholder="Choose withdrawal to..."
