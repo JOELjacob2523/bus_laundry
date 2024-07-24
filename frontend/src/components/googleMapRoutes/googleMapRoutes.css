@@ -20,3 +20,25 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 1; 
 }
+
+.result_container{
+  padding: 10px 0 10px 0;
+  text-align: center;
+}
+
+.distance_duration_container{
+  padding-left: 10px;
+}
+
+.save_route_btn_container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.download_btn_container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 10px;
+}
