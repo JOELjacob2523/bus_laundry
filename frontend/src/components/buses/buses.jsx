@@ -1,7 +1,9 @@
 import "./buses.css";
 import React, { useState, useEffect } from "react";
-import { Row, Col, Pagination, Empty } from "antd";
+import { useNavigate } from "react-router-dom";
+import { Row, Col, Pagination, Empty, Button, message } from "antd";
 import { getAllPaymentInfo, getAllUserInfo } from "../../servers/getRequest";
+import { archiveOldStudentPayments } from "../../servers/postRequest";
 import AddUser from "../addUser/newUserBtn";
 import UserCard from "./userCard";
 import SearchBar from "../search/search";
@@ -12,6 +14,9 @@ const Buses = () => {
   const [filteredUserInfo, setFilteredUserInfo] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(32);
+  const [selectedUsers, setSelectedUsers] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,6 +53,36 @@ const Buses = () => {
     setCurrentPage(1); // Reset to first page on new search
   };
 
+  const handleCheckboxChange = (studentId) => {
+    setSelectedUsers((prevSelectedUsers) => {
+      if (prevSelectedUsers.includes(studentId)) {
+        return prevSelectedUsers.filter((id) => id !== studentId);
+      } else {
+        return [...prevSelectedUsers, studentId];
+      }
+    });
+  };
+
+  const handleArchive = async (selectedUsers) => {
+    try {
+      await archiveOldStudentPayments(selectedUsers);
+      message.open({
+        type: "success",
+        content: "Students archived successfully",
+      });
+      setSelectedUsers([]);
+      setTimeout(() => {
+        navigate(0);
+      }, 2000);
+    } catch (err) {
+      console.error(err);
+      message.open({
+        type: "error",
+        content: "Failed to archive students",
+      });
+    }
+  };
+
   // Calculate the cards to display on the current page
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
@@ -65,6 +100,16 @@ const Buses = () => {
               <AddUser />
             </div>
           </div>
+          {selectedUsers.length > 0 && (
+            <div style={{ textAlign: "center", marginTop: "16px" }}>
+              <Button
+                type="primary"
+                onClick={() => handleArchive(selectedUsers)}
+              >
+                Archive Selected
+              </Button>
+            </div>
+          )}
           {filteredUserInfo.length === 0 ? (
             <div className="data_not_found">
               <Empty description="No matches found" />
@@ -84,6 +129,8 @@ const Buses = () => {
                     <UserCard
                       student={student}
                       payment={paymentInfo[student.student_id] || []}
+                      isSelected={selectedUsers.includes(student.student_id)}
+                      handleCheckboxChange={handleCheckboxChange}
                     />
                   </Col>
                 ))}

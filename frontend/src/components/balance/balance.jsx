@@ -75,6 +75,14 @@ const StudentBalance = ({ payment }) => {
     balanceColor = "black";
   }
 
+  // if (balance >= totalCost) {
+  //   balanceColor = "green";
+  // } else if (balance < totalCost) {
+  //   balanceColor = "red";
+  // } else if (balance < totalCost) {
+  //   balanceColor = "black";
+  // }
+
   return (
     <div className="payment_info_container">
       {payment.length === 0 ? (

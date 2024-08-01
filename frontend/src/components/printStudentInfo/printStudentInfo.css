@@ -11,6 +11,10 @@
     flex-direction: row;
 }
 
+.print_student_info_container{
+    width: 80%;
+}
+
 .print_student_table_info_btn{
     padding-top: 50px;
 }

@@ -1,5 +1,5 @@
 import "./buses.css";
-import { Card, Divider, Modal } from "antd";
+import { Card, Checkbox, Divider, Modal } from "antd";
 import { EditOutlined, DollarOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import EditUser from "../editUser/editUser";
@@ -10,7 +10,7 @@ import DeleteUser from "../deleteUser/deleteUser";
 import StudentBalance from "../balance/balance";
 import StudentBalanceInfo from "../studentBalanceInfo/studentBalanceInfo";
 
-const UserCard = ({ student, payment }) => {
+const UserCard = ({ student, payment, isSelected, handleCheckboxChange }) => {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
   const [isCCModalVisible, setIsCCModalVisible] = useState(false);
@@ -59,10 +59,21 @@ const UserCard = ({ student, payment }) => {
         title={
           <div className="student_title_container">
             <div>
-              {student.first_name} {student.last_name}
+              {student.first_name ? student.first_name : "N/A"}{" "}
+              {student.last_name ? student.last_name : "N/A"}
             </div>
-            <div>
-              <DeleteUser student={student} />
+            <div className="student_title_delete_options">
+              <div>
+                <Checkbox
+                  checked={isSelected}
+                  onChange={() => handleCheckboxChange(student.student_id)}
+                >
+                  Archive
+                </Checkbox>
+              </div>
+              <div>
+                <DeleteUser student={student} />
+              </div>
             </div>
           </div>
         }
@@ -75,27 +86,35 @@ const UserCard = ({ student, payment }) => {
       >
         <div className="user_info_container">
           <div>Age</div>
-          <div>{student.age}</div>
+          <div>{student.age ? student.age : "N/A"}</div>
         </div>
         <div className="user_info_container">
           <div>Address 1</div>
-          <div>{student.address1}</div>
+          <div>{student.address1 ? student.address1 : "N/A"}</div>
         </div>
         <div className="user_info_container">
           <div>Address 2</div>
-          <div>{student.address2}</div>
+          <div>{student.address2 ? student.address2 : "N/A"}</div>
         </div>
         <div className="user_info_container">
           <div>City</div>
-          <div>{student.city}</div>
+          <div>{student.city ? student.city : "N/A"}</div>
         </div>
         <div className="user_info_container">
           <div>State</div>
-          <div>{student.state}</div>
+          <div>{student.state ? student.state : "N/A"}</div>
         </div>
         <div className="user_info_container">
           <div>Zip Code</div>
-          <div>{student.zip_code}</div>
+          <div>{student.zip_code ? student.zip_code : "N/A"}</div>
+        </div>
+        <div className="user_info_container">
+          <div>Phone Number</div>
+          <div>
+            {student.phone
+              ? student.phone.replace(/^(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
+              : "N/A"}
+          </div>
         </div>
         <Divider orientation="left">Balance</Divider>
         <div className="balance_container">

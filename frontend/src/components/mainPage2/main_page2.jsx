@@ -1,3 +1,4 @@
+import "../../Fonts/fonts.css";
 import "./main_page2.css";
 import React, { useState, useEffect } from "react";
 import { getAllUserInfo } from "../../servers/getRequest";
@@ -110,10 +111,14 @@ const MainPage2 = ({ cityCounts }) => {
           <div className="zman_info_details">
             {zmanGoal.map((goal, index) => (
               <div key={index}>
-                <h3 className="rest_weeks">
+                <h3 className="rest_weeks" style={{ fontFamily: "OYoelTovia" }}>
                   עס איז נאך דא {restWeeks} וואכן אינעם זמן ה{goal.zman}
                 </h3>
-                <h4 key={index} className="header2">
+                <h4
+                  key={index}
+                  className="header2"
+                  style={{ fontFamily: "OYoelTovia" }}
+                >
                   די קומענדיגע מאל וואס מען פארט אהיים איז פרשת{" "}
                   <strong>{nextSedra && nextSedra.sedra}</strong>
                 </h4>

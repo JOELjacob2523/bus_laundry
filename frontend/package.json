@@ -13,6 +13,8 @@
     "antd": "^5.17.2",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.2",
+    "docx": "^8.5.0",
+    "file-saver": "^2.0.5",
     "hebcal": "^2.3.2",
     "jewish-dates-core": "^2.0.12",
     "jspdf": "^2.5.1",

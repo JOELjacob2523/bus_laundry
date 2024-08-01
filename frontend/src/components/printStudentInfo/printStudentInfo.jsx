@@ -33,7 +33,7 @@ const PrintStudentInfo = () => {
         centered
         open={open}
         onCancel={() => setOpen(false)}
-        width={1300}
+        width={1600}
         footer={null}
       >
         <div className="print_container">

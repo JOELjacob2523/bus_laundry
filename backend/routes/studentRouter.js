@@ -99,7 +99,7 @@ router.get("/payments", async (req, res, next) => {
 // router to create the zman goal
 router.post("/zman_goal", upload.fields([]), async (req, res, next) => {
   try {
-    await CONTORLLER.migrateOldData();
+    await CONTORLLER.migrateOldZmanGoalData();
     await CONTORLLER.insertZmanGoalInfo(req.body);
     res.status(200).json({ message: "Zman goal created successfully" });
   } catch (err) {
@@ -109,6 +109,27 @@ router.post("/zman_goal", upload.fields([]), async (req, res, next) => {
       .json({ message: "Error inserting zman goal", error: err.message });
   }
 });
+
+// router to archive old students & payment
+router.post(
+  "/archive_oldStudent_payments",
+  upload.fields([]),
+  async (req, res, next) => {
+    const { selectedStudents } = req.body;
+    try {
+      await CONTORLLER.migrateOldData(selectedStudents);
+      res
+        .status(200)
+        .json({ message: "Old student & payments archived successfully" });
+    } catch (err) {
+      console.error("Error archiving old student & payments credentials:", err);
+      res.status(500).json({
+        message: "Error archiving old student & payments",
+        error: err.message,
+      });
+    }
+  }
+);
 
 // router get all zman goal info
 router.get("/get_zman_goal", async (req, res, next) => {

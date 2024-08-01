@@ -20,7 +20,6 @@ const DeleteUser = ({ student }) => {
         content: "Student deleted successfully",
         footer: null,
       });
-      console.log(`Student with ${student.student_id} deleted successfully`);
       setTimeout(() => {
         navigate(0);
       }, 2000);
@@ -49,7 +48,7 @@ const DeleteUser = ({ student }) => {
             <CgDanger className="delete_icon" /> Confirm Deletion
           </div>
         }
-        visible={visible}
+        open={visible}
         onCancel={() => setVisible(false)}
         footer={[
           <Button key="cancel" onClick={() => setVisible(false)}>
@@ -61,8 +60,8 @@ const DeleteUser = ({ student }) => {
         ]}
       >
         <p>
-          Are you sure you want to delete '{student.first_name}{" "}
-          {student.last_name}' ?
+          ? "דו ביזט זיכער אז דו ווילסט אויסמעקן "{student.first_name}{" "}
+          {student.last_name}
         </p>
       </Modal>
     </div>

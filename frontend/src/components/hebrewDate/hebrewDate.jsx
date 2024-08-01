@@ -1,3 +1,4 @@
+import "../../Fonts/fonts.css";
 import "./hebrewDate.css";
 import React, { useState, useEffect } from "react";
 import Hebcal from "hebcal";
@@ -46,7 +47,7 @@ const HebrewDate = () => {
 
   return (
     <>
-      <h1 className="hebrew_date">
+      <h1 className="hebrew_date" style={{ fontFamily: "OYoelTovia" }}>
         {`יום ${jewishWeekDays[day]} ${sedra} ${hebrewDate} ${now}`}
       </h1>
     </>

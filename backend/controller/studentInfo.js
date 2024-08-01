@@ -17,6 +17,7 @@ module.exports = {
   insertPaymentInfo,
   getAllPaymentInfo,
   migrateOldData,
+  migrateOldZmanGoalData,
   insertWithdrawalInfo,
   getAllWithdrawalInfo,
   getOldPaymentsInfo,
@@ -36,6 +37,7 @@ async function insertUserInfo(userInfo) {
       state: userInfo.state,
       zip_code: userInfo.zip_code,
       date: new Date(),
+      phone: userInfo.phone,
     });
 
     const token = jwt.sign({ student_id: studentId }, SECRET_KEY, {
@@ -69,6 +71,7 @@ async function updateUserInfo(student) {
     city,
     state,
     zip_code,
+    phone,
   } = student;
   return knex("students").where("student_id", student_id).update({
     first_name,
@@ -79,6 +82,7 @@ async function updateUserInfo(student) {
     city,
     state,
     zip_code,
+    phone,
   });
 }
 
@@ -154,46 +158,12 @@ async function getAllPaymentInfo() {
 }
 
 //archiving old data into old data tables
-async function migrateOldData() {
+async function migrateOldZmanGoalData() {
   try {
-    let payments = await knex("payments").select();
-    let students = await knex("students").select();
     let zmanGoals = await knex("zman_goal").select();
 
     let closedWeeks = zmanGoals[0]?.closed_weeks;
 
-    for (const name of students) {
-      const studentData = {
-        first_name: name.first_name,
-        last_name: name.last_name,
-        age: name.age,
-        address1: name.address1,
-        address2: name.address2,
-        city: name.city,
-        state: name.state,
-        zip_code: name.zip_code,
-        token: name.token,
-      };
-      await knex("old_students").insert(studentData);
-    }
-    for (const pay of payments) {
-      const paymentData = {
-        first_name: pay.first_name,
-        last_name: pay.last_name,
-        bus: pay.bus,
-        wash: pay.wash,
-        bus_wash: pay.bus_wash,
-        cash: pay.cash,
-        checks: pay.checks,
-        credit_card: pay.credit_card,
-        total_paid: pay.total_paid,
-        token: pay.token,
-        student_id: pay.student_id,
-        payment_type: pay.payment_type,
-        pay_date: pay.pay_date,
-      };
-      await knex("old_payments").insert(paymentData);
-    }
     for (const goal of zmanGoals) {
       const zmanGoalData = {
         zman: goal.zman,
@@ -213,14 +183,75 @@ async function migrateOldData() {
     await knex.transaction(async (trx) => {
       await trx.raw("SET FOREIGN_KEY_CHECKS = 0");
 
-      await knex("payments").del();
-      await knex("students").del();
       await knex("zman_goal").del();
 
       //returning safty mode after deleting old data
       await trx.raw("SET FOREIGN_KEY_CHECKS = 1");
     });
     console.log("Data migration completed successfully.");
+  } catch (error) {
+    console.error("Error migrating data:", error);
+    throw error;
+  }
+}
+
+async function migrateOldData(selectedStudents) {
+  try {
+    await knex.transaction(async (trx) => {
+      let payments = await trx("payments")
+        .whereIn("student_id", selectedStudents)
+        .select();
+      let students = await trx("students")
+        .whereIn("student_id", selectedStudents)
+        .select();
+
+      for (const name of students) {
+        const studentData = {
+          student_id: name.student_id,
+          first_name: name.first_name,
+          last_name: name.last_name,
+          age: name.age,
+          address1: name.address1,
+          address2: name.address2,
+          city: name.city,
+          state: name.state,
+          zip_code: name.zip_code,
+          phone: name.phone,
+          token: name.token,
+          date: name.date,
+        };
+        await trx("old_students").insert(studentData);
+      }
+      for (const pay of payments) {
+        const paymentData = {
+          first_name: pay.first_name,
+          last_name: pay.last_name,
+          bus: pay.bus,
+          wash: pay.wash,
+          bus_wash: pay.bus_wash,
+          cash: pay.cash,
+          checks: pay.checks,
+          credit_card: pay.credit_card,
+          total_paid: pay.total_paid,
+          token: pay.token,
+          student_id: pay.student_id,
+          payment_type: pay.payment_type,
+          pay_date: pay.pay_date,
+        };
+        await trx("old_payments").insert(paymentData);
+      }
+
+      //removing safty mode while deleting old data
+      await trx.raw("SET FOREIGN_KEY_CHECKS = 0");
+
+      await trx("payments").whereIn("student_id", selectedStudents).del();
+      await trx("students").whereIn("student_id", selectedStudents).del();
+
+      //returning safty mode after deleting old data
+      await trx.raw("SET FOREIGN_KEY_CHECKS = 1");
+
+      console.log("Data migration completed successfully.");
+    });
   } catch (error) {
     console.error("Error migrating data:", error);
     throw error;

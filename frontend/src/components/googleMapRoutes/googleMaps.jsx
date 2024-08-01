@@ -1,5 +1,15 @@
 import "./googleMapRoutes.css";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Button, Card, Divider, Modal, Select, message, Empty } from "antd";
+import {
+  Document,
+  Packer,
+  Paragraph,
+  TextRun,
+  HeadingLevel,
+  signedHpsMeasureValue,
+} from "docx";
+import { saveAs } from "file-saver";
 import {
   APIProvider,
   Map,
@@ -7,9 +17,7 @@ import {
   useMap,
 } from "@vis.gl/react-google-maps";
 import API from "../GoogleAPIKey";
-import { Button, Card, Divider, Select, Modal, message } from "antd";
 import { getAllUserInfo } from "../../servers/getRequest";
-import jsPDF from "jspdf";
 
 const { Option } = Select;
 
@@ -19,21 +27,22 @@ function Directions() {
   const [directionsService, setDirectionService] = useState(null);
   const [directionsRenderer, setDirectionRenderer] = useState(null);
   const [routes, setRoutes] = useState([]);
-  const [routesIndex, setRoutesIndex] = useState(0);
   const [originInput, setOriginInput] = useState("");
   const [destinationInput, setDestinationInput] = useState("");
+  const [waypoints, setWaypoints] = useState([]);
+  const [students, setStudents] = useState([]);
   const [validAddresses, setValidAddresses] = useState([]);
-  const [savedRoutes, setSavedRoutes] = useState([]);
+  const [fastestRoute, setFastestRoute] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const selected = routes[routesIndex];
-  const leg = selected?.legs ? selected?.legs[0] : null;
+  const [selectedStudent, setSelectedStudent] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       const studentData = await getAllUserInfo();
+      setStudents(studentData);
       const addresses = studentData
         .map((student) => student.address2)
-        .filter((address) => address); // filter out empty addresses
+        .filter((address) => address);
       setValidAddresses(addresses);
     };
     fetchData();
@@ -45,93 +54,387 @@ function Directions() {
     setDirectionRenderer(new routesLibary.DirectionsRenderer({ map }));
   }, [routesLibary, map]);
 
-  useEffect(() => {
-    if (
-      !directionsService ||
-      !directionsRenderer ||
-      !originInput ||
-      !destinationInput
-    )
+  // const updateSelectedStudent = (address) => {
+  //   const student = students.find((student) => student.address2 === address);
+  //   if (student) {
+  //     setSelectedStudent(student);
+  //   }
+  // };
+
+  const updateSelectedStudent = (addresses) => {
+    // Ensure addresses is an array
+    if (!Array.isArray(addresses)) {
+      addresses = [addresses];
+    }
+
+    // Find all students matching the provided addresses
+    const selectedStudents = students.filter((student) =>
+      addresses.includes(student.address2)
+    );
+
+    // Set selected students (you might want to update state to store an array)
+    setSelectedStudent(selectedStudents);
+  };
+
+  const handleOriginChange = (value) => {
+    setOriginInput(value);
+    updateSelectedStudent(value);
+  };
+  const handleDestinationChange = (value) => {
+    setDestinationInput(value);
+    updateSelectedStudent(value);
+  };
+
+  const handleWaypointChange = (value) => {
+    setWaypoints(value);
+    setSelectedStudent(value);
+  };
+
+  const calculateRoutes = () => {
+    if (!directionsService || !originInput || !destinationInput) {
+      message.error({
+        type: "error",
+        content: "Please select origin and destination.",
+      });
       return;
-    const origin = originInput;
-    const destination = destinationInput;
+    }
+
+    const waypointsArray = waypoints.map((address) => ({
+      location: address,
+      stopover: true,
+    }));
     directionsService
       .route({
-        origin: origin,
-        destination: destination,
+        origin: originInput,
+        destination: destinationInput,
+        waypoints: waypointsArray,
         travelMode: window.google.maps.TravelMode.DRIVING,
         provideRouteAlternatives: true,
+        optimizeWaypoints: true,
       })
       .then((response) => {
         if (response.status === "OK") {
-          directionsRenderer.setDirections(response);
           setRoutes(response.routes);
+          directionsRenderer.setDirections(response);
+          message.open({
+            type: "success",
+            content: "Route calculeted successfully",
+          });
         } else {
-          console.error("Directions request failed: ", response.status);
+          console.error("Directions request failed:", response.status);
         }
       })
       .catch((error) => {
         console.error("Error calculating directions:", error);
       });
-  }, [directionsService, directionsRenderer, originInput, destinationInput]);
+  };
 
   useEffect(() => {
     if (!directionsRenderer) return;
-    directionsRenderer.setOptions({
-      routeIndex: routesIndex,
-    });
     const directions = directionsRenderer.getDirections();
     if (directions) {
       directionsRenderer.setDirections(directions);
     }
-  }, [routesIndex, directionsRenderer]);
+  }, [directionsRenderer]);
 
-  const handleOriginChange = (value) => {
-    setOriginInput(value);
+  const normalizeAddress = (address) => {
+    if (!address) return null;
+    const normalized = address
+      .trim()
+      .toLowerCase()
+      .replace(/[\s,]+/g, " ")
+      .replace(/(unit|apt|floor|suite|ste|room|fl|#)\s*\d+/g, "")
+      .replace(/\s+#\d+/g, "")
+      .replace(/\s+usa$/, "")
+      .replace(/, usa$/, "")
+      .replace(/\s+/g, " ")
+      .replace(/[^a-z0-9\s]/g, "");
+
+    return normalized;
   };
 
-  const handleDestinationChange = (value) => {
-    setDestinationInput(value);
-  };
-
-  const handleSaveRoute = () => {
-    if (selected) {
-      setSavedRoutes((prevRoutes) => {
-        const updatedRoutes = [...prevRoutes, selected];
-        message.open({
-          type: "success",
-          content: "Route added successfully",
-        });
-        return updatedRoutes;
-      });
-    } else {
-      console.log("No route selected to save.");
+  const findFastestRoute = () => {
+    if (routes.length === 0) {
+      message.error("No routes available to find the fastest route.");
+      return;
     }
-  };
 
-  useEffect(() => {
-    console.log("Updated Saved Routes:", savedRoutes);
-  }, [savedRoutes]);
+    let fastestRoute = routes[0];
 
-  const handleDownloadRoutes = () => {
-    const doc = new jsPDF();
-
-    savedRoutes.forEach((route, index) => {
-      doc.text(`Route ${index + 1}`, 10, 10 + index * 20);
-      doc.text(
-        `Start Address: ${route?.legs?.[0]?.start_address || "N/A"}`,
-        10,
-        20 + index * 20
-      );
-      doc.text(
-        `End Address: ${route?.legs?.[0]?.end_address || "N/A"}`,
-        10,
-        30 + index * 20
-      );
-      doc.text(`Summary: ${route.summary || "N/A"}`, 10, 40 + index * 20);
+    routes.forEach((route) => {
+      if (
+        route.legs &&
+        route.legs[0].duration.value < fastestRoute.legs[0].duration.value
+      ) {
+        fastestRoute = route;
+      }
     });
 
-    doc.save(`saved_routes_${new Date().toDateString()}.pdf`);
+    if (!fastestRoute.legs) {
+      message.error("No valid legs found in the routes.");
+      return;
+    }
+
+    const originStudent = students.find(
+      (student) => student.address2 === originInput
+    );
+
+    const destinationStudent = students.find(
+      (student) => student.address2 === destinationInput
+    );
+
+    const waypointsStudents = waypoints
+      .map((waypoint) =>
+        students.find((student) => student.address2 === waypoint)
+      )
+      .filter((student) => student !== undefined);
+
+    const routeWithStudentInfo = fastestRoute.legs.map((leg) => {
+      const endStudent = students.find(
+        (student) =>
+          normalizeAddress(student.address2) ===
+          normalizeAddress(leg.end_address)
+      );
+
+      return {
+        ...leg,
+        studentFirstName: endStudent ? endStudent.first_name : "Unknown",
+        studentLastName: endStudent ? endStudent.last_name : "Unknown",
+        studentPhone: endStudent ? endStudent.phone : "Unknown",
+      };
+    });
+
+    const updatedFastestRoute = {
+      ...fastestRoute,
+      legs: routeWithStudentInfo,
+      studentInfo: {
+        originStudent,
+        destinationStudent,
+        waypointsStudents,
+      },
+    };
+
+    setFastestRoute(updatedFastestRoute);
+    showModal();
+  };
+
+  // const findFastestRoute = () => {
+  //   if (routes.length === 0) {
+  //     message.error("No routes available to find the fastest route.");
+  //     return;
+  //   }
+
+  //   let fastestRoute = routes[0];
+
+  //   routes.forEach((route) => {
+  //     if (
+  //       route.legs &&
+  //       route.legs[0].duration.value < fastestRoute.legs[0].duration.value
+  //     ) {
+  //       fastestRoute = route;
+  //     }
+  //   });
+
+  //   if (!fastestRoute.legs) {
+  //     message.error("No valid legs found in the routes.");
+  //     return;
+  //   }
+
+  //   const originStudent = students.find(
+  //     (student) => student.address2 === originInput
+  //   );
+  //   const destinationStudent = students.find(
+  //     (student) => student.address2 === destinationInput
+  //   );
+  //   const waypointsStudents = waypoints
+  //     .map((waypoint) =>
+  //       students.find((student) => student.address2 === waypoint)
+  //     )
+  //     .filter((student) => student !== undefined);
+
+  //   const routeWithStudentInfo = fastestRoute.legs.map((leg, index) => {
+  //     let studentInfo = null;
+
+  //     // Determine if it's a waypoint or destination
+  //     if (index < waypointsStudents.length) {
+  //       studentInfo = waypointsStudents[index];
+  //     } else if (index === fastestRoute.legs.length - 1) {
+  //       studentInfo = destinationStudent;
+  //     }
+
+  //     return {
+  //       ...leg,
+  //       studentFirstName: studentInfo ? studentInfo.first_name : "Unknown",
+  //       studentLastName: studentInfo ? studentInfo.last_name : "Unknown",
+  //       studentPhone: studentInfo ? studentInfo.phone : "Unknown",
+  //     };
+  //   });
+
+  //   const updatedFastestRoute = {
+  //     ...fastestRoute,
+  //     legs: routeWithStudentInfo,
+  //     studentInfo: {
+  //       originStudent,
+  //       destinationStudent,
+  //       waypointsStudents,
+  //     },
+  //   };
+
+  //   setFastestRoute(updatedFastestRoute);
+  //   showModal();
+  // };
+
+  const handleDownloadRoutes = async () => {
+    if (!fastestRoute || !fastestRoute.legs) {
+      message.error({
+        type: "error",
+        content: "No fastest route available for download.",
+      });
+      return;
+    }
+
+    const doc = new Document({
+      sections: [
+        {
+          properties: {},
+          children: [
+            new Paragraph({
+              text: "Fastest Routes",
+              heading: HeadingLevel.HEADING_1,
+              spacing: {
+                before: 100,
+                after: 100,
+                line: 100,
+              },
+            }),
+            ...fastestRoute.legs
+              .map((route, index) => {
+                return [
+                  new Paragraph({
+                    text: `Route ${index + 1}`,
+                    heading: HeadingLevel.HEADING_2,
+                    spacing: {
+                      before: 450,
+                      after: 250,
+                      line: 250,
+                    },
+                  }),
+                  new Paragraph({
+                    spacing: {
+                      before: 250,
+                      after: 250,
+                      line: 250,
+                    },
+
+                    children: [
+                      new TextRun({
+                        text: "Name: ",
+                        bold: true,
+                      }),
+                      new TextRun({
+                        text: `${route.studentFirstName} ${route.studentLastName}`,
+                        size: 24,
+                      }),
+                    ],
+                  }),
+                  new Paragraph({
+                    spacing: {
+                      before: 200,
+                      after: 250,
+                      line: 250,
+                    },
+                    children: [
+                      new TextRun({
+                        text: "Phone Number: ",
+                        bold: true,
+                      }),
+                      new TextRun({
+                        text: `${route.studentPhone.replace(
+                          /^(\d{3})(\d{3})(\d{4})/,
+                          "$1-$2-$3"
+                        )}`,
+                        size: 24,
+                      }),
+                    ],
+                  }),
+                  new Paragraph({
+                    spacing: {
+                      before: 200,
+                      after: 250,
+                      line: 250,
+                    },
+                    children: [
+                      new TextRun({
+                        text: "Start Address: ",
+                        bold: true,
+                      }),
+                      new TextRun({
+                        text: route.start_address,
+                        size: 24,
+                      }),
+                    ],
+                  }),
+                  new Paragraph({
+                    spacing: {
+                      before: 200,
+                      after: 250,
+                      line: 250,
+                    },
+                    children: [
+                      new TextRun({
+                        text: "End Address: ",
+                        bold: true,
+                      }),
+                      new TextRun({
+                        text: route.end_address,
+                        size: 24,
+                      }),
+                    ],
+                  }),
+                  new Paragraph({
+                    spacing: {
+                      before: 200,
+                      after: 250,
+                      line: 250,
+                    },
+                    children: [
+                      new TextRun({
+                        text: "Duration: ",
+                        bold: true,
+                      }),
+                      new TextRun({
+                        text: route.duration.text,
+                        size: 24,
+                      }),
+                    ],
+                  }),
+                  new Paragraph({
+                    spacing: {
+                      before: 200,
+                      after: 250,
+                      line: 250,
+                    },
+                    children: [
+                      new TextRun({
+                        text: "Distance: ",
+                        bold: true,
+                      }),
+                      new TextRun({
+                        text: route.distance.text,
+                        size: 24,
+                      }),
+                    ],
+                  }),
+                ].filter(Boolean);
+              })
+              .flat(),
+          ],
+        },
+      ],
+    });
+
+    const blob = await Packer.toBlob(doc);
+    saveAs(blob, `saved_routes_${new Date().toDateString()}.docx`);
   };
 
   const showModal = () => {
@@ -148,103 +451,148 @@ function Directions() {
   return (
     <div>
       <Card
-        title={selected ? selected.summary : "Select origin and destination"}
+        title="Calculate Your Routes"
         size="small"
         className="google_maps_directions_container"
       >
-        <div>
-          <div>
+        <div className="google_maps_calculation_container">
+          <div className="google_maps_calculation_select">
             <Select
-              showSearch
               placeholder="Select origin"
               value={originInput}
               onChange={handleOriginChange}
-              style={{ width: 200, marginRight: 10 }}
+              style={{ width: 200, height: 60 }}
             >
-              {validAddresses.map((address, index) => (
-                <Option key={index} value={address}>
-                  {address}
-                </Option>
-              ))}
+              {students.map((student, index) =>
+                student.address2 && student.address2.trim() !== "" ? (
+                  <Option key={index} value={student.address2}>
+                    <div>
+                      {student.first_name} {student.last_name}
+                    </div>
+                    <div>{student.address2}</div>
+                  </Option>
+                ) : null
+              )}
             </Select>
+
             <Select
-              showSearch
-              value={destinationInput}
               placeholder="Select destination"
+              value={destinationInput}
               onChange={handleDestinationChange}
-              style={{ width: 200, marginRight: 10 }}
+              style={{ width: 200, height: 60 }}
             >
-              {validAddresses.map((address, index) => (
-                <Option key={index} value={address}>
-                  {address}
-                </Option>
-              ))}
+              {students.map((student, index) =>
+                student.address2 && student.address2.trim() !== "" ? (
+                  <Option key={index} value={student.address2}>
+                    <div>
+                      {student.first_name} {student.last_name}
+                    </div>
+                    <div>{student.address2}</div>
+                  </Option>
+                ) : null
+              )}
             </Select>
           </div>
-          <div>
-            {leg && (
-              <>
-                <div className="result_container">
-                  You selected:{" "}
-                  <strong>{leg.start_address?.split(",")[0]}</strong> to{" "}
-                  <strong>{leg.end_address?.split(",")[0]}</strong>
-                </div>
-              </>
-            )}
+          <div className="google_maps_calculation_multi_select">
+            <Select
+              mode="multiple"
+              placeholder="Select waypoints..."
+              value={waypoints}
+              onChange={handleWaypointChange}
+              style={{
+                width: 400,
+              }}
+            >
+              {students.map((student, index) =>
+                student.address2 && student.address2.trim() !== "" ? (
+                  <Option key={index} value={student.address2}>
+                    <div>
+                      {student.first_name} {student.last_name}
+                    </div>
+                    <div>{student.address2}</div>
+                  </Option>
+                ) : null
+              )}
+            </Select>
           </div>
-          {leg && (
-            <>
-              <div className="distance_duration_container">
-                <div>Distance: {leg.distance?.text}</div>
-                <div>Duration: {leg.duration?.text}</div>
-              </div>
 
-              <div className="save_route_btn_container">
-                <Button type="primary" onClick={handleSaveRoute}>
-                  Save Route
-                </Button>
-              </div>
-
-              <Divider orientation="left">Other Routes</Divider>
-              <ul>
-                {routes.map((route, index) => (
-                  <li key={route.summary}>
-                    <Button type="text" onClick={() => setRoutesIndex(index)}>
-                      {route.summary}
-                    </Button>
-                  </li>
-                ))}
-              </ul>
-              <div className="download_btn_container">
-                <Button
-                  type="default"
-                  onClick={showModal}
-                  style={{ marginTop: 10 }}
-                >
-                  Download Saved Routes
-                </Button>
-              </div>
-            </>
-          )}
+          <div className="calculate_routes_btn_container">
+            <Button
+              type="primary"
+              onClick={calculateRoutes}
+              className="calculate_routes_btn"
+            >
+              Calculate Routes
+            </Button>
+          </div>
+          <Divider orientation="left">Find Fastest Route Details</Divider>
+          <div className="download_btn_container">
+            <Button
+              type="default"
+              onClick={findFastestRoute}
+              style={{ marginTop: 10 }}
+            >
+              Download Fastest Route
+            </Button>
+          </div>
         </div>
       </Card>
+
       <Modal
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
         okText="Download"
+        width={600}
       >
-        <div>
-          {savedRoutes.map((route, index) => (
-            <div key={index}>
-              <div>
-                Start at: <strong>{route?.legs?.[0]?.start_address}</strong>
-              </div>{" "}
-              <div>
-                Going to: <strong>{route?.legs?.[0]?.end_address}</strong>
+        <div className="download_modal_container">
+          <h3>Fastest Route</h3>
+          {fastestRoute && fastestRoute.legs ? (
+            fastestRoute.legs.map((leg, index) => (
+              <div key={index} className="download_modal_inner">
+                <Card title={`Route ${index + 1}`} size="small">
+                  <div>
+                    <div className="download_modal_card_inner">
+                      <div>
+                        {leg.studentFirstName} {leg.studentLastName}
+                      </div>
+                      <div>:נאמען</div>
+                    </div>
+                    <div className="download_modal_card_inner">
+                      <div>
+                        {leg.studentPhone.replace(
+                          /^(\d{3})(\d{3})(\d{4})/,
+                          "$1-$2-$3"
+                        )}
+                      </div>
+                      <div>:טעל. נומער</div>
+                    </div>
+                  </div>
+
+                  <div className="download_modal_card_inner">
+                    <div> {leg.start_address}</div>
+                    <div>:ארויספארן פון</div>
+                  </div>
+                  <div className="download_modal_card_inner">
+                    <div> {leg.end_address}</div>
+                    <div>:אנקומען צו</div>
+                  </div>
+                  <div className="download_modal_card_inner">
+                    <div> {leg.distance.text}</div>
+                    <div>:ווייט</div>
+                  </div>
+                  <div className="download_modal_card_inner">
+                    <div> {leg.duration.text}</div>
+                    <div>:צייט</div>
+                  </div>
+                </Card>
               </div>
+            ))
+          ) : (
+            <div>
+              <Empty />
             </div>
-          ))}
+          )}
         </div>
       </Modal>
     </div>
@@ -272,5 +620,4 @@ const GoogleMaps = () => {
     </div>
   );
 };
-
 export default GoogleMaps;

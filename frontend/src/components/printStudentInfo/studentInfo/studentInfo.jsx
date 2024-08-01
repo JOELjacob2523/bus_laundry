@@ -72,6 +72,17 @@ const StudentInfoToPrint = forwardRef((props, ref) => {
                       City-State-Zip: <strong>{student.city_state_zip}</strong>
                     </div>
                     <div>
+                      Phone Number:{" "}
+                      <strong>
+                        {student.phone
+                          ? student.phone.replace(
+                              /^(\d{3})(\d{3})(\d{4})/,
+                              "$1-$2-$3"
+                            )
+                          : "N/A"}
+                      </strong>
+                    </div>
+                    <div>
                       Total Paid:{" "}
                       {student.payment ? (
                         <strong>

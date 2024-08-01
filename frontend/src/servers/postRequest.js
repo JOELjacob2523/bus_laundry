@@ -106,6 +106,30 @@ export const zmanGoalInfo = async (formData) => {
   }
 };
 
+//add zman goal info
+export const archiveOldStudentPayments = async (selectedStudents) => {
+  try {
+    const response = await axios.post(
+      `${URL}/archive_oldStudent_payments`,
+      { selectedStudents },
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      console.log("Success!!");
+    } else {
+      console.log(`Error inserting! ${response.data}`);
+    }
+  } catch (err) {
+    console.error("Error:", err.message);
+    throw err;
+  }
+};
+
 //add user payments into the database
 export const payments = async (formData) => {
   try {

@@ -73,3 +73,9 @@
     justify-content: space-between;
     padding: 0 10px 0 10px;
   }
+
+  .student_title_delete_options{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+  }

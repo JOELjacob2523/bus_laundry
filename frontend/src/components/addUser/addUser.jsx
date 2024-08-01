@@ -156,6 +156,18 @@ const FirstName = () => {
         </Form.Item>
 
         <Form.Item
+          name="phone"
+          label="Phone Number"
+          rules={[
+            {
+              // required: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
           wrapperCol={{
             ...layout.wrapperCol,
             offset: 20,
