@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Card, Collapse, Input, Modal, Radio } from "antd";
 import OldZmanData from "./mainOldDataItems";
 import OldSummerPayments from "../oldSummerPayments/oldSummerPayments";
+import { Helmet } from "react-helmet";
 
 const MainOldDataPage = () => {
   const [items, setItems] = useState([]);
@@ -11,6 +12,7 @@ const MainOldDataPage = () => {
   const [isSummerModalOpen, setIsSummerModalOpen] = useState(false);
   const [isWinterModalOpen, setIsWinterModalOpen] = useState(false);
   const [selectedHebrewYear, setSelectedHebrewYear] = useState("");
+  const [selectedZman, setSelectedZman] = useState("");
 
   useEffect(() => {
     if (originalItems.length === 0 && items.length > 0) {
@@ -40,8 +42,9 @@ const MainOldDataPage = () => {
     }
   };
 
-  const showSummerModal = useCallback((hebrewYear) => {
+  const showSummerModal = useCallback((hebrewYear, zman) => {
     setSelectedHebrewYear(hebrewYear);
+    setSelectedZman(zman);
     setIsSummerModalOpen(true);
   }, []);
 
@@ -53,8 +56,9 @@ const MainOldDataPage = () => {
     setIsSummerModalOpen(false);
   }, []);
 
-  const showWinterModal = useCallback((hebrewYear) => {
+  const showWinterModal = useCallback((hebrewYear, zman) => {
     setSelectedHebrewYear(hebrewYear);
+    setSelectedZman(zman);
     setIsWinterModalOpen(true);
   }, []);
 
@@ -66,8 +70,20 @@ const MainOldDataPage = () => {
     setIsWinterModalOpen(false);
   }, []);
 
+  const handleRadioChange = (e, item) => {
+    const zman = e.target.value;
+    if (zman === "קיץ") {
+      showSummerModal(item.label, zman);
+    } else if (zman === "חורף") {
+      showWinterModal(item.label, zman);
+    }
+  };
+
   return (
     <div className="main_old_data_container">
+      <Helmet>
+        <title>Old Information - Kadishes Yoel Bus & Laundry</title>
+      </Helmet>
       <OldZmanData
         setItems={setItems}
         showSummerModal={showSummerModal}
@@ -91,13 +107,7 @@ const MainOldDataPage = () => {
             <Collapse.Panel header={item.label} key={item.key}>
               <Radio.Group
                 value={item.value}
-                onChange={(e) => {
-                  if (e.target.value === "קיץ") {
-                    showSummerModal(item.label);
-                  } else if (e.target.value === "חורף") {
-                    showWinterModal(item.label);
-                  }
-                }}
+                onChange={(e) => handleRadioChange(e, item)}
               >
                 <Radio value="חורף">חורף</Radio>
                 <Radio value="קיץ">קיץ</Radio>
@@ -105,28 +115,36 @@ const MainOldDataPage = () => {
             </Collapse.Panel>
           ))}
         </Collapse>
-        {/* <Collapse accordion items={items} /> */}
         <Modal
-          title="זמן הקיץ"
+          title={<div style={{ textAlign: "center" }}>זמן הקיץ</div>}
           open={isSummerModalOpen}
           onOk={handleSummerOk}
           onCancel={handleSummerCancel}
           footer={null}
+          width={1000}
         >
           <OldSummerPayments
             oldZmanGoal={oldZmanGoal}
             items={items}
             selectedHebrewYear={selectedHebrewYear}
+            selectedZman={selectedZman}
           />
         </Modal>
         <Modal
-          title="זמן החורף"
+          title={<div style={{ textAlign: "center" }}>זמן החורף</div>}
           open={isWinterModalOpen}
           onOk={handleWinterOk}
           onCancel={handleWinterCancel}
           footer={null}
+          width={1000}
         >
-          winter
+          <OldSummerPayments
+            oldZmanGoal={oldZmanGoal}
+            items={items}
+            selectedHebrewYear={selectedHebrewYear}
+            selectedZman={selectedZman}
+            isWinter
+          />
         </Modal>
       </Card>
     </div>

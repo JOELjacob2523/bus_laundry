@@ -2,15 +2,6 @@ import "./googleMapRoutes.css";
 import React, { useEffect, useState } from "react";
 import { Button, Card, Divider, Modal, Select, message, Empty } from "antd";
 import {
-  Document,
-  Packer,
-  Paragraph,
-  TextRun,
-  HeadingLevel,
-  signedHpsMeasureValue,
-} from "docx";
-import { saveAs } from "file-saver";
-import {
   APIProvider,
   Map,
   useMapsLibrary,
@@ -18,6 +9,7 @@ import {
 } from "@vis.gl/react-google-maps";
 import API from "../GoogleAPIKey";
 import { getAllUserInfo } from "../../servers/getRequest";
+import HandleDownloadRoutes from "./downloadedRoutes";
 
 const { Option } = Select;
 
@@ -53,13 +45,6 @@ function Directions() {
     setDirectionService(new routesLibary.DirectionsService());
     setDirectionRenderer(new routesLibary.DirectionsRenderer({ map }));
   }, [routesLibary, map]);
-
-  // const updateSelectedStudent = (address) => {
-  //   const student = students.find((student) => student.address2 === address);
-  //   if (student) {
-  //     setSelectedStudent(student);
-  //   }
-  // };
 
   const updateSelectedStudent = (addresses) => {
     // Ensure addresses is an array
@@ -218,231 +203,12 @@ function Directions() {
     showModal();
   };
 
-  // const findFastestRoute = () => {
-  //   if (routes.length === 0) {
-  //     message.error("No routes available to find the fastest route.");
-  //     return;
-  //   }
-
-  //   let fastestRoute = routes[0];
-
-  //   routes.forEach((route) => {
-  //     if (
-  //       route.legs &&
-  //       route.legs[0].duration.value < fastestRoute.legs[0].duration.value
-  //     ) {
-  //       fastestRoute = route;
-  //     }
-  //   });
-
-  //   if (!fastestRoute.legs) {
-  //     message.error("No valid legs found in the routes.");
-  //     return;
-  //   }
-
-  //   const originStudent = students.find(
-  //     (student) => student.address2 === originInput
-  //   );
-  //   const destinationStudent = students.find(
-  //     (student) => student.address2 === destinationInput
-  //   );
-  //   const waypointsStudents = waypoints
-  //     .map((waypoint) =>
-  //       students.find((student) => student.address2 === waypoint)
-  //     )
-  //     .filter((student) => student !== undefined);
-
-  //   const routeWithStudentInfo = fastestRoute.legs.map((leg, index) => {
-  //     let studentInfo = null;
-
-  //     // Determine if it's a waypoint or destination
-  //     if (index < waypointsStudents.length) {
-  //       studentInfo = waypointsStudents[index];
-  //     } else if (index === fastestRoute.legs.length - 1) {
-  //       studentInfo = destinationStudent;
-  //     }
-
-  //     return {
-  //       ...leg,
-  //       studentFirstName: studentInfo ? studentInfo.first_name : "Unknown",
-  //       studentLastName: studentInfo ? studentInfo.last_name : "Unknown",
-  //       studentPhone: studentInfo ? studentInfo.phone : "Unknown",
-  //     };
-  //   });
-
-  //   const updatedFastestRoute = {
-  //     ...fastestRoute,
-  //     legs: routeWithStudentInfo,
-  //     studentInfo: {
-  //       originStudent,
-  //       destinationStudent,
-  //       waypointsStudents,
-  //     },
-  //   };
-
-  //   setFastestRoute(updatedFastestRoute);
-  //   showModal();
-  // };
-
-  const handleDownloadRoutes = async () => {
-    if (!fastestRoute || !fastestRoute.legs) {
-      message.error({
-        type: "error",
-        content: "No fastest route available for download.",
-      });
-      return;
-    }
-
-    const doc = new Document({
-      sections: [
-        {
-          properties: {},
-          children: [
-            new Paragraph({
-              text: "Fastest Routes",
-              heading: HeadingLevel.HEADING_1,
-              spacing: {
-                before: 100,
-                after: 100,
-                line: 100,
-              },
-            }),
-            ...fastestRoute.legs
-              .map((route, index) => {
-                return [
-                  new Paragraph({
-                    text: `Route ${index + 1}`,
-                    heading: HeadingLevel.HEADING_2,
-                    spacing: {
-                      before: 450,
-                      after: 250,
-                      line: 250,
-                    },
-                  }),
-                  new Paragraph({
-                    spacing: {
-                      before: 250,
-                      after: 250,
-                      line: 250,
-                    },
-
-                    children: [
-                      new TextRun({
-                        text: "Name: ",
-                        bold: true,
-                      }),
-                      new TextRun({
-                        text: `${route.studentFirstName} ${route.studentLastName}`,
-                        size: 24,
-                      }),
-                    ],
-                  }),
-                  new Paragraph({
-                    spacing: {
-                      before: 200,
-                      after: 250,
-                      line: 250,
-                    },
-                    children: [
-                      new TextRun({
-                        text: "Phone Number: ",
-                        bold: true,
-                      }),
-                      new TextRun({
-                        text: `${route.studentPhone.replace(
-                          /^(\d{3})(\d{3})(\d{4})/,
-                          "$1-$2-$3"
-                        )}`,
-                        size: 24,
-                      }),
-                    ],
-                  }),
-                  new Paragraph({
-                    spacing: {
-                      before: 200,
-                      after: 250,
-                      line: 250,
-                    },
-                    children: [
-                      new TextRun({
-                        text: "Start Address: ",
-                        bold: true,
-                      }),
-                      new TextRun({
-                        text: route.start_address,
-                        size: 24,
-                      }),
-                    ],
-                  }),
-                  new Paragraph({
-                    spacing: {
-                      before: 200,
-                      after: 250,
-                      line: 250,
-                    },
-                    children: [
-                      new TextRun({
-                        text: "End Address: ",
-                        bold: true,
-                      }),
-                      new TextRun({
-                        text: route.end_address,
-                        size: 24,
-                      }),
-                    ],
-                  }),
-                  new Paragraph({
-                    spacing: {
-                      before: 200,
-                      after: 250,
-                      line: 250,
-                    },
-                    children: [
-                      new TextRun({
-                        text: "Duration: ",
-                        bold: true,
-                      }),
-                      new TextRun({
-                        text: route.duration.text,
-                        size: 24,
-                      }),
-                    ],
-                  }),
-                  new Paragraph({
-                    spacing: {
-                      before: 200,
-                      after: 250,
-                      line: 250,
-                    },
-                    children: [
-                      new TextRun({
-                        text: "Distance: ",
-                        bold: true,
-                      }),
-                      new TextRun({
-                        text: route.distance.text,
-                        size: 24,
-                      }),
-                    ],
-                  }),
-                ].filter(Boolean);
-              })
-              .flat(),
-          ],
-        },
-      ],
-    });
-
-    const blob = await Packer.toBlob(doc);
-    saveAs(blob, `saved_routes_${new Date().toDateString()}.docx`);
-  };
-
   const showModal = () => {
     setIsModalOpen(true);
   };
-  const handleOk = () => {
+  const handleOk = async () => {
     setIsModalOpen(false);
-    handleDownloadRoutes();
+    await HandleDownloadRoutes({ fastestRoute });
   };
   const handleCancel = () => {
     setIsModalOpen(false);

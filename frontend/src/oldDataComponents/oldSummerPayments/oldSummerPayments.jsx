@@ -1,52 +1,75 @@
+import "../../Fonts/fonts.css";
+import "./oldSummerPayments.css";
 import { useEffect, useState } from "react";
-import { getOldPaymentInfo } from "../../servers/getRequest";
-import { Descriptions, Empty } from "antd";
+import { getOldPaymentInfo, getOldStudentInfo } from "../../servers/getRequest";
+import { Card, Descriptions, Empty } from "antd";
 
-const OldSummerPayments = ({ oldZmanGoal, items, selectedHebrewYear }) => {
+const formatNumber = (number) => {
+  return new Intl.NumberFormat("en-US").format(number);
+};
+
+const OldSummerPayments = ({ oldZmanGoal, selectedZman }) => {
   const [paymentData, setPaymentData] = useState([]);
-  // const [hebrewYears, setHebrewYears] = useState([]);
-  const [startDates, setStartDates] = useState([]);
-  const [endDates, setEndDates] = useState([]);
+  const [studentData, setStudentData] = useState({});
+  const [startDate, setStartDate] = useState([]);
+  const [endDate, setEndDate] = useState([]);
 
   useEffect(() => {
     const fetchOldPayments = async () => {
-      const data = await getOldPaymentInfo();
+      try {
+        const payments = await getOldPaymentInfo();
+        setPaymentData(payments);
 
-      const startDateSet = new Set();
-      const endDateSet = new Set();
-      const hebrewYearSet = new Set();
+        const studentIds = [
+          ...new Set(payments.map((payment) => payment.student_id)),
+        ];
+        const studentDetailsArrays = await Promise.all(
+          studentIds.map((id) => getOldStudentInfo(id))
+        );
 
-      oldZmanGoal.forEach((goal) => {
-        startDateSet.add(goal.zman_starts_ends.start.date);
-        endDateSet.add(goal.zman_starts_ends.end.date);
-      });
+        const studentDetails = studentDetailsArrays.flat();
 
-      items.forEach((item) => {
-        hebrewYearSet.add(item.label);
-      });
+        const studentDataMap = studentDetails.reduce((acc, student) => {
+          if (student.student_id) {
+            acc[student.student_id] = student;
+          }
+          return acc;
+        }, {});
 
-      setStartDates(Array.from(startDateSet));
-      setEndDates(Array.from(endDateSet));
-      // setHebrewYears(Array.from(hebrewYearSet));
-      setPaymentData(data);
+        setStudentData(studentDataMap);
+
+        oldZmanGoal.forEach((goal) => {
+          if (goal.zman === selectedZman) {
+            const start = new Date(goal.zman_starts_ends.start.date);
+            const end = new Date(goal.zman_starts_ends.end.date);
+            setStartDate(start);
+            setEndDate(end);
+          }
+        });
+      } catch (error) {
+        console.error("Error fetching payments or student data:", error);
+      }
     };
     fetchOldPayments();
-  }, [oldZmanGoal, items]);
+  }, [oldZmanGoal, selectedZman]);
 
-  const isDateInRange = (date, startDates, endDates) => {
-    return startDates.some((startDate, index) => {
-      const endDate = endDates[index];
-      return (
-        new Date(startDate) <= new Date(date) &&
-        new Date(date) <= new Date(endDate)
-      );
-    });
+  const isDateInRange = (date) => {
+    return (
+      startDate &&
+      endDate &&
+      new Date(date) >= startDate &&
+      new Date(date) <= endDate
+    );
   };
 
   const getMatchingPayments = () => {
     return paymentData.filter((payment) => {
-      const inDateRange = isDateInRange(payment.date, startDates, endDates);
-      return selectedHebrewYear === payment.hebrewYear && inDateRange;
+      const paymentDate = payment.date ? new Date(payment.date) : null;
+      if (!paymentDate) {
+        return false;
+      }
+      const isInRange = isDateInRange(paymentDate);
+      return isInRange;
     });
   };
 
@@ -55,15 +78,107 @@ const OldSummerPayments = ({ oldZmanGoal, items, selectedHebrewYear }) => {
   return (
     <div>
       {matchingPayments.length > 0 ? (
-        matchingPayments.map((payment, index) => (
-          // <div key={index}>{payment.first_name}</div>
-          <div key={index}>
-            <Descriptions
-              title={`${payment.first_name} ${payment.last_name}`}
-              items={"Hello"}
-            />
-          </div>
-        ))
+        matchingPayments.map((payment, index) => {
+          const student = studentData[payment.student_id] || {};
+          return (
+            <div key={index} className="description_container">
+              <Card
+                hoverable
+                size="small"
+                title={
+                  <div
+                    className="description_title"
+                    style={{ fontFamily: "OYoelTovia" }}
+                  >
+                    {student.first_name} {student.last_name}
+                  </div>
+                }
+              >
+                <Descriptions layout="vertical" size="small" bordered>
+                  <Descriptions.Item
+                    label="Address"
+                    labelStyle={{ fontWeight: "bold" }}
+                  >
+                    <div className="description_item">{student.address1}</div>
+                  </Descriptions.Item>
+                  <Descriptions.Item
+                    label="Address 2"
+                    labelStyle={{ fontWeight: "bold" }}
+                  >
+                    <div className="description_item">
+                      {student.address2 || "N/A"}
+                    </div>
+                  </Descriptions.Item>
+                  <Descriptions.Item
+                    label="City-State-Zip"
+                    labelStyle={{ fontWeight: "bold" }}
+                  >
+                    <div className="description_item">
+                      {student.city} {student.state} {student.zip_code}
+                    </div>
+                  </Descriptions.Item>
+                  <Descriptions.Item
+                    label="Phone number"
+                    labelStyle={{ fontWeight: "bold" }}
+                  >
+                    <div className="description_item">
+                      {" "}
+                      {student.phone
+                        ? student.phone.replace(
+                            /^(\d{3})(\d{3})(\d{4})/,
+                            "$1-$2-$3"
+                          )
+                        : "N/A"}{" "}
+                    </div>
+                  </Descriptions.Item>
+                  <Descriptions.Item
+                    label="Total Paid"
+                    labelStyle={{ fontWeight: "bold" }}
+                  >
+                    <div className="description_item">{`$${formatNumber(
+                      payment.total_paid
+                    )}`}</div>
+                  </Descriptions.Item>
+                  <Descriptions.Item
+                    label="Pay Date"
+                    labelStyle={{ fontWeight: "bold" }}
+                    className="description_item"
+                  >
+                    <div className="description_item">{payment.pay_date}</div>
+                  </Descriptions.Item>
+                  <Descriptions.Item
+                    label="Cash"
+                    labelStyle={{ fontWeight: "bold" }}
+                  >
+                    <div className="description_item">
+                      {payment.cash ? `$${formatNumber(payment.cash)}` : "N/A"}
+                    </div>
+                  </Descriptions.Item>
+                  <Descriptions.Item
+                    label="Check"
+                    labelStyle={{ fontWeight: "bold" }}
+                  >
+                    <div className="description_item">
+                      {payment.checks
+                        ? `$${formatNumber(payment.checks)}`
+                        : "N/A"}
+                    </div>
+                  </Descriptions.Item>
+                  <Descriptions.Item
+                    label="Credit Card"
+                    labelStyle={{ fontWeight: "bold" }}
+                  >
+                    <div className="description_item">
+                      {payment.credit_card
+                        ? `$${formatNumber(payment.credit_card)}`
+                        : "N/A"}
+                    </div>
+                  </Descriptions.Item>
+                </Descriptions>
+              </Card>
+            </div>
+          );
+        })
       ) : (
         <div>
           <Empty />

@@ -59,10 +59,10 @@ const DeleteUser = ({ student }) => {
           </Button>,
         ]}
       >
-        <p>
+        <div>
           ? "דו ביזט זיכער אז דו ווילסט אויסמעקן "{student.first_name}{" "}
           {student.last_name}
-        </p>
+        </div>
       </Modal>
     </div>
   );

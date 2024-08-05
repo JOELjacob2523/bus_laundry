@@ -7,6 +7,7 @@ import { getAllPaymentInfo } from "../../servers/getRequest";
 import { Card, Spin } from "antd";
 import IncomeProgress from "../imcomeProgress/incomeProgress";
 import Error500 from "../error/error";
+import { Helmet } from "react-helmet";
 
 const MainPage2 = ({ cityCounts }) => {
   const [userInfo, setUserInfo] = useState(null);
@@ -94,6 +95,9 @@ const MainPage2 = ({ cityCounts }) => {
 
   return (
     <div className="main_container">
+      <Helmet>
+        <title>Home - Kadishes Yoel Bus & Laundry</title>
+      </Helmet>
       <div className="main_page_header_container">
         <Card
           title={
@@ -120,7 +124,9 @@ const MainPage2 = ({ cityCounts }) => {
                   style={{ fontFamily: "OYoelTovia" }}
                 >
                   די קומענדיגע מאל וואס מען פארט אהיים איז פרשת{" "}
-                  <strong>{nextSedra && nextSedra.sedra}</strong>
+                  <strong style={{ fontFamily: "OYoelToviaBold" }}>
+                    {nextSedra && nextSedra.sedra}
+                  </strong>
                 </h4>
                 <IncomeProgress
                   zmanGoal={zmanGoal}
@@ -136,20 +142,20 @@ const MainPage2 = ({ cityCounts }) => {
         <div className="student_amount_container">
           <Card title="וויליאמסבורג" style={{ textAlign: "right" }}>
             <div>
-              עס זענען איינגעשריבן <strong>{cityCounts.brooklyn}</strong> בחורים
-              קיין וויליאמסבורג
+              עס זענען איינגעשריבן <strong>{cityCounts.brooklyn}</strong>{" "}
+              {cityCounts.brooklyn > 1 ? "בחורים" : "בחור"} קיין וויליאמסבורג
             </div>
           </Card>
           <Card title="מאנסי" style={{ textAlign: "right" }}>
             <div>
-              עס זענען איינגעשריבן <strong>{cityCounts.monsey}</strong> בחורים
-              קיין מאנסי
+              עס זענען איינגעשריבן <strong>{cityCounts.monsey}</strong>{" "}
+              {cityCounts.monsey > 1 ? "בחורים" : "בחור"} קיין מאנסי
             </div>
           </Card>
           <Card title="בארא פארק" style={{ textAlign: "right" }}>
             <div>
-              עס זענען איינגעשריבן <strong>{cityCounts.boropark}</strong> בחורים
-              קיין בארא פארק
+              עס זענען איינגעשריבן <strong>{cityCounts.boropark}</strong>{" "}
+              {cityCounts.boropark > 1 ? "בחורים" : "בחור"} קיין בארא פארק
             </div>
           </Card>
         </div>

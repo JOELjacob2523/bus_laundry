@@ -23,6 +23,12 @@
     padding-top: 20px;
   }
 
+  .bocherim_count_container{
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+  }
+
   .add_user_container{
     display: flex;
     flex-direction: row;
@@ -77,5 +83,5 @@
   .student_title_delete_options{
     display: flex;
     flex-direction: row;
-    gap: 5px;
+    gap: 10px;
   }

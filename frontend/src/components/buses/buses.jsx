@@ -1,12 +1,16 @@
+import "../../Fonts/fonts.css";
 import "./buses.css";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Row, Col, Pagination, Empty, Button, message } from "antd";
+import { Row, Col, Pagination, Empty, Button, message, Typography } from "antd";
 import { getAllPaymentInfo, getAllUserInfo } from "../../servers/getRequest";
 import { archiveOldStudentPayments } from "../../servers/postRequest";
 import AddUser from "../addUser/newUserBtn";
 import UserCard from "./userCard";
 import SearchBar from "../search/search";
+import { Helmet } from "react-helmet";
+
+const { Title } = Typography;
 
 const Buses = () => {
   const [userInfo, setUserInfo] = useState([]);
@@ -90,7 +94,20 @@ const Buses = () => {
 
   return (
     <div className="main_buses_container">
+      <Helmet>
+        <title>Bus & Wash - Kadishes Yoel Bus & Laundry</title>
+      </Helmet>
       <div className="content_container">
+        <div className="bocherim_count_container">
+          <Title
+            level={2}
+            style={{
+              fontFamily: "OYoelTovia",
+            }}
+          >
+            ~ עס זענען איינגעשריבן {userInfo.length} בחורים ~
+          </Title>
+        </div>
         <div className="scrollable_cards">
           <div className="add_user_container">
             <div className="search_inner">

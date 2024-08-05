@@ -11,18 +11,19 @@ const OldZmanData = ({
 }) => {
   const [value, setValue] = useState("");
 
-  const onChange = useCallback(
-    (e) => {
-      const newValue = e.target.value;
-      setValue(newValue);
-      if (newValue === "קיץ") {
-        showSummerModal();
-      } else if (newValue === "חורף") {
-        showWinterModal();
-      }
-    },
-    [showSummerModal, showWinterModal]
-  );
+  // const onChange = useCallback(
+  //   (e) => {
+  //     const newValue = e.target.value;
+  //     console.log(newValue);
+  //     setValue(newValue);
+  //     if (newValue === "קיץ") {
+  //       showSummerModal();
+  //     } else if (newValue === "חורף") {
+  //       showWinterModal();
+  //     }
+  //   },
+  //   [showSummerModal, showWinterModal]
+  // );
 
   useEffect(() => {
     const fetchOldZmanData = async () => {
@@ -39,7 +40,10 @@ const OldZmanData = ({
           key: zmanGoal.zman_goal_id,
           label: hebrewYear,
           items: (
-            <Radio.Group value={value} onChange={onChange}>
+            <Radio.Group
+            // value={value}
+            // onChange={onChange}
+            >
               <Radio value="חורף">חורף</Radio>
               <Radio value="קיץ">קיץ</Radio>
             </Radio.Group>
@@ -49,7 +53,12 @@ const OldZmanData = ({
       setItems(newItems);
     };
     fetchOldZmanData();
-  }, [setItems, onChange, value, setOldZmanGoal]);
+  }, [
+    setItems,
+    // onChange,
+    // value,
+    setOldZmanGoal,
+  ]);
 
   return null;
 };

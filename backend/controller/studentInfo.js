@@ -237,6 +237,7 @@ async function migrateOldData(selectedStudents) {
           student_id: pay.student_id,
           payment_type: pay.payment_type,
           pay_date: pay.pay_date,
+          date: pay.date,
         };
         await trx("old_payments").insert(paymentData);
       }

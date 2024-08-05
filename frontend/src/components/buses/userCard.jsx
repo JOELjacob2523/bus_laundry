@@ -58,11 +58,10 @@ const UserCard = ({ student, payment, isSelected, handleCheckboxChange }) => {
       <Card
         title={
           <div className="student_title_container">
-            <div>
-              {student.first_name ? student.first_name : "N/A"}{" "}
-              {student.last_name ? student.last_name : "N/A"}
-            </div>
             <div className="student_title_delete_options">
+              <div>
+                <DeleteUser student={student} />
+              </div>
               <div>
                 <Checkbox
                   checked={isSelected}
@@ -71,9 +70,10 @@ const UserCard = ({ student, payment, isSelected, handleCheckboxChange }) => {
                   Archive
                 </Checkbox>
               </div>
-              <div>
-                <DeleteUser student={student} />
-              </div>
+            </div>
+            <div>
+              {student.first_name ? student.first_name : "N/A"}{" "}
+              {student.last_name ? student.last_name : "N/A"}
             </div>
           </div>
         }
