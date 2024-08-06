@@ -14,17 +14,20 @@ const EditUserBtn = () => {
     right: 0,
   });
   const draggleRef = useRef(null);
+
   const showModal = () => {
     setOpen(true);
   };
+
   const handleOk = (e) => {
     console.log(e);
     setOpen(false);
   };
-  const handleCancel = (e) => {
-    console.log(e);
+
+  const handleCancel = () => {
     setOpen(false);
   };
+
   const onStart = (_event, uiData) => {
     const { clientWidth, clientHeight } = window.document.documentElement;
     const targetRect = draggleRef.current?.getBoundingClientRect();
@@ -38,6 +41,7 @@ const EditUserBtn = () => {
       bottom: clientHeight - (targetRect.bottom - uiData.y),
     });
   };
+
   return (
     <>
       <EditOutlined key="edit" onClick={showModal} />
@@ -78,7 +82,7 @@ const EditUserBtn = () => {
             <div ref={draggleRef}>{modal}</div>
           </Draggable>
         )}
-        footer={false}
+        footer={null}
       >
         <EditUser />
       </Modal>

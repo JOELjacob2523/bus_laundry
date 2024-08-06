@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.css";
-import { Button, Form, Input, InputNumber, Modal, message } from "antd";
+import { Button, Form, Input, InputNumber, message } from "antd";
 import { userInfo } from "../../servers/postRequest";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +27,7 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const FirstName = () => {
+const FirstName = ({ handleCancel }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
 
@@ -170,12 +170,15 @@ const FirstName = () => {
         <Form.Item
           wrapperCol={{
             ...layout.wrapperCol,
-            offset: 20,
+            offset: 16,
           }}
         >
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
+          <div className="add_user_form_container">
+            <Button onClick={handleCancel}>Cancel</Button>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </div>
         </Form.Item>
       </Form>
     </>

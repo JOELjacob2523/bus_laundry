@@ -9,6 +9,7 @@ import PaymentForm from "../payments/paymentForm";
 import DeleteUser from "../deleteUser/deleteUser";
 import StudentBalance from "../balance/balance";
 import StudentBalanceInfo from "../studentBalanceInfo/studentBalanceInfo";
+import { Link, NavLink } from "react-router-dom";
 
 const UserCard = ({ student, payment, isSelected, handleCheckboxChange }) => {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
@@ -53,6 +54,10 @@ const UserCard = ({ student, payment, isSelected, handleCheckboxChange }) => {
     setIsCCModalVisible(false);
   };
 
+  const creditCardPay = () => {
+    return window.open(URL, "_blank");
+  };
+
   return (
     <div className="main_card_container">
       <Card
@@ -81,7 +86,8 @@ const UserCard = ({ student, payment, isSelected, handleCheckboxChange }) => {
         actions={[
           <EditOutlined onClick={showEditModal} />,
           <DollarOutlined onClick={showPaymentModal} />,
-          <TbCreditCardPay onClick={showCCModal} />,
+          // <TbCreditCardPay onClick={showCCModal} />,
+          <TbCreditCardPay onClick={creditCardPay} />,
         ]}
       >
         <div className="user_info_container">
@@ -134,7 +140,11 @@ const UserCard = ({ student, payment, isSelected, handleCheckboxChange }) => {
           onCancel={handleEditCancel}
           footer={null}
         >
-          <EditUser studentId={student.student_id} token={student.token} />
+          <EditUser
+            studentId={student.student_id}
+            token={student.token}
+            handleCancel={handleEditCancel}
+          />
         </Modal>
         <Modal
           title="Payment Options"
@@ -146,6 +156,7 @@ const UserCard = ({ student, payment, isSelected, handleCheckboxChange }) => {
           <PaymentOptions
             studentId={student.student_id}
             token={student.token}
+            handleCancel={handlePaymentCancel}
           />
         </Modal>
         <Modal

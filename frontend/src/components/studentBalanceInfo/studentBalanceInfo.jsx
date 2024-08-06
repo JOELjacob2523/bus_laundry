@@ -67,7 +67,7 @@ const StudentBalanceInfo = ({ payment }) => {
           <div>
             <strong>Date:</strong>
           </div>
-          <div>{aggregatedPayment.pay_date} </div>
+          <div>{aggregatedPayment.pay_date || "N/A"} </div>
         </div>
       </div>
       <Divider />

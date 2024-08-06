@@ -27,7 +27,7 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const EditUser = ({ studentId, token }) => {
+const EditUser = ({ studentId, token, handleCancel }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -205,12 +205,15 @@ const EditUser = ({ studentId, token }) => {
         <Form.Item
           wrapperCol={{
             ...layout.wrapperCol,
-            offset: 20,
+            offset: 16,
           }}
         >
-          <Button type="primary" htmlType="submit">
-            Update
-          </Button>
+          <div className="edit_user_form_container">
+            <Button onClick={handleCancel}>Cancel</Button>
+            <Button type="primary" htmlType="submit">
+              Update
+            </Button>
+          </div>
         </Form.Item>
       </Form>
     </>

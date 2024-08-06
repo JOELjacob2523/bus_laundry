@@ -4,10 +4,10 @@ import {
   Form,
   Input,
   Spin,
-  Modal,
   Radio,
   Divider,
   message,
+  Empty,
 } from "antd";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { getUserInfoById } from "../../servers/getRequest";
@@ -37,7 +37,7 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const PaymentOptions = ({ studentId, token }) => {
+const PaymentOptions = ({ studentId, token, handleCancel }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
   const [value, setValue] = useState("bus");
@@ -103,7 +103,12 @@ const PaymentOptions = ({ studentId, token }) => {
     return <Spin fullscreen={true} tip="Loading..." />;
   }
 
-  if (!userInfo) return <div>User not found</div>;
+  if (!userInfo)
+    return (
+      <div>
+        <Empty description="User not found" />
+      </div>
+    );
 
   return (
     <>
@@ -198,12 +203,15 @@ const PaymentOptions = ({ studentId, token }) => {
         <Form.Item
           wrapperCol={{
             ...layout.wrapperCol,
-            offset: 20,
+            offset: 16,
           }}
         >
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
+          <div className="payment_option_form_container">
+            <Button onClick={handleCancel}>Cancel</Button>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </div>
         </Form.Item>
       </Form>
     </>

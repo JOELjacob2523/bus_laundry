@@ -80,6 +80,15 @@ const OldSummerPayments = ({ oldZmanGoal, selectedZman }) => {
       {matchingPayments.length > 0 ? (
         matchingPayments.map((payment, index) => {
           const student = studentData[payment.student_id] || {};
+          let paymentType;
+          if (payment.bus_wash === "1") {
+            paymentType = "באס און וואשן";
+          } else if (payment.bus === "1") {
+            paymentType = "באס";
+          } else if (payment.wash === "1") {
+            paymentType = "וואשן";
+          }
+
           return (
             <div key={index} className="description_container">
               <Card
@@ -90,7 +99,7 @@ const OldSummerPayments = ({ oldZmanGoal, selectedZman }) => {
                     className="description_title"
                     style={{ fontFamily: "OYoelTovia" }}
                   >
-                    {student.first_name} {student.last_name}
+                    הב' {student.first_name} {student.last_name}
                   </div>
                 }
               >
@@ -151,7 +160,7 @@ const OldSummerPayments = ({ oldZmanGoal, selectedZman }) => {
                     labelStyle={{ fontWeight: "bold" }}
                   >
                     <div className="description_item">
-                      {payment.cash ? `$${formatNumber(payment.cash)}` : "N/A"}
+                      {payment.cash ? `$${formatNumber(payment.cash)}` : "$0"}
                     </div>
                   </Descriptions.Item>
                   <Descriptions.Item
@@ -161,7 +170,7 @@ const OldSummerPayments = ({ oldZmanGoal, selectedZman }) => {
                     <div className="description_item">
                       {payment.checks
                         ? `$${formatNumber(payment.checks)}`
-                        : "N/A"}
+                        : "$0"}
                     </div>
                   </Descriptions.Item>
                   <Descriptions.Item
@@ -171,8 +180,15 @@ const OldSummerPayments = ({ oldZmanGoal, selectedZman }) => {
                     <div className="description_item">
                       {payment.credit_card
                         ? `$${formatNumber(payment.credit_card)}`
-                        : "N/A"}
+                        : "$0"}
                     </div>
+                  </Descriptions.Item>
+                  <Descriptions.Item
+                    label="Payment Type"
+                    labelStyle={{ fontWeight: "bold" }}
+                    className="description_item"
+                  >
+                    <div className="description_item">{paymentType}</div>
                   </Descriptions.Item>
                 </Descriptions>
               </Card>
@@ -181,7 +197,7 @@ const OldSummerPayments = ({ oldZmanGoal, selectedZman }) => {
         })
       ) : (
         <div>
-          <Empty />
+          <Empty description="No student data" />
         </div>
       )}
     </div>

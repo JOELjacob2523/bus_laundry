@@ -366,7 +366,7 @@ function Directions() {
 }
 
 const GoogleMaps = () => {
-  const position = { lat: 41.3204, lng: -74.1718 };
+  const position = { lat: 41.34416, lng: -74.17183 };
 
   return (
     <div className="google_maps_container">

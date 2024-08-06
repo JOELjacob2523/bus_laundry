@@ -14,15 +14,19 @@ const AddUser = () => {
     right: 0,
   });
   const draggleRef = useRef(null);
+
   const showModal = () => {
     setOpen(true);
   };
+
   const handleOk = () => {
     setOpen(false);
   };
+
   const handleCancel = () => {
     setOpen(false);
   };
+
   const onStart = (_event, uiData) => {
     const { clientWidth, clientHeight } = window.document.documentElement;
     const targetRect = draggleRef.current?.getBoundingClientRect();
@@ -36,6 +40,7 @@ const AddUser = () => {
       bottom: clientHeight - (targetRect.bottom - uiData.y),
     });
   };
+
   return (
     <>
       <div className="add_btn_container">
@@ -80,7 +85,7 @@ const AddUser = () => {
         )}
         footer={null}
       >
-        <FirstName />
+        <FirstName handleCancel={handleCancel} />
       </Modal>
     </>
   );
