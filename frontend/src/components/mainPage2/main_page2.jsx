@@ -8,6 +8,7 @@ import { Card, Spin } from "antd";
 import IncomeProgress from "../imcomeProgress/incomeProgress";
 import Error500 from "../error/error";
 import { Helmet } from "react-helmet";
+import TotalClosedWeeks from "../totalClosedWeeks/totalClosedWeeks";
 
 const MainPage2 = ({ cityCounts }) => {
   const [userInfo, setUserInfo] = useState(null);
@@ -101,10 +102,15 @@ const MainPage2 = ({ cityCounts }) => {
       <div className="main_page_header_container">
         <Card
           title={
-            <div className="main_title_container">
+            <div>
               {zmanGoal.map((goal, index) => (
-                <div key={index} className="zman_name">
-                  זמן אינפארמאציע פאר זמן ה{goal.zman}
+                <div className="main_title_container" key={index}>
+                  <div>
+                    <TotalClosedWeeks zmanGoal={zmanGoal} />
+                  </div>
+                  <div key={index} className="zman_name">
+                    זמן אינפארמאציע פאר זמן ה{goal.zman}
+                  </div>
                 </div>
               ))}
             </div>

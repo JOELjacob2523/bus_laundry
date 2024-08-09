@@ -5,7 +5,10 @@ import { getOldPaymentInfo, getOldStudentInfo } from "../../servers/getRequest";
 import { Card, Descriptions, Empty } from "antd";
 
 const formatNumber = (number) => {
-  return new Intl.NumberFormat("en-US").format(number);
+  return new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(number);
 };
 
 const OldSummerPayments = ({ oldZmanGoal, selectedZman }) => {
@@ -153,14 +156,16 @@ const OldSummerPayments = ({ oldZmanGoal, selectedZman }) => {
                     labelStyle={{ fontWeight: "bold" }}
                     className="description_item"
                   >
-                    <div className="description_item">{payment.pay_date}</div>
+                    <div className="description_item">
+                      {payment.pay_date ? payment.pay_date : "N/A"}
+                    </div>
                   </Descriptions.Item>
                   <Descriptions.Item
                     label="Cash"
                     labelStyle={{ fontWeight: "bold" }}
                   >
                     <div className="description_item">
-                      {payment.cash ? `$${formatNumber(payment.cash)}` : "$0"}
+                      {payment.cash ? `$${formatNumber(payment.cash)}` : "N/A"}
                     </div>
                   </Descriptions.Item>
                   <Descriptions.Item
@@ -170,7 +175,7 @@ const OldSummerPayments = ({ oldZmanGoal, selectedZman }) => {
                     <div className="description_item">
                       {payment.checks
                         ? `$${formatNumber(payment.checks)}`
-                        : "$0"}
+                        : "N/A"}
                     </div>
                   </Descriptions.Item>
                   <Descriptions.Item
@@ -180,7 +185,7 @@ const OldSummerPayments = ({ oldZmanGoal, selectedZman }) => {
                     <div className="description_item">
                       {payment.credit_card
                         ? `$${formatNumber(payment.credit_card)}`
-                        : "$0"}
+                        : "N/A"}
                     </div>
                   </Descriptions.Item>
                   <Descriptions.Item

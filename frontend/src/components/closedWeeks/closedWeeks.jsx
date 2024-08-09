@@ -167,7 +167,7 @@ const ClosedWeeks = () => {
                       { value: "חורף", label: "חורף" },
                       { value: "קיץ", label: "קיץ" },
                     ]}
-                    placeholder="Choose zman"
+                    placeholder="...וועל אויס א זמן"
                   />
                 </Form.Item>
 
@@ -215,7 +215,7 @@ const ClosedWeeks = () => {
                       icon={<PlusOutlined />}
                       style={{ width: "100%", marginTop: "10px" }}
                     >
-                      Add Sedra
+                      לייג צו א סדרה
                     </Button>
                   </Space>
                 </Form.Item>
@@ -232,7 +232,7 @@ const ClosedWeeks = () => {
                 >
                   <Input
                     prefix={<BsCurrencyDollar />}
-                    placeholder="Enter bus round trip price..."
+                    placeholder="...לייג אריין ראונד טריפ פרייז"
                   />
                 </Form.Item>
 
@@ -248,7 +248,7 @@ const ClosedWeeks = () => {
                 >
                   <Input
                     prefix={<BsCurrencyDollar />}
-                    placeholder="Enter wash bag price..."
+                    placeholder="...לייג אריין וואשן פרייז"
                   />
                 </Form.Item>
 
