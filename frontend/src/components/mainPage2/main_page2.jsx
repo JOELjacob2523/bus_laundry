@@ -129,9 +129,9 @@ const MainPage2 = ({ cityCounts }) => {
                   className="header2"
                   style={{ fontFamily: "OYoelTovia" }}
                 >
-                  די קומענדיגע מאל וואס מען פארט אהיים איז פרשת{" "}
+                  די קומענדיגע מאל וואס מען פארט אהיים איז{" "}
                   <strong style={{ fontFamily: "OYoelToviaBold" }}>
-                    {nextSedra && nextSedra.sedra}
+                    פרשת {nextSedra && nextSedra.sedra}
                   </strong>
                 </h4>
                 <IncomeProgress
@@ -148,19 +148,19 @@ const MainPage2 = ({ cityCounts }) => {
         <div className="student_amount_container">
           <Card title="וויליאמסבורג" style={{ textAlign: "right" }}>
             <div>
-              עס זענען איינגעשריבן <strong>{cityCounts.brooklyn}</strong>{" "}
+              עס איז איינגעשריבן <strong>{cityCounts.brooklyn}</strong>{" "}
               {cityCounts.brooklyn > 1 ? "בחורים" : "בחור"} קיין וויליאמסבורג
             </div>
           </Card>
           <Card title="מאנסי" style={{ textAlign: "right" }}>
             <div>
-              עס זענען איינגעשריבן <strong>{cityCounts.monsey}</strong>{" "}
+              עס איז איינגעשריבן <strong>{cityCounts.monsey}</strong>{" "}
               {cityCounts.monsey > 1 ? "בחורים" : "בחור"} קיין מאנסי
             </div>
           </Card>
           <Card title="בארא פארק" style={{ textAlign: "right" }}>
             <div>
-              עס זענען איינגעשריבן <strong>{cityCounts.boropark}</strong>{" "}
+              עס איז איינגעשריבן <strong>{cityCounts.boropark}</strong>{" "}
               {cityCounts.boropark > 1 ? "בחורים" : "בחור"} קיין בארא פארק
             </div>
           </Card>

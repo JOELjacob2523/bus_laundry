@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.css";
 import { Button, Form, Input, InputNumber, message } from "antd";
 import { userInfo } from "../../servers/postRequest";
+import { MDBuserInfo } from "../../servers/mongoDB/studentRequests/postRequests";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./addUser.css";
@@ -33,7 +34,8 @@ const FirstName = ({ handleCancel }) => {
 
   const onFinish = async (values) => {
     try {
-      await userInfo(values);
+      // await userInfo(values);
+      await MDBuserInfo(values);
       messageApi.open({
         type: "success",
         content: "Student added successfully",
@@ -55,7 +57,8 @@ const FirstName = ({ handleCancel }) => {
         onFinish={onFinish}
         className="add_user_form"
         validateMessages={validateMessages}
-        action="student/student_info"
+        // action="student/student_info"
+        action="student/student_info_mdb"
         method="POST"
       >
         <Form.Item

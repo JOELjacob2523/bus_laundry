@@ -1,6 +1,9 @@
 import "./totalBalance.css";
 import React, { useState, useEffect } from "react";
-import { getAllWithdrawalInfo } from "../../servers/getRequest";
+import {
+  getAllWithdrawalInfo,
+  getOldPaymentInfo,
+} from "../../servers/getRequest";
 
 const formatNumber = (number) => {
   return new Intl.NumberFormat("en-US").format(number);
@@ -10,18 +13,25 @@ const TotalBalance = ({ bus, wash, goalAmount }) => {
   const [withdrawalData, setWithdrawalData] = useState([]);
   const [busMoney, setBusMoney] = useState(0);
   const [washMoney, setWashMoney] = useState(0);
+  const [oldPyaments, setOldPayments] = useState(0);
 
   useEffect(() => {
     async function fetchData() {
       try {
         const data = await getAllWithdrawalInfo();
+        const oldData = await getOldPaymentInfo();
         setWithdrawalData(data);
+        setOldPayments(oldData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     }
     fetchData();
   }, []);
+
+  const totalOldIncome = Array.isArray(oldPyaments)
+    ? oldPyaments.reduce((acc, pay) => acc + parseFloat(pay.total_paid), 0)
+    : 0;
 
   useEffect(() => {
     const withdrawals = () => {
@@ -55,7 +65,7 @@ const TotalBalance = ({ bus, wash, goalAmount }) => {
           <div className="total_balance_inner">
             <div>
               {bus + wash ? (
-                <strong>${formatNumber(bus + wash)}</strong>
+                <strong>${formatNumber(bus + wash + totalOldIncome)}</strong>
               ) : (
                 <strong>$0</strong>
               )}
@@ -86,7 +96,10 @@ const TotalBalance = ({ bus, wash, goalAmount }) => {
             <div style={{ color: balanceColor }}>
               {busMoney + washMoney ? (
                 <strong>
-                  ${formatNumber(bus + wash - busMoney + washMoney)}
+                  $
+                  {formatNumber(
+                    bus + wash + totalOldIncome - busMoney + washMoney
+                  )}
                 </strong>
               ) : (
                 <strong>$0</strong>

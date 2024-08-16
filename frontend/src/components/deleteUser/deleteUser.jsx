@@ -1,5 +1,5 @@
 import "./deleteUser.css";
-import { Modal, Button } from "antd";
+import { Modal, Button, message } from "antd";
 import { useState } from "react";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { CgDanger } from "react-icons/cg";
@@ -15,24 +15,16 @@ const DeleteUser = ({ student }) => {
     console.log("Delete confirmed for student:", student.student_id);
     try {
       await deleteUserInfo(student.student_id);
-      Modal.success({
-        title: "Success",
+      message.open({
+        title: "success",
         content: "Student deleted successfully",
-        footer: null,
       });
       setTimeout(() => {
         navigate(0);
       }, 2000);
     } catch (error) {
       console.error("Failed to delete student:", error);
-      Modal.error({
-        title: "Error",
-        content: "Failed to delete student",
-        footer: null,
-      });
-      setTimeout(() => {
-        navigate(0);
-      }, 2000);
+      navigate("/error500");
     }
   };
 
