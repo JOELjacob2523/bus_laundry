@@ -6,7 +6,6 @@ const cors = require("cors");
 const studentInfoRouter = require("./routes/studentRouter");
 const userRouter = require("./routes/userRouter");
 const bodyParser = require("body-parser");
-const studentRouter = require("./mongoDBRoutes/studentRouter");
 
 app.use(
   session({
@@ -32,7 +31,6 @@ app.use(
 
 app.use("/", userRouter);
 app.use("/student", studentInfoRouter);
-app.use("/student", studentRouter);
 
 app.listen(CONFIG.PORT, () => {
   console.log(`Server listening on port ${CONFIG.PORT}`);

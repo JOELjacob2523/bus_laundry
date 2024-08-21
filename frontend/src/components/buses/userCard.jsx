@@ -122,6 +122,21 @@ const UserCard = ({ student, payment, isSelected, handleCheckboxChange }) => {
               : "N/A"}
           </div>
         </div>
+        <div className="user_info_container">
+          <div>Date Created</div>
+          <div>
+            {student.date
+              ? new Date(student.date).toLocaleString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                })
+              : "N/A"}
+          </div>
+        </div>
         <Divider orientation="left">Balance</Divider>
         <div className="balance_container">
           <div>

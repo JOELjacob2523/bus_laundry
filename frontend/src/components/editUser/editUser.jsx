@@ -1,5 +1,5 @@
 import "./editUser.css";
-import { Button, Form, Input, InputNumber, message, Spin } from "antd";
+import { Button, Empty, Form, Input, InputNumber, message, Spin } from "antd";
 import { getUserInfoById } from "../../servers/getRequest";
 import { updateUserInfo } from "../../servers/postRequest";
 import React, { useState, useEffect } from "react";
@@ -76,7 +76,12 @@ const EditUser = ({ studentId, token, handleCancel }) => {
     return <Spin spinning="loading" tip="Loading..." fullscreen={true} />;
   }
 
-  if (!userInfo) return <div>User not found</div>;
+  if (!userInfo)
+    return (
+      <div>
+        <Empty description="User not found" />
+      </div>
+    );
 
   return (
     <>
