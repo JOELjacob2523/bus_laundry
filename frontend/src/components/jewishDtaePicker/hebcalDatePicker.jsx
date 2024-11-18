@@ -19,6 +19,7 @@ const HebrewDatePicker = ({ onChange }) => {
         value={new Date()}
         isHebrew
         isRange
+        // rangePicker
         onClick={handleDateChange}
       />
     </div>

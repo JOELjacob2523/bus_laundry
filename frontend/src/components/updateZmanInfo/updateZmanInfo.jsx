@@ -79,14 +79,17 @@ const UpdateClosedWeeks = () => {
     try {
       await zmanGoalInfo(values);
       console.log("Zman goal added successfully", values);
-      Modal.success({
-        title: "Success",
-        content: "Zman goal added successfully",
-        footer: null,
-      });
       setTimeout(() => {
-        navigate("/buses");
-      }, 2000);
+        Modal.success(
+          {
+            title: "Success",
+            content: "Zman goal added successfully",
+            footer: null,
+          },
+          2000
+        );
+      });
+      navigate("/buses");
     } catch (error) {
       console.error("Error adding zman goal:", error);
       Modal.error({

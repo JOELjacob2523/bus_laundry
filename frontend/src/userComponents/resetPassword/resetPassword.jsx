@@ -43,7 +43,7 @@ const ResetPasswordForm = () => {
               },
             ]}
           >
-            <Input
+            <Input.OTP
               placeholder="Confirmation number"
               prefix={<MdOutlineConfirmationNumber />}
             />

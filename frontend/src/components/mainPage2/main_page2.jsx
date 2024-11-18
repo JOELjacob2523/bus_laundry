@@ -16,6 +16,7 @@ const MainPage2 = ({ cityCounts }) => {
   const [paymentInfo, setPaymentInfo] = useState(null);
   const [restWeeks, setRestWeeks] = useState(0);
   const [nextSedra, setNextSedra] = useState(null);
+  const [zmanEndingDate, setZmanEndingDate] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,7 +37,8 @@ const MainPage2 = ({ cityCounts }) => {
 
   useEffect(() => {
     if (zmanGoal && Array.isArray(zmanGoal) && zmanGoal.length > 0) {
-      const zmanEndDate = zmanGoal[0].zman_starts_ends?.end?.date;
+      const zmanEndDate = new Date(zmanGoal[0].zman_starts_ends?.end?.date);
+      setZmanEndingDate(zmanEndDate);
     }
   }, [zmanGoal]);
 
@@ -122,7 +124,16 @@ const MainPage2 = ({ cityCounts }) => {
             {zmanGoal.map((goal, index) => (
               <div key={index}>
                 <h3 className="rest_weeks" style={{ fontFamily: "OYoelTovia" }}>
-                  עס איז נאך דא {restWeeks} וואכן אינעם זמן ה{goal.zman}
+                  {new Date() > zmanEndingDate ? (
+                    <>עס איז יעצט בין הזמנים</>
+                  ) : (
+                    <>
+                      {/* עס איז נאך דא {restWeeks} אינעם זמן ה{goal.zman} */}
+                      עס איז נאך דא{" "}
+                      {restWeeks > 1 ? `${restWeeks} וואכן` : "1 וואך"} אינעם
+                      זמן ה{goal.zman}
+                    </>
+                  )}
                 </h3>
                 <h4
                   key={index}
@@ -131,7 +142,9 @@ const MainPage2 = ({ cityCounts }) => {
                 >
                   די קומענדיגע מאל וואס מען פארט אהיים איז{" "}
                   <strong style={{ fontFamily: "OYoelToviaBold" }}>
-                    פרשת {nextSedra && nextSedra.sedra}
+                    {nextSedra
+                      ? `פרשת ${nextSedra && nextSedra.sedra}`
+                      : `סוף זמן`}
                   </strong>
                 </h4>
                 <IncomeProgress
