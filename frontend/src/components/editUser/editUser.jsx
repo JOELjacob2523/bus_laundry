@@ -1,9 +1,11 @@
 import "./editUser.css";
-import { Button, Empty, Form, Input, InputNumber, message, Spin } from "antd";
+import { Button, Divider, Empty, Form, Input, message, Spin } from "antd";
 import { getUserInfoById } from "../../servers/getRequest";
 import { updateUserInfo } from "../../servers/postRequest";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { CiCalendarDate } from "react-icons/ci";
+import { GiRotaryPhone } from "react-icons/gi";
 
 const layout = {
   labelCol: {
@@ -27,10 +29,19 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const EditUser = ({ studentId, token, handleCancel }) => {
+const EditUser = ({
+  studentId,
+  token,
+  handleEditCancel,
+  student,
+  disabled,
+  showButtons,
+  isEditing,
+}) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -84,7 +95,7 @@ const EditUser = ({ studentId, token, handleCancel }) => {
     );
 
   return (
-    <>
+    <div>
       {contextHolder}
       <Form
         {...layout}
@@ -98,130 +109,143 @@ const EditUser = ({ studentId, token, handleCancel }) => {
         <Form.Item name="student_id" hidden={true}>
           <Input />
         </Form.Item>
-        <Form.Item
-          name="first_name"
-          label="First Name"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input disabled={true} />
-        </Form.Item>
-        <Form.Item
-          name="last_name"
-          label="Last Name"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input disabled={true} />
-        </Form.Item>
-        <Form.Item
-          name="age"
-          label="Age"
-          rules={[
-            {
-              type: "number",
-              min: 10,
-              max: 99,
-            },
-          ]}
-        >
-          <InputNumber />
-        </Form.Item>
-        <Form.Item
-          name="address1"
-          label="Address 1"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          name="address2"
-          label="Address 2"
-          rules={[
-            {
-              // required: true,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          name="city"
-          label="City"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          name="state"
-          label="State"
-          rules={[
-            {
-              min: 0,
-              max: 10,
-              required: true,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          name="zip_code"
-          label="Zip Code"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          name="phone"
-          label="Phone Number"
-          rules={[
-            {
-              // required: true,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          wrapperCol={{
-            ...layout.wrapperCol,
-            offset: 16,
-          }}
-        >
-          <div className="edit_user_form_container">
-            <Button onClick={handleCancel}>Cancel</Button>
-            <Button type="primary" htmlType="submit">
-              Update
-            </Button>
+        <div>
+          <div>Address 1:</div>
+          <div>
+            <Form.Item
+              name="address1"
+              rules={[
+                {
+                  required: true,
+                },
+              ]}
+            >
+              <Input disabled={disabled} style={{ width: "300px" }} />
+            </Form.Item>
           </div>
-        </Form.Item>
+        </div>
+        <div>
+          <div>Address 2:</div>
+          <div>
+            <Form.Item name="address2">
+              <Input style={{ width: "315px" }} disabled={disabled} />
+            </Form.Item>
+          </div>
+        </div>
+        <div>
+          <div>City:</div>
+          <div>
+            <Form.Item
+              name="city"
+              rules={[
+                {
+                  required: true,
+                },
+              ]}
+            >
+              <Input disabled={disabled} style={{ width: "200px" }} />
+            </Form.Item>
+          </div>
+        </div>
+        <div>
+          <div>State:</div>
+          <div>
+            <Form.Item
+              name="state"
+              rules={[
+                {
+                  min: 0,
+                  max: 10,
+                  required: true,
+                },
+              ]}
+            >
+              <Input disabled={disabled} style={{ width: "200px" }} />
+            </Form.Item>
+          </div>
+        </div>
+        <div>
+          <div>Zip Code:</div>
+          <div>
+            <Form.Item
+              name="zip_code"
+              rules={[
+                {
+                  required: true,
+                },
+              ]}
+            >
+              <Input disabled={disabled} style={{ width: "200px" }} />
+            </Form.Item>
+          </div>
+        </div>
+        <div>
+          <div>Age:</div>
+          <div>
+            <Form.Item name="age">
+              <Input disabled={disabled} style={{ width: "200px" }} />
+            </Form.Item>
+          </div>
+        </div>
+        <div>
+          <div>Phone Number:</div>
+          <div>
+            {!isEditing ? (
+              <Input
+                value={
+                  student.phone
+                    ? student.phone.replace(
+                        /^(\d{3})(\d{3})(\d{4})/,
+                        "$1-$2-$3"
+                      )
+                    : "N/A"
+                }
+                prefix={<GiRotaryPhone />}
+                disabled={disabled}
+              />
+            ) : (
+              <Form.Item name="phone">
+                <Input disabled={disabled} style={{ width: "200px" }} />
+              </Form.Item>
+            )}
+          </div>
+        </div>
+        <div>
+          <div>Date Created:</div>
+          <div>
+            <Input
+              value={
+                student.date
+                  ? new Date(student.date).toLocaleString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      second: "2-digit",
+                    })
+                  : "N/A"
+              }
+              style={{ width: "235px" }}
+              prefix={<CiCalendarDate />}
+              disabled
+            />
+          </div>
+        </div>
+        {showButtons && (
+          <div className="edit_user_form_container">
+            <Form.Item className="edit_user_form_btns">
+              <div>
+                <Button onClick={handleEditCancel}>Cancel</Button>
+                <Button type="primary" htmlType="submit">
+                  Save
+                </Button>
+              </div>
+            </Form.Item>
+          </div>
+        )}
       </Form>
-    </>
+    </div>
   );
 };
 

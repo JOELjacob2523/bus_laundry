@@ -13,7 +13,7 @@
     overflow: hidden;
   }
 
-  .student_title_container{
+  .student_title_delete_options{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -78,10 +78,4 @@
     flex-direction: row;
     justify-content: space-between;
     padding: 0 10px 0 10px;
-  }
-
-  .student_title_delete_options{
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
   }

@@ -100,16 +100,19 @@ const StudentBalance = ({ payment }) => {
 
   const { totalCost, remainingWeeksCost } = calculateTotalCost();
 
-  // const balance = totalPayments - totalCost;
-  let balance;
-  payment.forEach((pay) => {
+  let balance = 0;
+  const hasPayments = payment.some((pay) => {
     const { date } = pay;
     if (new Date(date) > zmanStart && new Date(date) < zmanEnd) {
       balance = totalPayments - totalCost;
-    } else {
-      balance = 0;
+      return true;
     }
+    return false;
   });
+
+  if (!hasPayments) {
+    return <div className="no_payment">No payments found</div>;
+  }
 
   let balanceColor;
 
@@ -128,7 +131,7 @@ const StudentBalance = ({ payment }) => {
       {payment.length === 0 ? (
         <div className="no_payment">No payments found</div>
       ) : (
-        <div style={{ color: balanceColor }}>${balance.toFixed(2)}</div>
+        <div style={{ color: balanceColor }}>${balance?.toFixed(2)}</div>
       )}
     </div>
   );

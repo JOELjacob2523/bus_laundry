@@ -1,6 +1,6 @@
 import "./studentBalanceInfo.css";
 import React from "react";
-import { Divider, Popover, Space } from "antd";
+import { Divider, Popover, Space, Input } from "antd";
 import { FiInfo } from "react-icons/fi";
 
 const StudentBalanceInfo = ({ payment }) => {
@@ -43,36 +43,48 @@ const StudentBalanceInfo = ({ payment }) => {
           <div>
             <strong>Cash:</strong>{" "}
           </div>
-          <div> ${aggregatedPayment.cash.toFixed(2)}</div>
+          <div>
+            {" "}
+            <Input value={`$${aggregatedPayment.cash.toFixed(2)}`} />
+          </div>
         </div>
         <div className="content_inner">
           <div>
             <strong>Check:</strong>{" "}
           </div>
-          <div>${aggregatedPayment.checks.toFixed(2)}</div>
+          <div>
+            <Input value={`$${aggregatedPayment.checks.toFixed(2)}`} />
+          </div>
         </div>
         <div className="content_inner">
           <div>
             <strong>Credit Card:</strong>
           </div>
-          <div>${aggregatedPayment.credit_card.toFixed(2)}</div>
+          <div>
+            <Input value={`$${aggregatedPayment.credit_card.toFixed(2)}`} />
+          </div>
         </div>
         <div className="content_inner">
           <div>
             <strong>Payment Type:</strong>
           </div>{" "}
-          <div>{aggregatedPayment.payment_type} </div>
+          <div>
+            <Input value={aggregatedPayment.payment_type} />{" "}
+          </div>
         </div>
         <div className="content_inner">
           <div>
             <strong>Date:</strong>
           </div>
-          <div>{aggregatedPayment.pay_date || "N/A"} </div>
+          <div>
+            <Input value={aggregatedPayment.pay_date || "N/A"} />{" "}
+          </div>
         </div>
       </div>
       <Divider />
       <div className="total_balance_info">
-        <strong>Total:</strong> ${aggregatedPayment.total_paid.toFixed(2)}
+        <strong>Total:</strong>
+        <Input value={`$${aggregatedPayment.total_paid.toFixed(2)}`} />
       </div>
     </div>
   );

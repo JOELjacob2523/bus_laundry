@@ -118,7 +118,6 @@ const PaymentOptions = ({ studentId, token, handleCancel }) => {
         form={form}
         onValuesChange={handleFormChange}
         onFinish={onFinish}
-        className="edit_user_form"
         validateMessages={validateMessages}
         initialValues={userInfo}
       >
