@@ -8,8 +8,8 @@ import {
   Input,
   Select,
   Space,
-  Modal,
   Drawer,
+  message,
 } from "antd";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
@@ -35,6 +35,7 @@ const ClosedWeeks = () => {
   const [selectedSedras, setSelectedSedras] = useState([]);
   const [loading, setLoading] = useState(false);
   const [zmanGoalOpen, setZmanGoalOpen] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
 
   const navigate = useNavigate();
 
@@ -94,13 +95,12 @@ const ClosedWeeks = () => {
       setLoading(true);
       await zmanGoalInfo(values);
       setTimeout(() => {
-        Modal.success({
-          title: "Success",
+        messageApi.open({
+          type: "success",
           content: "Zman goal added successfully",
-          footer: null,
         });
+        navigate("/home/buses");
       }, 2000);
-      navigate("/home/buses");
     } catch (error) {
       console.error("Error adding zman goal:", error);
       navigate("/error500");
@@ -122,6 +122,7 @@ const ClosedWeeks = () => {
 
   return (
     <div className="zman_goal_container">
+      {contextHolder}
       <div>
         <Card
           title={<div className="modal_title">זמן אינפארמאציע</div>}

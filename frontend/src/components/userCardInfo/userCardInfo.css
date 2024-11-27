@@ -1,6 +1,8 @@
 .user_info_title{
     display: flex;
     justify-content: center;
+    font-family: 'OYoelToviaBold';
+    font-size: 25px;
 }
 
 .user_info_btn{

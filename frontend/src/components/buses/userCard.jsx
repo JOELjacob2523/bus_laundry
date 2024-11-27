@@ -1,5 +1,5 @@
 import "./buses.css";
-import { Card, Checkbox, Modal } from "antd";
+import { Card, Checkbox, Divider, Modal } from "antd";
 import { EditOutlined, DollarOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import EditUser from "../editUser/editUser";
@@ -8,6 +8,7 @@ import { TbCreditCardPay } from "react-icons/tb";
 import PaymentForm from "../payments/paymentForm";
 import DeleteUser from "../deleteUser/deleteUser";
 import UserCardInfo from "../userCardInfo/userCardInfo";
+import StudentBalance from "../balance/balance";
 
 const UserCard = ({ student, payment, isSelected, handleCheckboxChange }) => {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
@@ -92,6 +93,12 @@ const UserCard = ({ student, payment, isSelected, handleCheckboxChange }) => {
             showPaymentModal={showPaymentModal}
             studentId={student.student_id}
           />
+        </div>
+        <Divider orientation="left">Balance</Divider>
+        <div className="balance_container">
+          <div>
+            <StudentBalance payment={payment} />
+          </div>
         </div>
       </Card>
       <div className="edit_modal_container">

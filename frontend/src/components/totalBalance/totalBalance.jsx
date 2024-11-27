@@ -53,9 +53,9 @@ const TotalBalance = ({ bus, wash, goalAmount }) => {
 
   let balanceColor;
   if (bus + wash - busMoney + washMoney >= 0) {
-    balanceColor = "black";
-  } else if (bus + wash - busMoney + washMoney < 0) {
     balanceColor = "red";
+  } else if (bus + wash - busMoney + washMoney < 0) {
+    balanceColor = "black";
   }
 
   return (
@@ -98,7 +98,7 @@ const TotalBalance = ({ bus, wash, goalAmount }) => {
                 <strong>
                   $
                   {formatNumber(
-                    bus + wash + totalOldIncome - busMoney + washMoney
+                    bus + wash + totalOldIncome - (busMoney + washMoney)
                   )}
                 </strong>
               ) : (

@@ -17,7 +17,7 @@ const Buses = () => {
   const [paymentInfo, setPaymentInfo] = useState({});
   const [filteredUserInfo, setFilteredUserInfo] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(32);
+  const [pageSize, setPageSize] = useState(30);
   const [selectedUsers, setSelectedUsers] = useState([]);
 
   const navigate = useNavigate();
@@ -28,8 +28,21 @@ const Buses = () => {
         const data = await getAllUserInfo();
         const payments = await getAllPaymentInfo();
 
+        // const paymentMap = payments.reduce((acc, payment) => {
+        //   const { student_id } = payment;
+        //   if (!acc[student_id]) {
+        //     acc[student_id] = [];
+        //   }
+        //   acc[student_id].push(payment);
+        //   return acc;
+        // }, {});
+
         const paymentMap = payments.reduce((acc, payment) => {
           const { student_id } = payment;
+          if (!student_id) {
+            console.warn("Payment is missing student_id:", payment);
+            return acc;
+          }
           if (!acc[student_id]) {
             acc[student_id] = [];
           }
@@ -47,6 +60,21 @@ const Buses = () => {
     fetchData();
   }, []);
 
+  const handleUserAdded = (newUser) => {
+    setUserInfo((prevUserInfo) => [...prevUserInfo, newUser]);
+    setFilteredUserInfo((prevFilteredUserInfo) => [
+      ...prevFilteredUserInfo,
+      newUser,
+    ]);
+
+    // if (newUser.student_id) {
+    //   setPaymentInfo((prevPaymentInfo) => ({
+    //     ...prevPaymentInfo,
+    //     [newUser.student_id]: [],
+    //   }));
+    // }
+  };
+
   const handlePageChange = (page, pageSize) => {
     setCurrentPage(page);
     setPageSize(pageSize);
@@ -54,7 +82,7 @@ const Buses = () => {
 
   const handleSearch = (results) => {
     setFilteredUserInfo(results);
-    setCurrentPage(1); // Reset to first page on new search
+    setCurrentPage(1);
   };
 
   const handleCheckboxChange = (studentId) => {
@@ -114,7 +142,7 @@ const Buses = () => {
               <SearchBar input={userInfo} onSearch={handleSearch} />
             </div>
             <div className="add_user_inner">
-              <AddUser />
+              <AddUser onUserAdded={handleUserAdded} />
             </div>
           </div>
           {selectedUsers.length > 0 && (
@@ -152,7 +180,7 @@ const Buses = () => {
                   </Col>
                 ))}
               </Row>
-              {filteredUserInfo > pageSize && (
+              {filteredUserInfo.length > pageSize && (
                 <div className="pagination">
                   <Pagination
                     current={currentPage}
@@ -160,7 +188,7 @@ const Buses = () => {
                     total={filteredUserInfo.length}
                     onChange={handlePageChange}
                     showSizeChanger
-                    pageSizeOptions={["32", "50", "100", "200"]}
+                    pageSizeOptions={["30", "50", "100", "200"]}
                   />
                 </div>
               )}

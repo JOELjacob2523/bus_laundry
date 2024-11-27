@@ -4,7 +4,7 @@ import { Button, Modal } from "antd";
 import Draggable from "react-draggable";
 import FirstName from "./addUser";
 
-const AddUser = () => {
+const AddUser = ({ onUserAdded }) => {
   const [open, setOpen] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [bounds, setBounds] = useState({
@@ -85,7 +85,7 @@ const AddUser = () => {
         )}
         footer={null}
       >
-        <FirstName handleCancel={handleCancel} />
+        <FirstName handleCancel={handleCancel} onUserAdded={onUserAdded} />
       </Modal>
     </>
   );

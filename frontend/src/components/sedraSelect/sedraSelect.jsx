@@ -10,7 +10,7 @@ const SedraSelect = ({ onChange }) => {
   useEffect(() => {
     const getAllSedras = (year) => {
       const startDate = new HDate(new Date(year, 0, 1)); // Start of the year
-      const endDate = new HDate(new Date(year, 12, 15)); // End of the year
+      const endDate = new HDate(new Date(year + 1, 12, 29)); // End of the year
 
       const sedras = [];
 

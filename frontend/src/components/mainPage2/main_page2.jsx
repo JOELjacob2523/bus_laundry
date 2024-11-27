@@ -128,7 +128,6 @@ const MainPage2 = ({ cityCounts }) => {
                     <>עס איז יעצט בין הזמנים</>
                   ) : (
                     <>
-                      {/* עס איז נאך דא {restWeeks} אינעם זמן ה{goal.zman} */}
                       עס איז נאך דא{" "}
                       {restWeeks > 1 ? `${restWeeks} וואכן` : "1 וואך"} אינעם
                       זמן ה{goal.zman}

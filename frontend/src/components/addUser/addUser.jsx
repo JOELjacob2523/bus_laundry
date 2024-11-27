@@ -27,29 +27,45 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const FirstName = ({ handleCancel }) => {
-  const [messageApi, contextHolder] = message.useMessage();
+const FirstName = ({ handleCancel, onUserAdded }) => {
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
     try {
       await userInfo(values);
-      messageApi.open({
-        type: "success",
+      message.success({
         content: "Student added successfully",
+        duration: 5,
+        onClose: navigate(0),
       });
-      setTimeout(() => {
-        navigate(0);
-      }, 2000);
     } catch (error) {
       console.error("Error adding user:", error);
       navigate("/error500");
     }
   };
 
+  // const onFinish = async (values) => {
+  //   try {
+  //     const addedUser = await userInfo(values); // Assuming this returns the newly added user data
+  //     console.log(addedUser);
+  //     messageApi.open({
+  //       type: "success",
+  //       content: "Student added successfully",
+  //     });
+
+  //     // Update parent state dynamically
+  //     onUserAdded(addedUser);
+
+  //     // Optionally navigate or close modal if needed
+  //     handleCancel();
+  //   } catch (error) {
+  //     console.error("Error adding user:", error);
+  //     navigate("/error500");
+  //   }
+  // };
+
   return (
     <>
-      {contextHolder}
       <Form
         {...layout}
         onFinish={onFinish}
