@@ -9,8 +9,8 @@ const SedraSelect = ({ onChange }) => {
 
   useEffect(() => {
     const getAllSedras = (year) => {
-      const startDate = new HDate(new Date(year, 0, 1)); // Start of the year
-      const endDate = new HDate(new Date(year + 1, 12, 29)); // End of the year
+      const startDate = new HDate(new Date(year, 0, 1));
+      const endDate = new HDate(new Date(year + 1, 12, 1));
 
       const sedras = [];
 
@@ -21,6 +21,7 @@ const SedraSelect = ({ onChange }) => {
       ) {
         if (date.getDay() === 6) {
           const events = date.getSedra("h");
+          const fullYear = date.toString("h");
           if (events && events.length > 0) {
             const gregDate = date.greg();
             const parsha = events.join(" - ");
@@ -28,6 +29,7 @@ const SedraSelect = ({ onChange }) => {
               id: `${gregDate.toISOString().split("T")[0]} - ${parsha}`,
               date: gregDate.toISOString().split("T")[0],
               sedra: parsha,
+              hebrewDate: fullYear,
             });
           }
         }
@@ -52,7 +54,7 @@ const SedraSelect = ({ onChange }) => {
         showSearch
         onChange={handleSelectChange}
         style={{
-          width: 200,
+          width: 350,
         }}
         placeholder="Search to Select"
         optionFilterProp="label"
@@ -72,7 +74,7 @@ const SedraSelect = ({ onChange }) => {
       >
         {sedras.map((sedra, index) => (
           <Option key={index} value={sedra.id}>
-            {sedra.date} - {sedra.sedra}
+            {sedra.date} - פרשת {sedra.sedra} - {sedra.hebrewDate}
           </Option>
         ))}
       </Select>

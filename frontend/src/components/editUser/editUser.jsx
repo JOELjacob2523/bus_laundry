@@ -1,5 +1,5 @@
 import "./editUser.css";
-import { Button, Divider, Empty, Form, Input, message, Spin } from "antd";
+import { Button, Empty, Form, Input, message, Select, Spin } from "antd";
 import { getUserInfoById } from "../../servers/getRequest";
 import { updateUserInfo } from "../../servers/postRequest";
 import React, { useState, useEffect } from "react";
@@ -38,7 +38,6 @@ const EditUser = ({
   showButtons,
   isEditing,
 }) => {
-  const [messageApi, contextHolder] = message.useMessage();
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -70,13 +69,8 @@ const EditUser = ({
   const onFinish = async (values) => {
     try {
       await updateUserInfo(values);
-      messageApi.open({
-        type: "success",
-        content: "Student updated successfully",
-      });
-      setTimeout(() => {
-        navigate(0);
-      }, 2000);
+      console.log(values);
+      message.success("Student updated successfully", 1.5, () => navigate(0));
     } catch (error) {
       console.error("Error updating student:", error);
       navigate("/error500");
@@ -96,7 +90,6 @@ const EditUser = ({
 
   return (
     <div>
-      {contextHolder}
       <Form
         {...layout}
         onFinish={onFinish}
@@ -183,7 +176,19 @@ const EditUser = ({
           <div>Age:</div>
           <div>
             <Form.Item name="age">
-              <Input disabled={disabled} style={{ width: "200px" }} />
+              {isEditing ? (
+                <Select
+                  options={[
+                    { value: "שיעור צעירים", label: "שיעור צעירים" },
+                    { value: "'שיעור א", label: "'שיעור א" },
+                    { value: "'שיעור ב", label: "'שיעור ב" },
+                  ]}
+                  disabled={disabled}
+                  style={{ width: "200px" }}
+                />
+              ) : (
+                <Input disabled={disabled} style={{ width: "200px" }} />
+              )}
             </Form.Item>
           </div>
         </div>

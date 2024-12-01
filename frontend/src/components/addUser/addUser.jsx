@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.css";
-import { Button, Form, Input, InputNumber, message } from "antd";
+import { Button, Form, Input, message, Select } from "antd";
 import { userInfo } from "../../servers/postRequest";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./addUser.css";
 
@@ -28,41 +28,21 @@ const validateMessages = {
 /* eslint-enable no-template-curly-in-string */
 
 const FirstName = ({ handleCancel, onUserAdded }) => {
+  const [resetKey, setResetKey] = useState(0);
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
     try {
-      await userInfo(values);
-      message.success({
-        content: "Student added successfully",
-        duration: 5,
-        onClose: navigate(0),
-      });
+      const addedUser = await userInfo(values);
+      onUserAdded(addedUser);
+      setResetKey((prevKey) => prevKey + 1);
+      handleCancel();
+      message.success("Student added successfully", 1.5);
     } catch (error) {
       console.error("Error adding user:", error);
       navigate("/error500");
     }
   };
-
-  // const onFinish = async (values) => {
-  //   try {
-  //     const addedUser = await userInfo(values); // Assuming this returns the newly added user data
-  //     console.log(addedUser);
-  //     messageApi.open({
-  //       type: "success",
-  //       content: "Student added successfully",
-  //     });
-
-  //     // Update parent state dynamically
-  //     onUserAdded(addedUser);
-
-  //     // Optionally navigate or close modal if needed
-  //     handleCancel();
-  //   } catch (error) {
-  //     console.error("Error adding user:", error);
-  //     navigate("/error500");
-  //   }
-  // };
 
   return (
     <>
@@ -71,6 +51,7 @@ const FirstName = ({ handleCancel, onUserAdded }) => {
         onFinish={onFinish}
         className="add_user_form"
         validateMessages={validateMessages}
+        key={resetKey}
         action="student/student_info"
         method="POST"
       >
@@ -83,7 +64,7 @@ const FirstName = ({ handleCancel, onUserAdded }) => {
             },
           ]}
         >
-          <Input />
+          <Input placeholder="...ערשטע נאמען" />
         </Form.Item>
         <Form.Item
           name="last_name"
@@ -94,20 +75,25 @@ const FirstName = ({ handleCancel, onUserAdded }) => {
             },
           ]}
         >
-          <Input />
+          <Input placeholder="...לעצטע נאמען" />
         </Form.Item>
         <Form.Item
           name="age"
           label="Age"
           rules={[
             {
-              type: "number",
-              min: 10,
-              max: 99,
+              required: true,
             },
           ]}
         >
-          <InputNumber />
+          <Select
+            options={[
+              { value: "שיעור צעירים", label: "שיעור צעירים" },
+              { value: "'שיעור א", label: "'שיעור א" },
+              { value: "'שיעור ב", label: "'שיעור ב" },
+            ]}
+            placeholder="Choose age..."
+          />
         </Form.Item>
         <Form.Item
           name="address1"
@@ -118,7 +104,7 @@ const FirstName = ({ handleCancel, onUserAdded }) => {
             },
           ]}
         >
-          <Input />
+          <Input placeholder="... אדרעסס" />
         </Form.Item>
 
         <Form.Item
@@ -130,7 +116,7 @@ const FirstName = ({ handleCancel, onUserAdded }) => {
             },
           ]}
         >
-          <Input />
+          <Input placeholder="... צווייטע אדרעסס" />
         </Form.Item>
 
         <Form.Item
@@ -142,7 +128,7 @@ const FirstName = ({ handleCancel, onUserAdded }) => {
             },
           ]}
         >
-          <Input />
+          <Input placeholder="... סיטי" />
         </Form.Item>
 
         <Form.Item
@@ -156,7 +142,7 @@ const FirstName = ({ handleCancel, onUserAdded }) => {
             },
           ]}
         >
-          <Input />
+          <Input placeholder="... שטאט" />
         </Form.Item>
 
         <Form.Item
@@ -168,7 +154,7 @@ const FirstName = ({ handleCancel, onUserAdded }) => {
             },
           ]}
         >
-          <Input />
+          <Input placeholder="... זיפ קאוד" />
         </Form.Item>
 
         <Form.Item
@@ -180,7 +166,7 @@ const FirstName = ({ handleCancel, onUserAdded }) => {
             },
           ]}
         >
-          <Input />
+          <Input placeholder="... טעל. נומער" />
         </Form.Item>
 
         <Form.Item

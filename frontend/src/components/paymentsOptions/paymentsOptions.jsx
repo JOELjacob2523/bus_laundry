@@ -38,7 +38,6 @@ const validateMessages = {
 /* eslint-enable no-template-curly-in-string */
 
 const PaymentOptions = ({ studentId, token, handleCancel }) => {
-  const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
   const [value, setValue] = useState("bus");
   const [userInfo, setUserInfo] = useState(null);
@@ -77,19 +76,9 @@ const PaymentOptions = ({ studentId, token, handleCancel }) => {
     try {
       const formData = { ...values, payment_type: value };
       await payments(formData);
-      messageApi.open({
-        type: "success",
-        content: "Payment added successfully",
-      });
-      setTimeout(() => {
-        navigate(0);
-      }, 2000);
+      message.success("Payment added successfully", 1.5, () => navigate(0));
     } catch (error) {
       console.error("Error adding payment:", error);
-      // messageApi.open({
-      //   type: "error",
-      //   content: "Failed to add payment",
-      // });
       navigate("/error500");
     }
   };
@@ -112,7 +101,6 @@ const PaymentOptions = ({ studentId, token, handleCancel }) => {
 
   return (
     <>
-      {contextHolder}
       <Form
         {...layout}
         form={form}

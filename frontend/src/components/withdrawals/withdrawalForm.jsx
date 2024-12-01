@@ -33,7 +33,6 @@ const WithdrawalForm = () => {
   const [date, setDate] = useState(new Date().toLocaleString());
   const [hebrewDate, setHebrewDate] = useState("");
   const [userId, setUserId] = useState("");
-  const [messageApi, contextHolder] = message.useMessage();
 
   const navigate = useNavigate();
 
@@ -55,13 +54,9 @@ const WithdrawalForm = () => {
   const onFinish = async (values) => {
     try {
       await withdrawalInfo(values);
-      messageApi.open({
-        type: "success",
-        content: "Withdrawal info added successfully",
-      });
-      setTimeout(() => {
-        navigate("/home");
-      }, 2000);
+      message.success("Withdrawal info added successfully", 1.5, () =>
+        navigate("/home")
+      );
     } catch (error) {
       console.error("Error adding withdrawal info:", error);
       navigate("/error500");
@@ -70,7 +65,6 @@ const WithdrawalForm = () => {
 
   return (
     <div>
-      {contextHolder}
       <Card>
         <Form
           {...layout}

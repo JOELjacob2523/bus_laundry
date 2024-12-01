@@ -60,19 +60,14 @@ const Buses = () => {
     fetchData();
   }, []);
 
-  const handleUserAdded = (newUser) => {
-    setUserInfo((prevUserInfo) => [...prevUserInfo, newUser]);
-    setFilteredUserInfo((prevFilteredUserInfo) => [
-      ...prevFilteredUserInfo,
-      newUser,
-    ]);
-
-    // if (newUser.student_id) {
-    //   setPaymentInfo((prevPaymentInfo) => ({
-    //     ...prevPaymentInfo,
-    //     [newUser.student_id]: [],
-    //   }));
-    // }
+  const handleUserAdded = async (newUser) => {
+    try {
+      const updatedUserInfo = await getAllUserInfo();
+      setUserInfo(updatedUserInfo);
+      setFilteredUserInfo(updatedUserInfo);
+    } catch (err) {
+      console.error("Failed to fetch updated user info:", err);
+    }
   };
 
   const handlePageChange = (page, pageSize) => {
@@ -80,8 +75,13 @@ const Buses = () => {
     setPageSize(pageSize);
   };
 
-  const handleSearch = (results) => {
-    setFilteredUserInfo(results);
+  const handleSearch = (filteredData) => {
+    setFilteredUserInfo(filteredData);
+    setCurrentPage(1);
+  };
+
+  const resetSearch = () => {
+    setFilteredUserInfo(userInfo);
     setCurrentPage(1);
   };
 
@@ -98,14 +98,8 @@ const Buses = () => {
   const handleArchive = async (selectedUsers) => {
     try {
       await archiveOldStudentPayments(selectedUsers);
-      message.open({
-        type: "success",
-        content: "Students archived successfully",
-      });
+      message.success("Students archived successfully", 1.5, () => navigate(0));
       setSelectedUsers([]);
-      setTimeout(() => {
-        navigate(0);
-      }, 2000);
     } catch (err) {
       console.error(err);
       message.open({
@@ -139,7 +133,11 @@ const Buses = () => {
         <div className="scrollable_cards">
           <div className="add_user_container">
             <div className="search_inner">
-              <SearchBar input={userInfo} onSearch={handleSearch} />
+              <SearchBar
+                input={filteredUserInfo}
+                onSearch={handleSearch}
+                resetSearch={resetSearch}
+              />
             </div>
             <div className="add_user_inner">
               <AddUser onUserAdded={handleUserAdded} />

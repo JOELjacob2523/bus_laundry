@@ -35,7 +35,6 @@ const ClosedWeeks = () => {
   const [selectedSedras, setSelectedSedras] = useState([]);
   const [loading, setLoading] = useState(false);
   const [zmanGoalOpen, setZmanGoalOpen] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
 
   const navigate = useNavigate();
 
@@ -94,13 +93,9 @@ const ClosedWeeks = () => {
     try {
       setLoading(true);
       await zmanGoalInfo(values);
-      setTimeout(() => {
-        messageApi.open({
-          type: "success",
-          content: "Zman goal added successfully",
-        });
-        navigate("/home/buses");
-      }, 2000);
+      message.success("Zman goal added successfully", 1.5, () =>
+        navigate("/home/buses")
+      );
     } catch (error) {
       console.error("Error adding zman goal:", error);
       navigate("/error500");
@@ -122,7 +117,6 @@ const ClosedWeeks = () => {
 
   return (
     <div className="zman_goal_container">
-      {contextHolder}
       <div>
         <Card
           title={<div className="modal_title">זמן אינפארמאציע</div>}
@@ -191,7 +185,7 @@ const ClosedWeeks = () => {
                       <Space key={index} align="baseline">
                         <SedraSelect
                           style={{ width: "200px" }}
-                          placeholder="Search to Select"
+                          placeholder="Search to Select..."
                           onChange={(value) => {
                             console.log(value);
                             const updatedSedras = [...selectedSedras];

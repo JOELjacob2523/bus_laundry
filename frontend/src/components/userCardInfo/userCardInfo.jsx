@@ -7,32 +7,14 @@ import {
   Input,
   Divider,
   Empty,
-  Form,
   Spin,
-  message,
-  InputNumber,
 } from "antd";
-import { CaretRightOutlined, EditOutlined } from "@ant-design/icons";
-import { GiRotaryPhone } from "react-icons/gi";
+import { CaretRightOutlined } from "@ant-design/icons";
 import { CiCalendarDate, CiMoneyCheck1 } from "react-icons/ci";
-import { FaRegAddressCard } from "react-icons/fa";
 import { HiOutlineCash, HiOutlineCreditCard } from "react-icons/hi";
 import "./userCardInfo.css";
-import { useNavigate } from "react-router-dom";
 import { getUserInfoById } from "../../servers/getRequest";
-import { updateUserInfo } from "../../servers/postRequest";
 import EditUser from "../editUser/editUser";
-
-const validateMessages = {
-  required: "${label} is required!",
-  types: {
-    email: "${label} is not a valid email!",
-    number: "${label} is not a valid number!",
-  },
-  number: {
-    range: "${label} must be between ${min} and ${max}",
-  },
-};
 
 const UserCardInfo = ({ student, payment, showPaymentModal, studentId }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -41,8 +23,6 @@ const UserCardInfo = ({ student, payment, showPaymentModal, studentId }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [messageApi, contextHolder] = message.useMessage();
-  const navigate = useNavigate();
   const { token } = theme.useToken();
 
   useEffect(() => {
