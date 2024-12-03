@@ -45,11 +45,6 @@ const EditUser = ({
 
   useEffect(() => {
     const fetchData = async () => {
-      // if (!userId || !token) {
-      //   console.error("Missing userId or token");
-      //   setLoading(false);
-      //   return;
-      // }
       try {
         const data = await getUserInfoById(studentId, token);
         if (data && data.student_id) {
@@ -69,7 +64,6 @@ const EditUser = ({
   const onFinish = async (values) => {
     try {
       await updateUserInfo(values);
-      console.log(values);
       message.success("Student updated successfully", 1.5, () => navigate(0));
     } catch (error) {
       console.error("Error updating student:", error);

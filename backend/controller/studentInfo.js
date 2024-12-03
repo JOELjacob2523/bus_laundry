@@ -23,6 +23,8 @@ module.exports = {
   getOldPaymentsInfo,
   getOldStudentsInfo,
   getOldZmanGoalInfo,
+  getPaymentInfoByStudentId,
+  updateUserPaymentInfo,
 };
 
 async function insertUserInfo(userInfo) {
@@ -60,6 +62,10 @@ async function getUserInfoById(id) {
   return await knex("students").select().where("student_id", id).first();
 }
 
+async function getPaymentInfoByStudentId(id) {
+  return await knex("payments").select().where("student_id", id).first();
+}
+
 async function updateUserInfo(student) {
   const {
     student_id,
@@ -83,6 +89,30 @@ async function updateUserInfo(student) {
     state,
     zip_code,
     phone,
+  });
+}
+
+async function updateUserPaymentInfo(student) {
+  const {
+    student_id,
+    cash,
+    checks,
+    credit_card,
+    bus,
+    wash,
+    bus_wash,
+    total_paid,
+    payment_type,
+  } = student;
+  return knex("payments").where("student_id", student_id).update({
+    cash,
+    checks,
+    credit_card,
+    bus,
+    wash,
+    bus_wash,
+    total_paid,
+    payment_type,
   });
 }
 

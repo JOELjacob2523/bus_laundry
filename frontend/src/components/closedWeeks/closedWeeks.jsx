@@ -187,7 +187,6 @@ const ClosedWeeks = () => {
                           style={{ width: "200px" }}
                           placeholder="Search to Select..."
                           onChange={(value) => {
-                            console.log(value);
                             const updatedSedras = [...selectedSedras];
                             updatedSedras[index] = value;
                             setSelectedSedras(updatedSedras);

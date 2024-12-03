@@ -2,7 +2,7 @@ import "./login.css";
 import React, { useState } from "react";
 import { TbPasswordUser } from "react-icons/tb";
 import { MdOutlineEmail } from "react-icons/md";
-import { Button, Card, Form, Input, Modal, Watermark } from "antd";
+import { Button, Card, Form, Input, Modal, Spin, Watermark } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../servers/userRequests/postUserRequest";
 import ErrorLogin from "../errorAlert/errorLogin";

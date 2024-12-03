@@ -41,6 +41,30 @@ export const updateUserInfo = async (formData) => {
   }
 };
 
+//update student info
+export const updateUserPaymentInfo = async (formData) => {
+  try {
+    const response = await axios.post(
+      `${URL}/update_user_payment_info`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      console.log("Updated Success!!");
+    } else {
+      console.log(`Error updating! ${response.data}`);
+    }
+  } catch (err) {
+    console.error("Error:", err.message);
+    throw err;
+  }
+};
+
 //get cc data into cardnox site
 export const paymentForm = async (formData) => {
   try {

@@ -44,6 +44,18 @@ router.get("/get_user_info", async (req, res, next) => {
   }
 });
 
+// router get student payment info by student ID
+router.get("/get_payment_info", async (req, res, next) => {
+  try {
+    const { student_id } = req.query;
+    const paymentInfo = await CONTORLLER.getPaymentInfoByStudentId(student_id);
+    res.status(200).json(paymentInfo);
+  } catch (err) {
+    console.error("Error inserting payment credentials:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // router to update a student
 router.post("/update_user_info", upload.fields([]), async (req, res, next) => {
   try {
@@ -58,6 +70,27 @@ router.post("/update_user_info", upload.fields([]), async (req, res, next) => {
     res.status(500).json({ message: "Error updaing user", error: err.message });
   }
 });
+
+// router to update student payment
+router.post(
+  "/update_user_payment_info",
+  upload.fields([]),
+  async (req, res, next) => {
+    try {
+      let { student_id } = await CONTORLLER.updateUserPaymentInfo(req.body);
+      req.session.student_id = student_id;
+      res.status(200).json({
+        message: "User updated successfully",
+        token: req.session.token,
+      });
+    } catch (err) {
+      console.error("Error updating user credentials:", err);
+      res
+        .status(500)
+        .json({ message: "Error updaing user", error: err.message });
+    }
+  }
+);
 
 // router to delete a student
 router.post("/delete_user", async (req, res, next) => {

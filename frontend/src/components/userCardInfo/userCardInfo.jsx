@@ -1,24 +1,14 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Modal,
-  Collapse,
-  theme,
-  Input,
-  Divider,
-  Empty,
-  Spin,
-} from "antd";
+import { Button, Modal, Collapse, theme, Divider, Empty, Spin } from "antd";
 import { CaretRightOutlined } from "@ant-design/icons";
-import { CiCalendarDate, CiMoneyCheck1 } from "react-icons/ci";
-import { HiOutlineCash, HiOutlineCreditCard } from "react-icons/hi";
 import "./userCardInfo.css";
 import { getUserInfoById } from "../../servers/getRequest";
 import EditUser from "../editUser/editUser";
+import EditUserPayment from "../editPayments/editPayments";
 
 const UserCardInfo = ({ student, payment, showPaymentModal, studentId }) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [disabled, setDisabled] = useState(true);
+  const [userDisabled, setUserDisabled] = useState(true);
   const [showButtons, setShowButtons] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -27,11 +17,6 @@ const UserCardInfo = ({ student, payment, showPaymentModal, studentId }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      // if (!userId || !token) {
-      //   console.error("Missing userId or token");
-      //   setLoading(false);
-      //   return;
-      // }
       try {
         const data = await getUserInfoById(studentId, token);
         if (data && data.student_id) {
@@ -49,13 +34,13 @@ const UserCardInfo = ({ student, payment, showPaymentModal, studentId }) => {
   }, [studentId, token]);
 
   const handleEditClick = () => {
-    setDisabled(false);
+    setUserDisabled(false);
     setShowButtons(true);
     setIsEditing(true);
   };
 
   const handleEditCancel = () => {
-    setDisabled(true);
+    setUserDisabled(true);
     setShowButtons(false);
     setIsEditing(false);
   };
@@ -166,7 +151,7 @@ const UserCardInfo = ({ student, payment, showPaymentModal, studentId }) => {
               student={student}
               handleEditCancel={handleEditCancel}
               showButtons={showButtons}
-              disabled={disabled}
+              disabled={userDisabled}
               isEditing={isEditing}
             />
           </div>
@@ -193,88 +178,13 @@ const UserCardInfo = ({ student, payment, showPaymentModal, studentId }) => {
                       <Empty description="No payments found" />
                     </div>
                   ) : (
-                    <div className="user_info_payment_main_container">
-                      <div className="user_info_payment_container">
-                        <div className="user_info_payment_inner">
-                          <div>Cash:</div>
-                          <div>
-                            {" "}
-                            <Input
-                              value={
-                                aggregatedPayment.cash > 0
-                                  ? `$${aggregatedPayment.cash.toFixed(2)}`
-                                  : "N/A"
-                              }
-                              prefix={<HiOutlineCash />}
-                              disabled
-                            />
-                          </div>
-                        </div>
-                        <div className="user_info_payment_inner">
-                          <div>Check:</div>
-                          <div>
-                            <Input
-                              value={
-                                aggregatedPayment.checks > 0
-                                  ? `$${aggregatedPayment.checks.toFixed(2)}`
-                                  : "N/A"
-                              }
-                              prefix={<CiMoneyCheck1 />}
-                              disabled
-                            />
-                          </div>
-                        </div>
-                        <div className="user_info_payment_inner">
-                          <div>Credit Card:</div>
-                          <div>
-                            <Input
-                              value={
-                                aggregatedPayment.credit_card > 0
-                                  ? `$${aggregatedPayment.credit_card.toFixed(
-                                      2
-                                    )}`
-                                  : "N/A"
-                              }
-                              prefix={<HiOutlineCreditCard />}
-                              disabled
-                            />
-                          </div>
-                        </div>
-                        <div className="user_info_payment_inner">
-                          <div>Payment Type:</div>{" "}
-                          <div>
-                            <Input
-                              value={aggregatedPayment.payment_type}
-                              disabled
-                            />{" "}
-                          </div>
-                        </div>
-                        <div className="user_info_payment_inner">
-                          <div>Date:</div>
-                          <div>
-                            <Input
-                              value={aggregatedPayment.pay_date || "N/A"}
-                              disabled
-                              prefix={<CiCalendarDate />}
-                            />{" "}
-                          </div>
-                        </div>
-                        <div className="user_info_payment_inner">
-                          <div>Total:</div>
-                          <div>
-                            <Input
-                              value={
-                                aggregatedPayment.total_paid > 0
-                                  ? `$${aggregatedPayment.total_paid.toFixed(
-                                      2
-                                    )}`
-                                  : "N/A"
-                              }
-                              style={{ width: "400px" }}
-                              disabled
-                            />
-                          </div>
-                        </div>
+                    <div>
+                      <div>
+                        <EditUserPayment
+                          studentId={studentId}
+                          student={student}
+                          payment={payment}
+                        />
                       </div>
                     </div>
                   ),

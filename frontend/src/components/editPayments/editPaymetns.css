@@ -1,0 +1,18 @@
+.edit_payment_btn_div{
+    padding: 15px 20px 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit_payment_btn_div Button{
+    width: 400px;
+    font-size: 15px;
+}
+
+.edit_user_payment_form{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}

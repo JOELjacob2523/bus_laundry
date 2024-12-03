@@ -30,6 +30,24 @@ export const getUserInfoById = async (studentId, token) => {
   }
 };
 
+//get user payment info by student ID
+export const getPaymentInfoByStudentId = async (studentId, token) => {
+  try {
+    const response = await axios.get(`${URL}/get_payment_info`, {
+      params: {
+        student_id: studentId,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
 //get zman goal info
 export const getAllZmanGoalInfo = async () => {
   try {
