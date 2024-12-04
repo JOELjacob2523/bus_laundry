@@ -92,7 +92,7 @@ async function updateUserInfo(student) {
   });
 }
 
-async function updateUserPaymentInfo(student) {
+async function updateUserPaymentInfo(paymentInfo) {
   const {
     student_id,
     cash,
@@ -103,14 +103,24 @@ async function updateUserPaymentInfo(student) {
     bus_wash,
     total_paid,
     payment_type,
-  } = student;
+  } = paymentInfo;
+
+  const paymentTypes = {
+    bus: paymentInfo.payment_type === "bus",
+    wash: paymentInfo.payment_type === "wash",
+    bus_wash: paymentInfo.payment_type === "bus_wash",
+  };
+
   return knex("payments").where("student_id", student_id).update({
     cash,
     checks,
     credit_card,
-    bus,
-    wash,
-    bus_wash,
+    // bus,
+    // wash,
+    // bus_wash,
+    bus: paymentTypes.bus,
+    wash: paymentTypes.wash,
+    bus_wash: paymentTypes.bus_wash,
     total_paid,
     payment_type,
   });

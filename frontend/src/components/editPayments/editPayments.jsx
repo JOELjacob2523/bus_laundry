@@ -29,12 +29,20 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const EditUserPayment = ({ studentId, token, payment }) => {
+const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
   const [userPaymentInfo, setUserPaymentInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [paymentDisabled, setPaymentDisabled] = useState(true);
   const [showPaymentButtons, setShowPaymentButtons] = useState(false);
   const [isEditingPayment, setIsEditingPayment] = useState(false);
+  const [aggregatedPayment, setAggregatedPayment] = useState({
+    cash: 0,
+    checks: 0,
+    credit_card: 0,
+    total_paid: 0,
+    payment_type: "N/A",
+    pay_date: "N/A",
+  });
   const [form] = Form.useForm();
 
   const navigate = useNavigate();
@@ -56,6 +64,45 @@ const EditUserPayment = ({ studentId, token, payment }) => {
     };
     fetchData();
   }, [studentId, token]);
+
+  const parseValue = (value) => {
+    const parsed = parseFloat(value);
+    return isNaN(parsed) ? 0 : parsed;
+  };
+
+  const formatPaymentType = (paymentType) => {
+    if (!paymentType) return "N/A";
+    return paymentType
+      .split("_")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" & ");
+  };
+
+  useEffect(() => {
+    const calculateAggregatedPayment = () => {
+      const aggregated = payment.reduce(
+        (acc, pay) => {
+          acc.cash += parseValue(pay.cash);
+          acc.checks += parseValue(pay.checks);
+          acc.credit_card += parseValue(pay.credit_card);
+          acc.payment_type = formatPaymentType(pay.payment_type);
+          acc.pay_date = acc.pay_date || pay.pay_date || "N/A";
+          acc.total_paid += parseValue(pay.total_paid);
+          return acc;
+        },
+        {
+          cash: 0 || null,
+          checks: 0 || null,
+          credit_card: 0 || null,
+          total_paid: 0,
+          payment_type: "N/A",
+        }
+      );
+      setAggregatedPayment(aggregated);
+    };
+
+    calculateAggregatedPayment();
+  }, [payment]);
 
   const handlePaymentEditClick = () => {
     setPaymentDisabled(false);
@@ -83,47 +130,16 @@ const EditUserPayment = ({ studentId, token, payment }) => {
     setLoading(true);
     try {
       await updateUserPaymentInfo(values);
-      message.success("Student updated successfully", 1.5);
+      updatePayment(values);
       setUserPaymentInfo(values);
       handlePaymentEditCancel();
       setLoading(false);
+      message.success("Student updated successfully", 1.5);
     } catch (error) {
       console.error("Error updating student:", error);
       navigate("/error500");
     }
   };
-
-  const parseValue = (value) => {
-    const parsed = parseFloat(value);
-    return isNaN(parsed) ? 0 : parsed;
-  };
-
-  const formatPaymentType = (paymentType) => {
-    if (!paymentType) return "N/A";
-    return paymentType
-      .split("_")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" & ");
-  };
-
-  const aggregatedPayment = payment.reduce(
-    (acc, pay) => {
-      acc.cash += parseValue(pay.cash);
-      acc.checks += parseValue(pay.checks);
-      acc.credit_card += parseValue(pay.credit_card);
-      acc.payment_type = formatPaymentType(pay.payment_type);
-      acc.pay_date = acc.pay_date || pay.pay_date || "N/A";
-      acc.total_paid += parseValue(pay.total_paid);
-      return acc;
-    },
-    {
-      cash: 0,
-      checks: 0,
-      credit_card: 0,
-      total_paid: 0,
-      payment_type: "N/A",
-    }
-  );
 
   if (loading) {
     return <Spin spinning="loading" tip="Loading..." fullscreen={true} />;

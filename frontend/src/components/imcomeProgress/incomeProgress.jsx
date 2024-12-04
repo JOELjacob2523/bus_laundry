@@ -4,6 +4,7 @@ import { Flex, Progress, Card, Modal } from "antd";
 import TotalBalance from "../totalBalance/totalBalance";
 import { TbListDetails } from "react-icons/tb";
 import WithdrawalsDetials from "../withdrawals/detailedWithdrawals";
+import IncomeTotalDetails from "../incomeTotalDetails/incomeTotalDetails";
 
 const twoColors = {
   "0%": "#108ee9",
@@ -50,23 +51,19 @@ const IncomeProgress = ({
       let busSum = 0;
       let washSum = 0;
 
-      paymentInfo.forEach((payment) => {
-        const { bus, wash, bus_wash } = payment;
-
-        if (bus === "1") {
+      for (let payment of paymentInfo) {
+        if (payment.payment_type === "bus") {
+          // Only bus payment
           busSum += totalBus;
-        }
-
-        if (wash === "1") {
+        } else if (payment.payment_type === "wash") {
+          // Only wash payment
           washSum += totalWash;
-        }
-
-        if (bus_wash === "1") {
+        } else if (payment.payment_type === "bus_wash") {
+          // Both bus and wash payment
           busSum += totalBus;
           washSum += totalWash;
         }
-      });
-
+      }
       setBus(busSum);
       setWash(washSum);
     };
@@ -118,11 +115,18 @@ const IncomeProgress = ({
           }
           className="total_balance_card"
         >
-          <TotalBalance bus={bus} wash={wash} goalAmount={goalAmount} />
+          <TotalBalance paymentInfo={paymentInfo} />
         </Card>
 
         <Card
-          title={<div className="modal_title">ס"ה געלט אריין</div>}
+          title={
+            <div className="withdrawal_title_container">
+              <div>
+                <IncomeTotalDetails paymentInfo={paymentInfo} />
+              </div>
+              <div className="modal_title">ס"ה געלט אריין</div>
+            </div>
+          }
           className="awaiting_income_card"
         >
           <div className="awaiting_income_container">

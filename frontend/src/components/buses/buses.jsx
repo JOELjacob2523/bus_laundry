@@ -109,6 +109,31 @@ const Buses = () => {
     }
   };
 
+  const updatePayment = (updatedPayment) => {
+    setPaymentInfo((prevPayments) => {
+      // Convert the object to an array of payments
+      const paymentsArray = Object.values(prevPayments).flat();
+
+      // Update the payment
+      const updatedPayments = paymentsArray.map((payment) =>
+        payment.student_id === updatedPayment.student_id &&
+        payment.id === updatedPayment.id
+          ? { ...payment, ...updatedPayment }
+          : payment
+      );
+
+      // Recreate the object grouped by `student_id`
+      const updatedPaymentMap = updatedPayments.reduce((acc, payment) => {
+        const { student_id } = payment;
+        if (!acc[student_id]) acc[student_id] = [];
+        acc[student_id].push(payment);
+        return acc;
+      }, {});
+
+      return updatedPaymentMap; // Set the updated object
+    });
+  };
+
   // Calculate the cards to display on the current page
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
@@ -172,6 +197,7 @@ const Buses = () => {
                     <UserCard
                       student={student}
                       payment={paymentInfo[student.student_id] || []}
+                      updatePayment={updatePayment}
                       isSelected={selectedUsers.includes(student.student_id)}
                       handleCheckboxChange={handleCheckboxChange}
                     />

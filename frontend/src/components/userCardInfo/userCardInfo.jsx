@@ -6,7 +6,13 @@ import { getUserInfoById } from "../../servers/getRequest";
 import EditUser from "../editUser/editUser";
 import EditUserPayment from "../editPayments/editPayments";
 
-const UserCardInfo = ({ student, payment, showPaymentModal, studentId }) => {
+const UserCardInfo = ({
+  student,
+  payment,
+  showPaymentModal,
+  studentId,
+  updatePayment,
+}) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [userDisabled, setUserDisabled] = useState(true);
   const [showButtons, setShowButtons] = useState(false);
@@ -184,6 +190,7 @@ const UserCardInfo = ({ student, payment, showPaymentModal, studentId }) => {
                           studentId={studentId}
                           student={student}
                           payment={payment}
+                          updatePayment={updatePayment}
                         />
                       </div>
                     </div>

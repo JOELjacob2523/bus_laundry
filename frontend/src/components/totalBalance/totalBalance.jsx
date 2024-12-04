@@ -9,11 +9,12 @@ const formatNumber = (number) => {
   return new Intl.NumberFormat("en-US").format(number);
 };
 
-const TotalBalance = ({ bus, wash, goalAmount }) => {
+const TotalBalance = ({ paymentInfo }) => {
   const [withdrawalData, setWithdrawalData] = useState([]);
   const [busMoney, setBusMoney] = useState(0);
   const [washMoney, setWashMoney] = useState(0);
   const [oldPyaments, setOldPayments] = useState(0);
+  const [incomeDetails, setIncomeDetails] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -28,6 +29,34 @@ const TotalBalance = ({ bus, wash, goalAmount }) => {
     }
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (paymentInfo.length > 0) {
+      const totals = paymentInfo.reduce(
+        (acc, pay) => {
+          acc.cash += Number(pay.cash) || 0;
+          acc.checks += Number(pay.checks) || 0;
+          acc.credit_card += Number(pay.credit_card) || 0;
+          acc.total_paid += Number(pay.total_paid) || 0;
+          acc.total +=
+            (Number(pay.cash) || 0) +
+            (Number(pay.checks) || 0) +
+            (Number(pay.credit_card) || 0);
+          return acc;
+        },
+        { cash: 0, checks: 0, credit_card: 0, total: 0, total_paid: 0 }
+      );
+      setIncomeDetails(totals);
+    } else {
+      setIncomeDetails({
+        cash: 0,
+        checks: 0,
+        creditCard: 0,
+        total: 0,
+        total_paid: 0,
+      });
+    }
+  }, [paymentInfo]);
 
   const totalOldIncome = Array.isArray(oldPyaments)
     ? oldPyaments.reduce((acc, pay) => acc + parseFloat(pay.total_paid), 0)
@@ -52,9 +81,9 @@ const TotalBalance = ({ bus, wash, goalAmount }) => {
   }, [withdrawalData]);
 
   let balanceColor;
-  if (bus + wash - busMoney + washMoney >= 0) {
+  if (incomeDetails.total - busMoney + washMoney >= 0) {
     balanceColor = "black";
-  } else if (bus + wash - busMoney + washMoney < 0) {
+  } else if (incomeDetails.total - busMoney + washMoney < 0) {
     balanceColor = "red";
   }
 
@@ -64,8 +93,10 @@ const TotalBalance = ({ bus, wash, goalAmount }) => {
         <div className="total_balance_container">
           <div className="total_balance_inner">
             <div>
-              {bus + wash ? (
-                <strong>${formatNumber(bus + wash + totalOldIncome)}</strong>
+              {incomeDetails.total + totalOldIncome ? (
+                <strong>
+                  ${formatNumber(incomeDetails.total + totalOldIncome)}
+                </strong>
               ) : (
                 <strong>$0</strong>
               )}
@@ -98,7 +129,7 @@ const TotalBalance = ({ bus, wash, goalAmount }) => {
                 <strong>
                   $
                   {formatNumber(
-                    bus + wash + totalOldIncome - (busMoney + washMoney)
+                    incomeDetails.total + totalOldIncome - busMoney - washMoney
                   )}
                 </strong>
               ) : (

@@ -10,7 +10,13 @@ import DeleteUser from "../deleteUser/deleteUser";
 import UserCardInfo from "../userCardInfo/userCardInfo";
 import StudentBalance from "../balance/balance";
 
-const UserCard = ({ student, payment, isSelected, handleCheckboxChange }) => {
+const UserCard = ({
+  student,
+  payment,
+  isSelected,
+  handleCheckboxChange,
+  updatePayment,
+}) => {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
   const [isCCModalVisible, setIsCCModalVisible] = useState(false);
@@ -90,6 +96,7 @@ const UserCard = ({ student, payment, isSelected, handleCheckboxChange }) => {
           <UserCardInfo
             student={student}
             payment={payment}
+            updatePayment={updatePayment}
             showPaymentModal={showPaymentModal}
             studentId={student.student_id}
           />
