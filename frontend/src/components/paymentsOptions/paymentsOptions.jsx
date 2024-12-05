@@ -152,6 +152,32 @@ const PaymentOptions = ({ studentId, token, handleCancel }) => {
           </Radio.Group>
         </div>
 
+        {value === "bus" || value === "bus_wash" ? (
+          <Form.Item
+            name="bus_amount"
+            label="Bus Amount"
+            rules={[{ required: value === "bus" || value === "bus_wash" }]}
+          >
+            <Input
+              prefix={<BsCurrencyDollar />}
+              placeholder="Enter bus amount..."
+            />
+          </Form.Item>
+        ) : null}
+
+        {value === "wash" || value === "bus_wash" ? (
+          <Form.Item
+            name="wash_amount"
+            label="Wash Amount"
+            rules={[{ required: value === "wash" || value === "bus_wash" }]}
+          >
+            <Input
+              prefix={<BsCurrencyDollar />}
+              placeholder="Enter wash amount..."
+            />
+          </Form.Item>
+        ) : null}
+
         <Form.Item name="cash" label="Cash">
           <Input
             className="cash_input"

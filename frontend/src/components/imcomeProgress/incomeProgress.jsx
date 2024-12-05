@@ -52,13 +52,13 @@ const IncomeProgress = ({
       let washSum = 0;
 
       for (let payment of paymentInfo) {
-        if (payment.payment_type === "bus") {
+        if (payment.bus_amount) {
           // Only bus payment
           busSum += totalBus;
-        } else if (payment.payment_type === "wash") {
+        } else if (payment.wash_amount) {
           // Only wash payment
           washSum += totalWash;
-        } else if (payment.payment_type === "bus_wash") {
+        } else if (payment.bus_amount && payment.wash_amount) {
           // Both bus and wash payment
           busSum += totalBus;
           washSum += totalWash;

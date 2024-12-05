@@ -31,6 +31,7 @@ const validateMessages = {
 
 const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
   const [userPaymentInfo, setUserPaymentInfo] = useState(null);
+  const [value, setValue] = useState("");
   const [loading, setLoading] = useState(true);
   const [paymentDisabled, setPaymentDisabled] = useState(true);
   const [showPaymentButtons, setShowPaymentButtons] = useState(false);
@@ -88,6 +89,8 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
           acc.payment_type = formatPaymentType(pay.payment_type);
           acc.pay_date = acc.pay_date || pay.pay_date || "N/A";
           acc.total_paid += parseValue(pay.total_paid);
+          acc.bus_amount += parseValue(pay.bus_amount);
+          acc.wash_amount += parseValue(pay.wash_amount);
           return acc;
         },
         {
@@ -95,6 +98,8 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
           checks: 0 || null,
           credit_card: 0 || null,
           total_paid: 0,
+          bus_amount: 0,
+          wash_amount: 0,
           payment_type: "N/A",
         }
       );
@@ -153,7 +158,7 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
     );
 
   return (
-    <div>
+    <div className="edit_payment_container">
       <div className="edit_payment_btn_div">
         <Button type="primary" onClick={handlePaymentEditClick}>
           Edit Payments
@@ -174,7 +179,7 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
         <Form.Item name="pay_date" hidden={true}>
           <Input />
         </Form.Item>
-        <div>
+        <div className="edit_user_form_item_container">
           <div>Cash:</div>
           <div>
             {isEditingPayment ? (
@@ -195,7 +200,7 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
             )}
           </div>
         </div>
-        <div>
+        <div className="edit_user_form_item_container">
           <div>Check:</div>
           <div>
             {isEditingPayment ? (
@@ -216,7 +221,7 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
             )}
           </div>
         </div>
-        <div>
+        <div className="edit_user_form_item_container">
           <div>Credit Card:</div>
           <div>
             {isEditingPayment ? (
@@ -237,17 +242,18 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
             )}
           </div>
         </div>
-        <div>
+        <div className="edit_user_form_item_container">
           <div>Payment Type:</div>
           <div>
             {isEditingPayment ? (
-              <Form.Item name="payment_type">
+              <Form.Item name="payment_type" rules={[{ required: true }]}>
                 <Select
                   options={[
                     { value: "bus", label: "באס" },
                     { value: "wash", label: "וואשן" },
                     { value: "bus_wash", label: "באס און וואשן" },
                   ]}
+                  onChange={(value) => setValue(value)}
                   disabled={paymentDisabled}
                   style={{ width: "200px" }}
                 />
@@ -261,7 +267,89 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
             )}
           </div>
         </div>
-        <div>
+        <div className="edit_user_form_item_container">
+          {isEditingPayment ? (
+            <div>
+              {value === "bus" || value === "bus_wash" ? (
+                <div>
+                  <div>Bus Amount:</div>
+                  <div>
+                    <Form.Item
+                      name="bus_amount"
+                      rules={[
+                        { required: value === "bus" || value === "bus_wash" },
+                      ]}
+                    >
+                      <Input
+                        placeholder="Enter bus amount..."
+                        style={{ width: "200px" }}
+                      />
+                    </Form.Item>
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          ) : (
+            <div>
+              {aggregatedPayment.bus_amount > 0 ? (
+                <div>
+                  <div>Bus Amount:</div>
+                  <Input
+                    value={
+                      aggregatedPayment.bus_amount
+                        ? `$${aggregatedPayment.bus_amount.toFixed(2)}`
+                        : "N/A"
+                    }
+                    disabled
+                    style={{ width: "200px" }}
+                  />
+                </div>
+              ) : null}
+            </div>
+          )}
+        </div>
+        <div className="edit_user_form_item_container">
+          {isEditingPayment ? (
+            <div>
+              {value === "wash" || value === "bus_wash" ? (
+                <div>
+                  <div>Wash Amount:</div>
+                  <div>
+                    <Form.Item
+                      name="wash_amount"
+                      rules={[
+                        { required: value === "wash" || value === "bus_wash" },
+                      ]}
+                    >
+                      <Input
+                        placeholder="Enter wash amount..."
+                        style={{ width: "200px" }}
+                      />
+                    </Form.Item>
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          ) : (
+            <div>
+              {aggregatedPayment.wash_amount > 0 ? (
+                <div>
+                  <div>Wash Amount:</div>
+                  <Input
+                    value={
+                      aggregatedPayment.wash_amount
+                        ? `$${aggregatedPayment.wash_amount.toFixed(2)}`
+                        : "N/A"
+                    }
+                    disabled
+                    style={{ width: "200px" }}
+                  />
+                </div>
+              ) : null}
+            </div>
+          )}
+        </div>
+        <div className="edit_user_form_item_container">
           <div>Date Created:</div>
           <div>
             <Input
@@ -271,12 +359,12 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
             />
           </div>
         </div>
-        <div>
+        <div className="edit_user_form_item_container">
           <div>Total:</div>
           <div>
             {isEditingPayment ? (
               <Form.Item name="total_paid">
-                <Input disabled style={{ width: "400px" }} value={""} />
+                <Input disabled style={{ width: "200px" }} value={""} />
               </Form.Item>
             ) : (
               <Input
@@ -285,7 +373,7 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
                     ? `$${aggregatedPayment.total_paid.toFixed(2)}`
                     : "N/A"
                 }
-                style={{ width: "400px" }}
+                style={{ width: "200px" }}
                 disabled
               />
             )}

@@ -98,29 +98,18 @@ async function updateUserPaymentInfo(paymentInfo) {
     cash,
     checks,
     credit_card,
-    bus,
-    wash,
-    bus_wash,
+    wash_amount,
+    bus_amount,
     total_paid,
     payment_type,
   } = paymentInfo;
-
-  const paymentTypes = {
-    bus: paymentInfo.payment_type === "bus",
-    wash: paymentInfo.payment_type === "wash",
-    bus_wash: paymentInfo.payment_type === "bus_wash",
-  };
 
   return knex("payments").where("student_id", student_id).update({
     cash,
     checks,
     credit_card,
-    // bus,
-    // wash,
-    // bus_wash,
-    bus: paymentTypes.bus,
-    wash: paymentTypes.wash,
-    bus_wash: paymentTypes.bus_wash,
+    wash_amount,
+    bus_amount,
     total_paid,
     payment_type,
   });
@@ -158,19 +147,12 @@ async function insertPaymentInfo(paymentInfo) {
   const ev = new HebrewDateEvent(hd);
 
   const hebrewDate = ev.render("he-x-NoNikud");
-
-  const paymentTypes = {
-    bus: paymentInfo.payment_type === "bus",
-    wash: paymentInfo.payment_type === "wash",
-    bus_wash: paymentInfo.payment_type === "bus_wash",
-  };
   try {
     const [payment_id] = await knex("payments").insert({
       first_name: paymentInfo.first_name,
       last_name: paymentInfo.last_name,
-      bus: paymentTypes.bus,
-      wash: paymentTypes.wash,
-      bus_wash: paymentTypes.bus_wash,
+      wash_amount: paymentInfo.wash_amount,
+      bus_amount: paymentInfo.bus_amount,
       payment_type: paymentInfo.payment_type,
       cash: paymentInfo.cash,
       checks: paymentInfo.checks,
