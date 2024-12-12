@@ -27,23 +27,17 @@ router.post("/signup", upload.fields([]), async (req, res, next) => {
   }
 });
 
-router.get("/check_auth", (req, res) => {
-  if (req.session && req.session.token) {
-    const decoded = jwt.verify(req.session.token, SECRET_KEY);
-    return res
-      .status(200)
-      .json({ message: "Authenticated", user_id: Number(decoded.user_id) });
-  }
-  res.status(401).json({ message: "Unauthorized" });
-});
-
 router.post("/login", upload.fields([]), async (req, res, next) => {
   try {
-    const { user, token } = await CONTORLLER.confirmUser(
+    const { user } = await CONTORLLER.confirmUser(
       req,
       req.body.email,
       req.body.password
     );
+
+    const token = jwt.sign({ user_id: user.user_id }, SECRET_KEY);
+    req.session.token = token;
+
     res.status(200).json({
       message: "User confirmed successfully",
       token: req.session.token,
@@ -56,10 +50,34 @@ router.post("/login", upload.fields([]), async (req, res, next) => {
   }
 });
 
+router.get("/check_auth", (req, res) => {
+  try {
+    if (req.session && req.session.token) {
+      const decoded = jwt.verify(req.session.token, SECRET_KEY);
+      return res
+        .status(200)
+        .json({ message: "Authenticated", user_id: Number(decoded.user_id) });
+    }
+    res.status(401).json({ message: "Unauthorized" });
+  } catch (err) {
+    console.error("JWT verification failed:", err.message);
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: err.message });
+  }
+});
+
 // router get student login info
 router.get("/get_student_login_info", async (req, res, next) => {
   try {
     const { user_id } = req.query;
+
+    if (!user_id) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Missing user_id" });
+    }
+
     let userInfo = await CONTORLLER.getStudentLoginInfo(user_id);
     res.status(200).json(userInfo);
   } catch (err) {

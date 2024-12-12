@@ -9,16 +9,16 @@ import { getStudentLoginInfo } from "../../servers/userRequests/getUserRequest";
 import { useAuth } from "../AuthProvider/AuthProvider";
 
 const PageHeader = () => {
-  // const { userId } = useAuth();
+  const { userId } = useAuth();
   const [userName, setUserName] = useState("");
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const data = await getStudentLoginInfo(userId);
-  //     setUserName(data.first_name);
-  //   };
-  //   fetchData();
-  // }, [userId]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getStudentLoginInfo(userId);
+      setUserName(data.first_name);
+    };
+    fetchData();
+  }, [userId]);
 
   return (
     <div className="header_container">
@@ -31,7 +31,7 @@ const PageHeader = () => {
         <HebrewDate />
       </div>
       <div className="profile_container">
-        {/* <div style={{ paddingBottom: "5px" }}>Hello, {userName}</div> */}
+        <div style={{ paddingBottom: "5px" }}>Hello, {userName}</div>
         <Dropdown
           menu={{
             items,

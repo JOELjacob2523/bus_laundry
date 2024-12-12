@@ -23,17 +23,28 @@
     padding-top: 20px;
   }
 
+  .second_header_container{
+    display: flex;
+    flex-direction: row;
+    padding: 20px 0 0 0;
+  }
+
   .bocherim_count_container{
     display: flex;
     justify-content: center;
-    padding-top: 10px;
+    flex: 1;
+    padding-left: 275px;
+  }
+
+  .top_pagination{
+    padding: 0 50px 0 0;
   }
 
   .add_user_container{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 0 100px 0 100px;
+    padding: 0 100px 30px 100px;
   }
 
   .add_user_inner{
@@ -69,12 +80,6 @@
     flex-direction: row;
     justify-content: space-between;
     color: rgb(154, 154, 154);
-  }
-
-  .top_pagination{
-    display: flex;
-    justify-content: right;
-    padding: 30px 50px 10px 0;
   }
 
   .pagination{
