@@ -18,6 +18,7 @@ module.exports = {
   confirmUser,
   sendEmail,
   resetPassword,
+  getStudentLoginInfo,
 };
 
 // create user
@@ -132,4 +133,8 @@ async function resetPassword(newPassword, confirmationNumber) {
   } else {
     throw new Error("Failed to reset password");
   }
+}
+
+async function getStudentLoginInfo(id) {
+  return await knex("users").select().where("user_id", id).first();
 }

@@ -27,7 +27,7 @@ router.get("/get_all_user_info", async (req, res, next) => {
     let userInfo = await CONTORLLER.getAllUserInfo();
     res.status(200).json(userInfo);
   } catch (err) {
-    console.error("Error inserting user credentials:", err);
+    console.error("Error getting user credentials:", err);
     res.status(500).json({ success: false, error: err.message });
   }
 });

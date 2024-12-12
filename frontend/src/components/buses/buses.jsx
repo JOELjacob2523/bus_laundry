@@ -168,6 +168,18 @@ const Buses = () => {
               <AddUser onUserAdded={handleUserAdded} />
             </div>
           </div>
+          {filteredUserInfo.length > pageSize && (
+            <div className="top_pagination">
+              <Pagination
+                current={currentPage}
+                pageSize={pageSize}
+                total={filteredUserInfo.length}
+                onChange={handlePageChange}
+                showSizeChanger
+                pageSizeOptions={["30", "50", "100", "200"]}
+              />
+            </div>
+          )}
           {selectedUsers.length > 0 && (
             <div style={{ textAlign: "center", marginTop: "16px" }}>
               <Button

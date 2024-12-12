@@ -307,8 +307,8 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
               ) : null}
             </div>
           )}
-        </div>
-        <div className="edit_user_form_item_container">
+          {/* </div>
+        <div className="edit_user_form_item_container"> */}
           {isEditingPayment ? (
             <div>
               {value === "wash" || value === "bus_wash" ? (

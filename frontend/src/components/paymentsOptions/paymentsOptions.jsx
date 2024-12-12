@@ -152,6 +152,30 @@ const PaymentOptions = ({ studentId, token, handleCancel }) => {
           </Radio.Group>
         </div>
 
+        <Form.Item name="cash" label="Cash">
+          <Input
+            className="cash_input"
+            prefix={<BsCurrencyDollar />}
+            placeholder="Enter cash amount..."
+          />
+        </Form.Item>
+
+        <Form.Item name="checks" label="Check">
+          <Input
+            className="check_input"
+            prefix={<BsCurrencyDollar />}
+            placeholder="Enter check amount..."
+          />
+        </Form.Item>
+
+        <Form.Item name="credit_card" label="Credit Card">
+          <Input
+            className="credit_card_input"
+            prefix={<BsCurrencyDollar />}
+            placeholder="Enter credit card amount..."
+          />
+        </Form.Item>
+
         {value === "bus" || value === "bus_wash" ? (
           <Form.Item
             name="bus_amount"
@@ -177,30 +201,6 @@ const PaymentOptions = ({ studentId, token, handleCancel }) => {
             />
           </Form.Item>
         ) : null}
-
-        <Form.Item name="cash" label="Cash">
-          <Input
-            className="cash_input"
-            prefix={<BsCurrencyDollar />}
-            placeholder="Enter cash amount..."
-          />
-        </Form.Item>
-
-        <Form.Item name="checks" label="Check">
-          <Input
-            className="check_input"
-            prefix={<BsCurrencyDollar />}
-            placeholder="Enter check amount..."
-          />
-        </Form.Item>
-
-        <Form.Item name="credit_card" label="Credit Card">
-          <Input
-            className="credit_card_input"
-            prefix={<BsCurrencyDollar />}
-            placeholder="Enter credit card amount..."
-          />
-        </Form.Item>
 
         <Divider></Divider>
 

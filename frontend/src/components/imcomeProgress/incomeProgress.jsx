@@ -34,34 +34,20 @@ const IncomeProgress = ({
 
   useEffect(() => {
     const calculateIncome = () => {
-      const totalBus = Array.isArray(zmanGoal)
-        ? zmanGoal.reduce(
-            (acc, goal) => acc + parseFloat(goal.total_bus_goal),
-            0
-          )
-        : 0;
-
-      const totalWash = Array.isArray(zmanGoal)
-        ? zmanGoal.reduce(
-            (acc, goal) => acc + parseFloat(goal.total_wash_goal),
-            0
-          )
-        : 0;
-
       let busSum = 0;
       let washSum = 0;
 
       for (let payment of paymentInfo) {
-        if (payment.bus_amount) {
+        if (payment.bus_amount && !payment.wash_amount) {
           // Only bus payment
-          busSum += totalBus;
-        } else if (payment.wash_amount) {
+          busSum += parseFloat(payment.bus_amount);
+        } else if (payment.wash_amount && !payment.bus_amount) {
           // Only wash payment
-          washSum += totalWash;
+          washSum += parseFloat(payment.wash_amount);
         } else if (payment.bus_amount && payment.wash_amount) {
-          // Both bus and wash payment
-          busSum += totalBus;
-          washSum += totalWash;
+          // Bus and wash payment
+          busSum += parseFloat(payment.bus_amount);
+          washSum += parseFloat(payment.wash_amount);
         }
       }
       setBus(busSum);

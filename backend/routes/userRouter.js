@@ -56,6 +56,18 @@ router.post("/login", upload.fields([]), async (req, res, next) => {
   }
 });
 
+// router get student login info
+router.get("/get_student_login_info", async (req, res, next) => {
+  try {
+    const { user_id } = req.query;
+    let userInfo = await CONTORLLER.getStudentLoginInfo(user_id);
+    res.status(200).json(userInfo);
+  } catch (err) {
+    console.error("Error getting user credentials:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 router.post("/forgot_password", upload.fields([]), async (req, res, next) => {
   try {
     const { email } = req.body;

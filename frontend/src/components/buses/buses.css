@@ -32,11 +32,15 @@
   .add_user_container{
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     padding: 0 100px 0 100px;
   }
 
   .add_user_inner{
-    padding-left: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
   }
 
   .data_not_found{
@@ -65,6 +69,12 @@
     flex-direction: row;
     justify-content: space-between;
     color: rgb(154, 154, 154);
+  }
+
+  .top_pagination{
+    display: flex;
+    justify-content: right;
+    padding: 30px 50px 10px 0;
   }
 
   .pagination{

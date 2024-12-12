@@ -139,11 +139,16 @@ const UserCardInfo = ({
                 Edit User
               </Button>
             </div>
-            <div className="user_info_options_btn">
-              <Button type="primary" onClick={() => showPaymentModal()}>
-                Make a payment
-              </Button>
-            </div>
+            {aggregatedPayment.total_paid > 0 ? null : (
+              // </div><Button type="primary"> Please use Edit Payments!</Button> <div>
+
+              <div className="user_info_options_btn">
+                <Button type="primary" onClick={() => showPaymentModal()}>
+                  Make a payment
+                </Button>
+              </div>
+            )}
+
             <div className="user_info_options_btn">
               <Button type="primary" onClick={creditCardPay}>
                 Pay with CC

@@ -18,11 +18,21 @@ const HebrewDate = () => {
   function getFormattedTime() {
     let hour = new Date().getHours();
     let min = new Date().getMinutes();
-    let period = "צופרי";
+    let period = "";
 
-    if (hour > 12) {
+    if (hour <= 12) {
+      if (hour > 5) {
+        period = "צופרי";
+      } else {
+        period = "פארטאגס";
+      }
+    } else if (hour > 12) {
       hour = hour - 12;
-      period = "נאכמיטאג";
+      if (hour > 8) {
+        period = "ביינאכט";
+      } else {
+        period = "נאכמיטאג";
+      }
     }
 
     return `${hour}:${min < 10 ? "0" : ""}${min} ${period}`;

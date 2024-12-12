@@ -46,14 +46,14 @@ const StudentBalance = ({ payment }) => {
   let totalPayments = 0;
 
   payment.forEach((pay) => {
-    const { payment_type, total_paid } = pay;
+    const { bus_amount, wash_amount, total_paid } = pay;
     const paidAmount = Number(total_paid) || 0;
 
-    if (payment_type === "bus") {
+    if (bus_amount && !wash_amount) {
       totalPayments += paidAmount;
-    } else if (payment_type === "wash") {
+    } else if (wash_amount && !bus_amount) {
       totalPayments += paidAmount;
-    } else if (payment_type === "bus_wash") {
+    } else if (bus_amount && wash_amount) {
       totalPayments += paidAmount;
     }
   });
@@ -70,34 +70,82 @@ const StudentBalance = ({ payment }) => {
       (Math.min(currentDate, zmanEnd) - zmanStart) / (7 * 24 * 60 * 60 * 1000)
     );
 
-    let pastWashCost = 0;
-    // Calculate costs for wash for the past weeks
-    for (let i = 0; i < numberOfWeeksPassed; i++) {
-      pastWashCost += Number(zmanGoal[0].wash_price) || 0;
-    }
+    // let pastWashCost = 0;
+    // // Calculate costs for wash for the past weeks
+    // for (let i = 0; i < numberOfWeeksPassed; i++) {
+    //   pastWashCost += Number(zmanGoal[0].wash_price) || 0;
+    // }
 
-    let pastBusCost = 0;
-    // Calculate costs for bus for the past weeks
-    zmanGoal[0].closed_weeks.forEach((closedWeek) => {
+    // let pastBusCost = 0;
+    // // Calculate costs for bus for the past weeks
+    // zmanGoal[0].closed_weeks.forEach((closedWeek) => {
+    //   const closedDate = new Date(closedWeek.date);
+    //   closedDate.setHours(0, 0, 0, 0);
+
+    //   if (closedDate < currentDate) {
+    //     pastBusCost += Number(zmanGoal[0].bus_price) || 0;
+    //   }
+    // });
+
+    // let totalCost = 0;
+
+    // if (totalPayments === zmanGoal[0].total_wash_goal) {
+    //   totalCost = pastWashCost;
+    // } else if (totalPayments <= zmanGoal[0].total_bus_goal) {
+    //   totalCost = pastBusCost;
+    // } else if (
+    //   totalPayments >= zmanGoal[0].total_wash_goal &&
+    //   totalPayments <= zmanGoal[0].total_bus_goal + zmanGoal[0].total_wash_goal
+    // ) {
+    //   totalCost = pastWashCost + pastBusCost;
+    // }
+
+    // Calculate closed bus weeks
+    const closedBusWeeks = zmanGoal[0].closed_weeks.filter((closedWeek) => {
       const closedDate = new Date(closedWeek.date);
       closedDate.setHours(0, 0, 0, 0);
+      return closedDate < currentDate;
+    }).length;
 
-      if (closedDate < currentDate) {
-        pastBusCost += Number(zmanGoal[0].bus_price) || 0;
-      }
-    });
+    // Total costs
+    const pastWashCost = numberOfWeeksPassed * zmanGoal[0].wash_price;
+    const pastBusCost = closedBusWeeks * zmanGoal[0].bus_price;
+    const totalCost = pastWashCost + pastBusCost;
 
-    let totalCost = 0;
+    // Payment attribution
+    let remainingPayments = totalPayments;
+    let usedWashCost = 0;
+    let usedBusCost = 0;
 
-    if (totalPayments === zmanGoal[0].total_bus_goal) {
-      totalCost += pastBusCost;
-    } else if (totalPayments === zmanGoal[0].total_wash_goal) {
-      totalCost += pastWashCost;
-    } else if (totalPayments === zmanGoal[0].total_zman_goal) {
-      totalCost += pastWashCost + pastBusCost;
+    // Deduct wash costs first
+    if (remainingPayments >= pastWashCost) {
+      usedWashCost = pastWashCost;
+      remainingPayments -= pastWashCost;
+    } else {
+      usedWashCost = remainingPayments;
+      remainingPayments = 0;
     }
 
-    return { totalCost };
+    // Deduct bus costs next
+    if (remainingPayments >= pastBusCost) {
+      usedBusCost = pastBusCost;
+      remainingPayments -= pastBusCost;
+    } else {
+      usedBusCost = remainingPayments;
+      remainingPayments = 0;
+    }
+
+    const balance = totalPayments - totalCost;
+
+    // return { totalCost };
+    return {
+      totalCost,
+      pastWashCost,
+      pastBusCost,
+      usedWashCost,
+      usedBusCost,
+      balance,
+    };
   };
 
   const { totalCost } = calculateTotalCost();
@@ -116,23 +164,13 @@ const StudentBalance = ({ payment }) => {
 
   let balanceColor;
 
-  if (payment.length === 0 || balance === 0) {
+  if (payment.length === 0 || balance >= 0) {
     balanceColor = "black";
   } else if (balance > 0) {
     balanceColor = "green";
   } else {
     balanceColor = "red";
   }
-
-  // if (payment.length === 0 || balance === 0) {
-  //   balanceColor = "black";
-  // } else if (balance >= remainingWeeksCost) {
-  //   balanceColor = "green";
-  // } else if (balance < remainingWeeksCost) {
-  //   balanceColor = "red";
-  // } else {
-  //   balanceColor = "black";
-  // }
 
   return (
     <div className="payment_info_container">

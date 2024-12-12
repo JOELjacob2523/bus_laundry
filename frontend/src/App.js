@@ -1,5 +1,4 @@
 import "./App.css";
-import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Error500 from "./components/error/error";
 import UserLogin from "./userComponents/login/login";
@@ -10,6 +9,7 @@ import CityTotal from "./components/city_total";
 import Buses from "./components/buses/buses";
 import Details from "./components/details/details";
 import MainOldDataPage from "./oldDataComponents/mainOldDataPage/mainOldDataPage";
+import { AuthProvider } from "./components/AuthProvider/AuthProvider";
 
 function App() {
   return (

@@ -15,3 +15,18 @@ export const checkAuth = async () => {
     throw err;
   }
 };
+
+//get user info by ID
+export const getStudentLoginInfo = async (userId) => {
+  try {
+    const response = await axios.get(`${URL}/get_student_login_info`, {
+      params: {
+        user_id: userId,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
