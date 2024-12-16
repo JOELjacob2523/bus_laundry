@@ -1,24 +1,31 @@
 import "./header.css";
 import KYSymbol from "../../images/KYSymbol.png";
-import items from "./headerItems";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import HebrewDate from "../hebrewDate/hebrewDate";
-import { Avatar, Dropdown } from "antd";
-import { UserOutlined } from "@ant-design/icons";
 import { getStudentLoginInfo } from "../../servers/userRequests/getUserRequest";
 import { useAuth } from "../AuthProvider/AuthProvider";
+import Profile from "../profile/profile";
 
 const PageHeader = () => {
-  const { userId } = useAuth();
-  const [userName, setUserName] = useState("");
+  const { authData } = useAuth();
+  const [userInfo, setUserInfo] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getStudentLoginInfo(userId);
-      setUserName(data.first_name);
+      try {
+        //get user info by id
+        const data = await getStudentLoginInfo(authData.userId);
+        setUserInfo(data);
+      } catch (err) {
+        console.error(err);
+        navigate("/error500");
+      }
     };
     fetchData();
-  }, [userId]);
+  }, [authData.userId, navigate]);
 
   return (
     <div className="header_container">
@@ -31,16 +38,8 @@ const PageHeader = () => {
         <HebrewDate />
       </div>
       <div className="profile_container">
-        <div style={{ paddingBottom: "5px" }}>Hello, {userName}</div>
-        <Dropdown
-          menu={{
-            items,
-          }}
-          placement="bottomLeft"
-          className="dropdown"
-        >
-          <Avatar size={48} icon={<UserOutlined />} className="profile" />
-        </Dropdown>
+        <div style={{ paddingBottom: "5px" }}>Hello, {userInfo.first_name}</div>
+        <Profile />
       </div>
     </div>
   );

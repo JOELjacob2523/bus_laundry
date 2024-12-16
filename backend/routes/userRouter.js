@@ -41,6 +41,7 @@ router.post("/login", upload.fields([]), async (req, res, next) => {
     res.status(200).json({
       message: "User confirmed successfully",
       token: req.session.token,
+      user_id: user.user_id,
     });
   } catch (err) {
     console.error("Error confirming user credentials:", err);
@@ -71,7 +72,6 @@ router.get("/check_auth", (req, res) => {
 router.get("/get_student_login_info", async (req, res, next) => {
   try {
     const { user_id } = req.query;
-
     if (!user_id) {
       return res
         .status(400)

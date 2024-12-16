@@ -84,11 +84,11 @@ const OldSummerPayments = ({ oldZmanGoal, selectedZman }) => {
         matchingPayments.map((payment, index) => {
           const student = studentData[payment.student_id] || {};
           let paymentType;
-          if (payment.bus_wash === "1") {
+          if (payment.bus_amount && payment.wash_amount) {
             paymentType = "באס און וואשן";
-          } else if (payment.bus === "1") {
+          } else if (payment.bus_amount && !payment.wash_amount) {
             paymentType = "באס";
-          } else if (payment.wash === "1") {
+          } else if (payment.wash_amount && !payment.bus_amount) {
             paymentType = "וואשן";
           }
 

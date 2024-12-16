@@ -4,7 +4,8 @@ import React, { useState, useEffect } from "react";
 import { getAllUserInfo } from "../../servers/getRequest";
 import { getAllZmanGoalInfo } from "../../servers/getRequest";
 import { getAllPaymentInfo } from "../../servers/getRequest";
-import { Card, Spin } from "antd";
+import { Card, Flex, Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import IncomeProgress from "../imcomeProgress/incomeProgress";
 import Error500 from "../error/error";
 import { Helmet } from "react-helmet";
@@ -91,7 +92,9 @@ const MainPage2 = ({ cityCounts }) => {
   if (!userInfo || !zmanGoal) {
     return (
       <div>
-        <Spin fullscreen={true} tip="Loading..."></Spin>
+        <Flex align="center" gap="middle">
+          <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
+        </Flex>
       </div>
     );
   }

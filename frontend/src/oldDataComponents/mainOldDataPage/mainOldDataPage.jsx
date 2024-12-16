@@ -1,6 +1,6 @@
 import "./mainOldDataPage.css";
 import React, { useCallback, useEffect, useState } from "react";
-import { Card, Collapse, Input, Modal, Radio } from "antd";
+import { Card, Collapse, Empty, Input, Modal, Radio } from "antd";
 import OldZmanData from "./mainOldDataItems";
 import OldSummerPayments from "../oldSummerPayments/oldSummerPayments";
 import { Helmet } from "react-helmet";
@@ -103,17 +103,23 @@ const MainOldDataPage = () => {
           />
         </div>
         <Collapse accordion>
-          {items.map((item) => (
-            <Collapse.Panel header={item.label} key={item.key}>
-              <Radio.Group
-                value={item.value}
-                onChange={(e) => handleRadioChange(e, item)}
-              >
-                <Radio value="חורף">חורף</Radio>
-                <Radio value="קיץ">קיץ</Radio>
-              </Radio.Group>
-            </Collapse.Panel>
-          ))}
+          {items.length > 0 ? (
+            items.map((item) => (
+              <Collapse.Panel header={item.label} key={item.key}>
+                <Radio.Group
+                  value={item.value}
+                  onChange={(e) => handleRadioChange(e, item)}
+                >
+                  <Radio value="חורף">חורף</Radio>
+                  <Radio value="קיץ">קיץ</Radio>
+                </Radio.Group>
+              </Collapse.Panel>
+            ))
+          ) : (
+            <div style={{ padding: "5px" }}>
+              <Empty description="No data found" />
+            </div>
+          )}
         </Collapse>
         <Modal
           title={<div style={{ textAlign: "center" }}>זמן הקיץ</div>}

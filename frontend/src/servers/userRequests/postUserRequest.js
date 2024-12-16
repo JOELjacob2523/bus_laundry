@@ -26,9 +26,7 @@ export const login = async (email, password) => {
     const response = await axios.post(
       `${URL}/login`,
       { email, password },
-      {
-        withCredentials: true,
-      }
+      { withCredentials: true }
     );
 
     if (response.status === 200) {

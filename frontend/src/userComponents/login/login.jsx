@@ -2,16 +2,20 @@ import "./login.css";
 import React, { useState } from "react";
 import { TbPasswordUser } from "react-icons/tb";
 import { MdOutlineEmail } from "react-icons/md";
-import { Button, Card, Form, Input, Modal, Spin, Watermark } from "antd";
+import { Button, Card, Form, Input, Modal, Spin, Watermark, Flex } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../servers/userRequests/postUserRequest";
 import ErrorLogin from "../errorAlert/errorLogin";
 import KYLetterhead from "../../images/KY_Letterhead.png";
 import ForgotPasswordForm from "../forgotPessword/forgotPassword";
+import { LoadingOutlined } from "@ant-design/icons";
+import { useAuth } from "../../components/AuthProvider/AuthProvider";
 
-const UserLogin = ({ setIsAuthenticated }) => {
+const UserLogin = () => {
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const { setAuthData } = useAuth();
 
   const navigate = useNavigate();
 
@@ -30,7 +34,12 @@ const UserLogin = ({ setIsAuthenticated }) => {
     try {
       const response = await login(email, password);
       if (response.status === 200) {
-        setIsAuthenticated(true);
+        setAuthData({
+          isAuthenticated: true,
+          userId: response.data.user_id,
+        });
+        // setIsAuthenticated(true);
+        setLoading(false);
         navigate("/home");
       } else {
         console.error("Login failed with status:", response.status);
@@ -41,6 +50,12 @@ const UserLogin = ({ setIsAuthenticated }) => {
       setError("Incorrect username or password. Please try again.");
     }
   };
+
+  if (loading) {
+    <Flex>
+      <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
+    </Flex>;
+  }
 
   return (
     // <Watermark height={80} width={130} image={KYSymbolWashed}>

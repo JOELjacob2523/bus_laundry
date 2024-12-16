@@ -16,3 +16,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.dark_mode {
+  background-color: #222;
+  color: #fff;
+}
+
+.light_mode {
+  background-color: #fff;
+  color: #222;
+}

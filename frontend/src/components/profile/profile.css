@@ -1,0 +1,32 @@
+.main_profile_container{
+  display: flex;
+  flex-direction: column;
+}
+
+.edit_profile_btn{
+  display: flex;
+  justify-content: center;
+  padding-bottom: 20px;
+}
+
+.profile_data_container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.profile_input {
+  width: 70%;
+}
+
+.profile_confirm_edit_container{
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  padding-top: 20px;
+}
+
+.profile_confirm_edit_container div Button{
+  width: 100px;
+}

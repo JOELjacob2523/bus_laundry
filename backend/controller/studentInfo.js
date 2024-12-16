@@ -248,9 +248,8 @@ async function migrateOldData(selectedStudents) {
         const paymentData = {
           first_name: pay.first_name,
           last_name: pay.last_name,
-          bus: pay.bus,
-          wash: pay.wash,
-          bus_wash: pay.bus_wash,
+          wash_amount: pay.wash_amount,
+          bus_amount: pay.bus_amount,
           cash: pay.cash,
           checks: pay.checks,
           credit_card: pay.credit_card,
