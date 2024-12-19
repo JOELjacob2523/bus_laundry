@@ -15,7 +15,7 @@ import { BsCurrencyDollar } from "react-icons/bs";
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import HebrewDatePicker from "../jewishDtaePicker/hebcalDatePicker";
 import { zmanGoalInfo } from "../../servers/postRequest";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useHistory } from "react-router-dom";
 import SedraSelect from "../sedraSelect/sedraSelect";
 import { FaPlus } from "react-icons/fa";
 

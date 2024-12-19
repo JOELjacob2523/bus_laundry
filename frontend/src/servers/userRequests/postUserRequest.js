@@ -83,3 +83,27 @@ export const resetPassword = async (newPassword, confirmationNumber) => {
     throw err;
   }
 };
+
+//update user info
+export const updateUserProfile = async (formData) => {
+  try {
+    const response = await axios.post(
+      `${URL}/update_user_profile_info`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      console.log("Updated Success!!");
+    } else {
+      console.log(`Error updating! ${response.data}`);
+    }
+  } catch (err) {
+    console.error("Error:", err.message);
+    throw err;
+  }
+};

@@ -39,7 +39,7 @@ const PageHeader = () => {
       </div>
       <div className="profile_container">
         <div style={{ paddingBottom: "5px" }}>Hello, {userInfo.first_name}</div>
-        <Profile />
+        <Profile userInfo={userInfo} setUserInfo={setUserInfo} />
       </div>
     </div>
   );

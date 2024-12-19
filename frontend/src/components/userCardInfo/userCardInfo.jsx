@@ -164,6 +164,8 @@ const UserCardInfo = ({
               showButtons={showButtons}
               disabled={userDisabled}
               isEditing={isEditing}
+              setUserDisabled={setUserDisabled}
+              setShowButtons={setShowButtons}
             />
           </div>
         </div>

@@ -37,6 +37,8 @@ const EditUser = ({
   disabled,
   showButtons,
   isEditing,
+  setUserDisabled,
+  setShowButtons,
 }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -64,7 +66,10 @@ const EditUser = ({
   const onFinish = async (values) => {
     try {
       await updateUserInfo(values);
-      message.success("Student updated successfully", 1.5, () => navigate(0));
+      setUserInfo(values);
+      setUserDisabled(true);
+      setShowButtons(false);
+      message.success("Student updated successfully", 1.5);
     } catch (error) {
       console.error("Error updating student:", error);
       navigate("/error500");

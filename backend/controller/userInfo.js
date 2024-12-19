@@ -19,6 +19,7 @@ module.exports = {
   sendEmail,
   resetPassword,
   getStudentLoginInfo,
+  updateUserProfile,
 };
 
 // create user
@@ -137,4 +138,18 @@ async function resetPassword(newPassword, confirmationNumber) {
 
 async function getStudentLoginInfo(id) {
   return await knex("users").select().where("user_id", id).first();
+}
+
+async function updateUserProfile(profileInfo) {
+  const { user_id, first_name, last_name, email, password, token, role } =
+    profileInfo;
+
+  return knex("users").where("user_id", user_id).update({
+    first_name,
+    last_name,
+    email,
+    password,
+    token,
+    role,
+  });
 }
