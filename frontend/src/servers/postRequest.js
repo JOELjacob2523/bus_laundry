@@ -193,3 +193,51 @@ export const withdrawalInfo = async (formData) => {
     throw err;
   }
 };
+
+//delete user info
+export const deleteWithdrawalInfo = async (id) => {
+  try {
+    const response = await axios.post(
+      `${URL}/delete_withdrawal`,
+      { withdrawal_id: id },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      console.log("Deleted Success!!");
+    } else {
+      console.log(`Error deleting! ${response.data}`);
+    }
+  } catch (err) {
+    console.error("Error:", err.message);
+    throw err;
+  }
+};
+
+//update withdrawal info
+export const updateWithdrawalInfo = async (formData) => {
+  try {
+    const response = await axios.post(
+      `${URL}/update_withdrawal_info`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      console.log("Updated Success!!");
+    } else {
+      console.log(`Error updating! ${response.data}`);
+    }
+  } catch (err) {
+    console.error("Error:", err.message);
+    throw err;
+  }
+};

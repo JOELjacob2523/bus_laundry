@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllUserInfo } from "../servers/getRequest";
-import Buttons from "./mainPage2/main_page2";
+import MainPage2 from "./mainPage2/main_page2";
 
 const CityTotal = () => {
   const [userInfo, setUserInfo] = useState([]);
@@ -21,7 +21,7 @@ const CityTotal = () => {
     };
 
     fetchData();
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     const data = userInfo.map((user) => ({
@@ -34,6 +34,9 @@ const CityTotal = () => {
     monroe: 0,
     brooklyn: 0,
     monsey: 0,
+    springvalley: 0,
+    airmont: 0,
+    suffern: 0,
     boropark: 0,
   };
 
@@ -44,7 +47,7 @@ const CityTotal = () => {
     }
   });
 
-  return <>{cityCounts && <Buttons cityCounts={cityCounts} />}</>;
+  return <>{cityCounts && <MainPage2 cityCounts={cityCounts} />}</>;
 };
 
 export default CityTotal;

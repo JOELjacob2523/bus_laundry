@@ -25,6 +25,8 @@ module.exports = {
   getOldZmanGoalInfo,
   getPaymentInfoByStudentId,
   updateUserPaymentInfo,
+  deleteWithdrawal,
+  updateWithdrawalInfo,
 };
 
 async function insertUserInfo(userInfo) {
@@ -299,6 +301,22 @@ async function insertWithdrawalInfo(withdrawalInfo) {
 //get withdrawal information
 async function getAllWithdrawalInfo() {
   return await knex("withdrawals").select();
+}
+
+async function deleteWithdrawal(id) {
+  return await knex("withdrawals").where("withdrawal_id", id).del();
+}
+
+async function updateWithdrawalInfo(withdarwalInfo) {
+  const { withdrawal_id, amount, withdrawal_to, date, hebrew_date } =
+    withdarwalInfo;
+
+  return knex("withdrawals").where("withdrawal_id", withdrawal_id).update({
+    amount,
+    withdrawal_to,
+    date,
+    hebrew_date,
+  });
 }
 
 //get old zman goal information

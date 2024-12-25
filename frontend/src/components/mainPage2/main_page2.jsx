@@ -169,8 +169,21 @@ const MainPage2 = ({ cityCounts }) => {
           </Card>
           <Card title="מאנסי" style={{ textAlign: "right" }}>
             <div>
-              עס איז איינגעשריבן <strong>{cityCounts.monsey}</strong>{" "}
-              {cityCounts.monsey > 1 ? "בחורים" : "בחור"} קיין מאנסי
+              עס איז איינגעשריבן{" "}
+              <strong>
+                {cityCounts.monsey +
+                  cityCounts.airmont +
+                  cityCounts.springvalley +
+                  cityCounts.suffern}
+              </strong>{" "}
+              {cityCounts.monsey +
+                cityCounts.airmont +
+                cityCounts.springvalley +
+                cityCounts.suffern >
+              1
+                ? "בחורים"
+                : "בחור"}{" "}
+              קיין מאנסי
             </div>
           </Card>
           <Card title="בארא פארק" style={{ textAlign: "right" }}>

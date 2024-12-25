@@ -39,6 +39,7 @@ const EditUser = ({
   isEditing,
   setUserDisabled,
   setShowButtons,
+  setModalOpen,
 }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -69,7 +70,11 @@ const EditUser = ({
       setUserInfo(values);
       setUserDisabled(true);
       setShowButtons(false);
-      message.success("Student updated successfully", 1.5);
+      setModalOpen(false);
+      message.success(
+        `${userInfo.first_name} ${userInfo.last_name} updated successfully`,
+        1.5
+      );
     } catch (error) {
       console.error("Error updating student:", error);
       navigate("/error500");

@@ -28,7 +28,7 @@ const TotalBalance = ({ paymentInfo }) => {
       }
     }
     fetchData();
-  }, []);
+  }, [withdrawalData]);
 
   useEffect(() => {
     if (paymentInfo.length > 0) {

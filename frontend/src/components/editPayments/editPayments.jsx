@@ -139,7 +139,10 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
       setUserPaymentInfo(values);
       handlePaymentEditCancel();
       setLoading(false);
-      message.success("Student updated successfully", 1.5);
+      message.success(
+        `Payment for ${userPaymentInfo.first_name} ${userPaymentInfo.last_name} updated successfully`,
+        1.5
+      );
     } catch (error) {
       console.error("Error updating student:", error);
       navigate("/error500");
@@ -168,106 +171,114 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
         {...layout}
         form={form}
         onFinish={onFinish}
-        className="edit_user_payment_form"
         onValuesChange={handleFormChange}
         validateMessages={validateMessages}
         initialValues={userPaymentInfo}
       >
-        <Form.Item name="student_id" hidden={true}>
-          <Input />
-        </Form.Item>
-        <Form.Item name="pay_date" hidden={true}>
-          <Input />
-        </Form.Item>
-        <div className="edit_user_form_item_container">
-          <div>Cash:</div>
-          <div>
-            {isEditingPayment ? (
-              <Form.Item name="cash">
-                <Input disabled={paymentDisabled} style={{ width: "175px" }} />
-              </Form.Item>
-            ) : (
-              <Input
-                value={
-                  aggregatedPayment.cash > 0
-                    ? `$${aggregatedPayment.cash.toFixed(2)}`
-                    : "N/A"
-                }
-                style={{ width: "175px" }}
-                prefix={<HiOutlineCash />}
-                disabled
-              />
-            )}
+        <div className="edit_user_payment_form">
+          <Form.Item name="student_id" hidden={true}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="pay_date" hidden={true}>
+            <Input />
+          </Form.Item>
+          <div className="edit_user_form_item_container">
+            <div>Cash:</div>
+            <div>
+              {isEditingPayment ? (
+                <Form.Item name="cash">
+                  <Input
+                    disabled={paymentDisabled}
+                    style={{ width: "175px" }}
+                  />
+                </Form.Item>
+              ) : (
+                <Input
+                  value={
+                    aggregatedPayment.cash > 0
+                      ? `$${aggregatedPayment.cash.toFixed(2)}`
+                      : "N/A"
+                  }
+                  style={{ width: "175px" }}
+                  prefix={<HiOutlineCash />}
+                  disabled
+                />
+              )}
+            </div>
           </div>
-        </div>
-        <div className="edit_user_form_item_container">
-          <div>Check:</div>
-          <div>
-            {isEditingPayment ? (
-              <Form.Item name="checks">
-                <Input disabled={paymentDisabled} style={{ width: "175px" }} />
-              </Form.Item>
-            ) : (
-              <Input
-                value={
-                  aggregatedPayment.checks > 0
-                    ? `$${aggregatedPayment.checks.toFixed(2)}`
-                    : "N/A"
-                }
-                style={{ width: "175px" }}
-                prefix={<CiMoneyCheck1 />}
-                disabled
-              />
-            )}
+          <div className="edit_user_form_item_container">
+            <div>Check:</div>
+            <div>
+              {isEditingPayment ? (
+                <Form.Item name="checks">
+                  <Input
+                    disabled={paymentDisabled}
+                    style={{ width: "175px" }}
+                  />
+                </Form.Item>
+              ) : (
+                <Input
+                  value={
+                    aggregatedPayment.checks > 0
+                      ? `$${aggregatedPayment.checks.toFixed(2)}`
+                      : "N/A"
+                  }
+                  style={{ width: "175px" }}
+                  prefix={<CiMoneyCheck1 />}
+                  disabled
+                />
+              )}
+            </div>
           </div>
-        </div>
-        <div className="edit_user_form_item_container">
-          <div>Credit Card:</div>
-          <div>
-            {isEditingPayment ? (
-              <Form.Item name="credit_card">
-                <Input disabled={paymentDisabled} style={{ width: "175px" }} />
-              </Form.Item>
-            ) : (
-              <Input
-                value={
-                  aggregatedPayment.credit_card > 0
-                    ? `$${aggregatedPayment.credit_card.toFixed(2)}`
-                    : "N/A"
-                }
-                style={{ width: "175px" }}
-                prefix={<HiOutlineCreditCard />}
-                disabled
-              />
-            )}
+          <div className="edit_user_form_item_container">
+            <div>Credit Card:</div>
+            <div>
+              {isEditingPayment ? (
+                <Form.Item name="credit_card">
+                  <Input
+                    disabled={paymentDisabled}
+                    style={{ width: "175px" }}
+                  />
+                </Form.Item>
+              ) : (
+                <Input
+                  value={
+                    aggregatedPayment.credit_card > 0
+                      ? `$${aggregatedPayment.credit_card.toFixed(2)}`
+                      : "N/A"
+                  }
+                  style={{ width: "175px" }}
+                  prefix={<HiOutlineCreditCard />}
+                  disabled
+                />
+              )}
+            </div>
           </div>
-        </div>
-        <div className="edit_user_form_item_container">
-          <div>Payment Type:</div>
-          <div>
-            {isEditingPayment ? (
-              <Form.Item name="payment_type" rules={[{ required: true }]}>
-                <Select
-                  options={[
-                    { value: "bus", label: "באס" },
-                    { value: "wash", label: "וואשן" },
-                    { value: "bus_wash", label: "באס און וואשן" },
-                  ]}
-                  onChange={(value) => setValue(value)}
-                  disabled={paymentDisabled}
+          <div className="edit_user_form_item_container">
+            <div>Payment Type:</div>
+            <div>
+              {isEditingPayment ? (
+                <Form.Item name="payment_type" rules={[{ required: true }]}>
+                  <Select
+                    options={[
+                      { value: "bus", label: "באס" },
+                      { value: "wash", label: "וואשן" },
+                      { value: "bus_wash", label: "באס און וואשן" },
+                    ]}
+                    onChange={(value) => setValue(value)}
+                    disabled={paymentDisabled}
+                    style={{ width: "200px" }}
+                  />
+                </Form.Item>
+              ) : (
+                <Input
+                  value={aggregatedPayment.payment_type}
+                  disabled
                   style={{ width: "200px" }}
                 />
-              </Form.Item>
-            ) : (
-              <Input
-                value={aggregatedPayment.payment_type}
-                disabled
-                style={{ width: "200px" }}
-              />
-            )}
+              )}
+            </div>
           </div>
-        </div>
-        <div className="edit_user_form_item_container">
           {isEditingPayment ? (
             <div className="edit_user_form_item_container">
               {value === "bus" || value === "bus_wash" ? (
@@ -290,7 +301,7 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
               ) : null}
             </div>
           ) : (
-            <div>
+            <div className="edit_user_form_item_container">
               {aggregatedPayment.bus_amount > 0 ? (
                 <div>
                   <div>Bus Amount:</div>
@@ -307,12 +318,10 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
               ) : null}
             </div>
           )}
-        </div>
-        <div className="edit_user_form_item_container">
           {isEditingPayment ? (
             <div>
               {value === "wash" || value === "bus_wash" ? (
-                <div>
+                <div className="edit_user_form_item_container">
                   <div>Wash Amount:</div>
                   <div>
                     <Form.Item
@@ -331,7 +340,7 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
               ) : null}
             </div>
           ) : (
-            <div>
+            <div className="edit_user_form_item_container">
               {aggregatedPayment.wash_amount > 0 ? (
                 <div>
                   <div>Wash Amount:</div>
@@ -348,39 +357,39 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
               ) : null}
             </div>
           )}
-        </div>
-        <div className="edit_user_form_item_container">
-          <div>Date Created:</div>
-          <div>
-            <Input
-              value={aggregatedPayment.pay_date || "N/A"}
-              disabled
-              prefix={<CiCalendarDate />}
-            />
-          </div>
-        </div>
-        <div className="edit_user_form_item_container">
-          <div>Total:</div>
-          <div>
-            {isEditingPayment ? (
-              <Form.Item name="total_paid">
-                <Input disabled style={{ width: "200px" }} value={""} />
-              </Form.Item>
-            ) : (
+          <div className="edit_user_form_item_container">
+            <div>Date Created:</div>
+            <div>
               <Input
-                value={
-                  aggregatedPayment.total_paid > 0
-                    ? `$${aggregatedPayment.total_paid.toFixed(2)}`
-                    : "N/A"
-                }
-                style={{ width: "200px" }}
+                value={aggregatedPayment.pay_date || "N/A"}
                 disabled
+                prefix={<CiCalendarDate />}
               />
-            )}
+            </div>
+          </div>
+          <div className="edit_user_form_item_container">
+            <div>Total:</div>
+            <div>
+              {isEditingPayment ? (
+                <Form.Item name="total_paid">
+                  <Input disabled style={{ width: "200px" }} />
+                </Form.Item>
+              ) : (
+                <Input
+                  value={
+                    aggregatedPayment.total_paid > 0
+                      ? `$${aggregatedPayment.total_paid.toFixed(2)}`
+                      : "N/A"
+                  }
+                  style={{ width: "200px" }}
+                  disabled
+                />
+              )}
+            </div>
           </div>
         </div>
-        {showPaymentButtons && (
-          <div className="edit_user_form_container">
+        <div className="edit_user_form_container">
+          {showPaymentButtons && (
             <Form.Item className="edit_user_form_btns">
               <div>
                 <Button onClick={handlePaymentEditCancel}>Cancel</Button>
@@ -389,8 +398,8 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
                 </Button>
               </div>
             </Form.Item>
-          </div>
-        )}
+          )}
+        </div>
       </Form>
     </div>
   );

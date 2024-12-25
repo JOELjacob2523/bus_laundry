@@ -28,15 +28,6 @@ const Buses = () => {
         const data = await getAllUserInfo();
         const payments = await getAllPaymentInfo();
 
-        // const paymentMap = payments.reduce((acc, payment) => {
-        //   const { student_id } = payment;
-        //   if (!acc[student_id]) {
-        //     acc[student_id] = [];
-        //   }
-        //   acc[student_id].push(payment);
-        //   return acc;
-        // }, {});
-
         const paymentMap = payments.reduce((acc, payment) => {
           const { student_id } = payment;
           if (!student_id) {

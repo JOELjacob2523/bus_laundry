@@ -12,7 +12,7 @@ import {
   Modal,
   Radio,
 } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { UserOutlined, EditOutlined } from "@ant-design/icons";
 import items from "../header/headerItems";
 import { useNavigate } from "react-router-dom";
 
@@ -136,12 +136,8 @@ const Profile = ({ userInfo, setUserInfo }) => {
                   onFinish={onFinish}
                 >
                   <div className="edit_profile_btn">
-                    <Button
-                      type="primary"
-                      onClick={handleEditUserProfile}
-                      style={{ width: "200px" }}
-                    >
-                      Edit Profile
+                    <Button onClick={handleEditUserProfile}>
+                      <EditOutlined />
                     </Button>
                   </div>
                   <div>
@@ -246,14 +242,18 @@ const Profile = ({ userInfo, setUserInfo }) => {
           </div>
         ) : modalType === "settings" ? (
           <div>
-            <div className="settings_mode_container">
-              <div>Set Mode:</div>
-              <div>
-                <Button onClick={toggleDarkMode}>
-                  {isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
-                </Button>
+            <Card className="settings_card">
+              <div className="settings_mode_container">
+                <div>Set Mode:</div>
+                <div>
+                  <Button onClick={toggleDarkMode} type="primary">
+                    {isDarkMode
+                      ? "Switch to Light Mode"
+                      : "Switch to Dark Mode"}
+                  </Button>
+                </div>
               </div>
-            </div>
+            </Card>
           </div>
         ) : null}
       </Modal>

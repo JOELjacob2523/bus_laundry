@@ -268,6 +268,39 @@ router.get("/get_withdrawal", async (req, res, next) => {
   }
 });
 
+// router to delete a withdrawal info
+router.post("/delete_withdrawal", async (req, res, next) => {
+  try {
+    const { withdrawal_id } = req.body;
+    await CONTORLLER.deleteWithdrawal(withdrawal_id);
+    res.status(200).json({ message: "Withdrawal deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting withdrawal credentials:", err);
+    res
+      .status(500)
+      .json({ message: "Error deleting withdrawal", error: err.message });
+  }
+});
+
+// router to update withdrawal info
+router.post(
+  "/update_withdrawal_info",
+  upload.fields([]),
+  async (req, res, next) => {
+    try {
+      let { withdrawal_id } = await CONTORLLER.updateWithdrawalInfo(req.body);
+      res.status(200).json({
+        message: "Withdrawal updated successfully",
+      });
+    } catch (err) {
+      console.error("Error updating withdrawal credentials:", err);
+      res
+        .status(500)
+        .json({ message: "Error updaing withdrawal", error: err.message });
+    }
+  }
+);
+
 // router get old zman goal info
 router.get("/get_old_zman_goal", async (req, res, next) => {
   try {

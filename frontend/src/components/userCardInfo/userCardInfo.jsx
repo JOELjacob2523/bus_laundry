@@ -166,6 +166,7 @@ const UserCardInfo = ({
               isEditing={isEditing}
               setUserDisabled={setUserDisabled}
               setShowButtons={setShowButtons}
+              setModalOpen={setModalOpen}
             />
           </div>
         </div>

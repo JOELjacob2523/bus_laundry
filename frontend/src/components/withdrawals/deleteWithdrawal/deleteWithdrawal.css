@@ -1,0 +1,8 @@
+.delete_withdrawal_icon{
+    color: red;
+    font-size: medium;
+}
+
+.delete_withdrawal_icon:hover{
+    cursor: pointer;
+}
