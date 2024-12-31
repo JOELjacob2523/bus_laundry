@@ -30,6 +30,14 @@
     padding-right: 50px;
 }
 
+.profile_info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 5px;
+}
+
 .profile_btn{
     height: fit-content;
     border: 0;

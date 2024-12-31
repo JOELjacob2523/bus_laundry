@@ -6,6 +6,7 @@ import { updateUserPaymentInfo } from "../../servers/postRequest";
 import { useNavigate } from "react-router-dom";
 import { CiCalendarDate, CiMoneyCheck1 } from "react-icons/ci";
 import { HiOutlineCash, HiOutlineCreditCard } from "react-icons/hi";
+import { useAuth } from "../AuthProvider/AuthProvider";
 
 const layout = {
   labelCol: {
@@ -30,6 +31,7 @@ const validateMessages = {
 /* eslint-enable no-template-curly-in-string */
 
 const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
+  const { authData } = useAuth();
   const [userPaymentInfo, setUserPaymentInfo] = useState(null);
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(true);
@@ -163,9 +165,12 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
   return (
     <div className="edit_payment_container">
       <div className="edit_payment_btn_div">
-        <Button type="primary" onClick={handlePaymentEditClick}>
-          Edit Payments
-        </Button>
+        {authData.role === "Administrator" ||
+        authData.role === "Super Admin" ? (
+          <Button type="primary" onClick={handlePaymentEditClick}>
+            Edit Payments
+          </Button>
+        ) : null}
       </div>
       <Form
         {...layout}

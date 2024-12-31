@@ -37,8 +37,11 @@ const UserLogin = () => {
         setAuthData({
           isAuthenticated: true,
           userId: response.data.user_id,
+          first_name: response.data.userInfo.first_name,
+          last_name: response.data.userInfo.last_name,
+          role: response.data.userInfo.role,
+          email: response.data.userInfo.email,
         });
-        // setIsAuthenticated(true);
         setLoading(false);
         navigate("/home");
       } else {

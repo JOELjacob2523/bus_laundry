@@ -36,3 +36,24 @@ export const getStudentLoginInfo = async (userId) => {
     throw error;
   }
 };
+
+//get user info by ID
+export const verifyAdminPassword = async (inputPassword) => {
+  try {
+    const response = await axios.get(
+      `${URL}/verify_admin_password`,
+      {
+        params: {
+          password: inputPassword,
+        },
+      },
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};

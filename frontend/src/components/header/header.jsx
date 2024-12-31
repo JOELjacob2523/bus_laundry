@@ -10,13 +10,13 @@ import Profile from "../profile/profile";
 const PageHeader = () => {
   const { authData } = useAuth();
   const [userInfo, setUserInfo] = useState("");
+  const [status, setStatus] = useState("");
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        //get user info by id
         const data = await getStudentLoginInfo(authData.userId);
         setUserInfo(data);
       } catch (err) {
@@ -26,6 +26,16 @@ const PageHeader = () => {
     };
     fetchData();
   }, [authData.userId, navigate]);
+
+  useEffect(() => {
+    if (authData.role === "Administrator") {
+      setStatus("Administrator");
+    } else if (authData.role === "Super Admin") {
+      setStatus("Super Admin");
+    } else {
+      setStatus("User");
+    }
+  }, [authData.role]);
 
   return (
     <div className="header_container">
@@ -38,8 +48,18 @@ const PageHeader = () => {
         <HebrewDate />
       </div>
       <div className="profile_container">
-        <div style={{ paddingBottom: "5px" }}>Hello, {userInfo.first_name}</div>
-        <Profile userInfo={userInfo} setUserInfo={setUserInfo} />
+        <div className="profile_info">
+          <div>
+            Hello, {authData.first_name} {authData.last_name}
+          </div>
+          <div>Status: {status}</div>
+        </div>
+        <Profile
+          userInfo={userInfo}
+          setUserInfo={setUserInfo}
+          authData={authData}
+          setStatus={setStatus}
+        />
       </div>
     </div>
   );

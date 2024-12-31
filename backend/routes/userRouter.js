@@ -38,10 +38,13 @@ router.post("/login", upload.fields([]), async (req, res, next) => {
     const token = jwt.sign({ user_id: user.user_id }, SECRET_KEY);
     req.session.token = token;
 
+    let userInfo = await CONTORLLER.getStudentLoginInfo(user.user_id);
+
     res.status(200).json({
       message: "User confirmed successfully",
       token: req.session.token,
       user_id: user.user_id,
+      userInfo: userInfo,
     });
   } catch (err) {
     console.error("Error confirming user credentials:", err);
@@ -67,6 +70,24 @@ router.get("/check_auth", (req, res) => {
       .json({ message: "Internal server error", error: err.message });
   }
 });
+
+// router to verify admin password
+router.get(
+  "/verify_admin_password",
+  upload.fields([]),
+  async (req, res, next) => {
+    try {
+      const result = await CONTORLLER.verifyAdminPassword(req.query.password);
+      res.status(200).json(result);
+    } catch (err) {
+      console.error("Error verifying admin password:", err);
+      res.status(500).json({
+        message: "Error verifying admin password",
+        error: err.message,
+      });
+    }
+  }
+);
 
 // router get student login info
 router.get("/get_student_login_info", async (req, res, next) => {

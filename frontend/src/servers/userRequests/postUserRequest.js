@@ -40,6 +40,30 @@ export const login = async (email, password) => {
   }
 };
 
+// //verify admin password
+// export const verifyAdminPassword = async (password, newRole, id) => {
+//   try {
+//     const response = await axios.post(
+//       `${URL}/verify_admin_password`,
+//       { password, newRole, id },
+//       {
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//       }
+//     );
+
+//     if (response.status === 200) {
+//       console.log("Updated Success!!");
+//     } else {
+//       console.log(`Error updating! ${response.data}`);
+//     }
+//   } catch (err) {
+//     console.error("Error:", err.message);
+//     throw err;
+//   }
+// };
+
 export const sendEmail = async (email) => {
   try {
     const response = await axios.post(

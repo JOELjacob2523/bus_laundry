@@ -5,6 +5,7 @@ import "./userCardInfo.css";
 import { getUserInfoById } from "../../servers/getRequest";
 import EditUser from "../editUser/editUser";
 import EditUserPayment from "../editPayments/editPayments";
+import { useAuth } from "../AuthProvider/AuthProvider";
 
 const UserCardInfo = ({
   student,
@@ -13,6 +14,7 @@ const UserCardInfo = ({
   studentId,
   updatePayment,
 }) => {
+  const { authData } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const [userDisabled, setUserDisabled] = useState(true);
   const [showButtons, setShowButtons] = useState(false);
@@ -133,28 +135,29 @@ const UserCardInfo = ({
       >
         <div>
           <Divider></Divider>
-          <div className="user_info_options_btn_container">
-            <div className="user_info_options_btn">
-              <Button type="primary" onClick={handleEditClick}>
-                Edit User
-              </Button>
-            </div>
-            {aggregatedPayment.total_paid > 0 ? null : (
-              // </div><Button type="primary"> Please use Edit Payments!</Button> <div>
-
+          {authData.role === "Administrator" ||
+          authData.role === "Super Admin" ? (
+            <div className="user_info_options_btn_container">
               <div className="user_info_options_btn">
-                <Button type="primary" onClick={() => showPaymentModal()}>
-                  Make a payment
+                <Button type="primary" onClick={handleEditClick}>
+                  Edit User
                 </Button>
               </div>
-            )}
+              {aggregatedPayment.total_paid > 0 ? null : (
+                <div className="user_info_options_btn">
+                  <Button type="primary" onClick={() => showPaymentModal()}>
+                    Make a payment
+                  </Button>
+                </div>
+              )}
 
-            <div className="user_info_options_btn">
-              <Button type="primary" onClick={creditCardPay}>
-                Pay with CC
-              </Button>
+              <div className="user_info_options_btn">
+                <Button type="primary" onClick={creditCardPay}>
+                  Pay with CC
+                </Button>
+              </div>
             </div>
-          </div>
+          ) : null}
           <Divider></Divider>
           <div className="user_info_main_container">
             <EditUser

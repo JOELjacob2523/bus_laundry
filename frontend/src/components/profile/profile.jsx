@@ -1,6 +1,7 @@
 import "./profile.css";
 import React, { useEffect, useState } from "react";
 import { updateUserProfile } from "../../servers/userRequests/postUserRequest";
+import { verifyAdminPassword } from "../../servers/userRequests/getUserRequest";
 import {
   Avatar,
   Button,
@@ -29,13 +30,19 @@ const validateMessages = {
 };
 /* eslint-disable no-template-curly-in-string */
 
-const Profile = ({ userInfo, setUserInfo }) => {
+const Profile = ({ userInfo, setUserInfo, authData, setStatus }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
   const [showButtons, setShowButtons] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [value, setValue] = useState("");
+  const [isPermissionModalOpen, setIsPermissionModalOpen] = useState(false);
+  const [password, setPassword] = useState("");
+  const [key, setKey] = useState(0);
+  const [isVerified, setIsVerified] = useState(false);
+
+  const [form] = Form.useForm();
 
   const navigate = useNavigate();
 
@@ -52,7 +59,9 @@ const Profile = ({ userInfo, setUserInfo }) => {
     try {
       const formData = { ...values, role: value };
       await updateUserProfile(formData);
-      setUserInfo(formData);
+      setUserInfo((prev) => ({ ...prev, ...formData }));
+      form.setFieldsValue(formData);
+      setStatus(value);
       setIsDisabled(true);
       setShowButtons(false);
       setIsModalOpen(false);
@@ -65,6 +74,32 @@ const Profile = ({ userInfo, setUserInfo }) => {
 
   const onRadioChange = (e) => {
     setValue(e.target.value);
+  };
+
+  const showPermissionModal = () => {
+    setIsPermissionModalOpen(true);
+  };
+
+  const handlePermissionOk = async () => {
+    const response = await verifyAdminPassword(password);
+    if (!response) {
+      message.error("Please enter the admin password!");
+      return;
+    }
+
+    if (response) {
+      setIsVerified(true);
+      setIsPermissionModalOpen(false);
+      setKey(key + 1);
+      message.success("Password verified successfully!");
+    } else {
+      message.error("Incorrect password. Please try again.");
+    }
+  };
+
+  const handlePermissionCancel = () => {
+    setIsPermissionModalOpen(false);
+    setKey(key + 1);
   };
 
   const showModal = (type) => {
@@ -83,6 +118,7 @@ const Profile = ({ userInfo, setUserInfo }) => {
   const handleEditUserProfile = () => {
     setIsDisabled(false);
     setShowButtons(true);
+    authData.role === "Administrator" && setIsVerified(true);
   };
 
   const handleCancelEditUserProfile = () => {
@@ -125,12 +161,14 @@ const Profile = ({ userInfo, setUserInfo }) => {
         onOk={handleOk}
         onCancel={handleCancel}
         footer={null}
+        key={key}
       >
         {modalType === "profile" ? (
           <div>
             <Card>
               <div className="main_profile_container">
                 <Form
+                  form={form}
                   validateMessages={validateMessages}
                   initialValues={userInfo}
                   onFinish={onFinish}
@@ -175,6 +213,22 @@ const Profile = ({ userInfo, setUserInfo }) => {
                       </div>
                     </div>
                     <div className="profile_data_container">
+                      <div>Password:</div>
+                      <div className="profile_input">
+                        <Form.Item
+                          name="password"
+                          rules={[
+                            {
+                              required: false,
+                            },
+                          ]}
+                        >
+                          <Input.Password disabled={isDisabled} />
+                        </Form.Item>
+                      </div>
+                    </div>
+
+                    <div className="profile_data_container">
                       <div>Email:</div>
                       <div className="profile_input">
                         <Form.Item
@@ -212,14 +266,22 @@ const Profile = ({ userInfo, setUserInfo }) => {
                       <div className="profile_role_container">
                         <div>Set Role:</div>
                         <div>
-                          <Radio.Group
-                            name="role"
-                            value={value}
-                            onChange={onRadioChange}
-                          >
-                            <Radio value="Administrator">Administrator</Radio>
-                            <Radio value="User">User</Radio>
-                          </Radio.Group>
+                          {isVerified ? (
+                            <Radio.Group
+                              name="role"
+                              value={value || userInfo.role}
+                              onChange={onRadioChange}
+                              disabled={!isVerified}
+                            >
+                              <Radio value="Administrator">Administrator</Radio>
+                              <Radio value="Super Admin">Super Admin</Radio>
+                              <Radio value="User">User</Radio>
+                            </Radio.Group>
+                          ) : (
+                            <Button type="dashed" onClick={showPermissionModal}>
+                              Set Role
+                            </Button>
+                          )}
                         </div>
                       </div>
                       <div className="profile_confirm_edit_container">
@@ -256,6 +318,34 @@ const Profile = ({ userInfo, setUserInfo }) => {
             </Card>
           </div>
         ) : null}
+      </Modal>
+      <Modal
+        title="Permission Denied"
+        open={isPermissionModalOpen}
+        onOk={handlePermissionOk}
+        onCancel={handlePermissionCancel}
+        footer={null}
+        style={{ zIndex: 1000 }}
+      >
+        <div className="permission_container">
+          <div className="permission_text">
+            Permission denied, Please enter admin password
+          </div>
+          <div className="permission_input_container">
+            <Input.Password
+              key={key}
+              placeholder="Admin Password"
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handlePermissionOk()}
+            />
+          </div>
+          <div className="permission_btn_container">
+            <Button onClick={handlePermissionCancel}>Cancel</Button>
+            <Button type="primary" onClick={handlePermissionOk}>
+              Submit
+            </Button>
+          </div>
+        </div>
       </Modal>
     </div>
   );

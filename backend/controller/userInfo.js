@@ -20,6 +20,7 @@ module.exports = {
   resetPassword,
   getStudentLoginInfo,
   updateUserProfile,
+  verifyAdminPassword,
 };
 
 // create user
@@ -36,6 +37,7 @@ async function createUser(first_name, last_name, email, password) {
     last_name: last_name,
     email: email,
     password: hashedPassword,
+    role: "User",
   };
   const token = jwt.sign(payload, SECRET_KEY);
   await knex("users").insert({
@@ -44,6 +46,7 @@ async function createUser(first_name, last_name, email, password) {
     email,
     password: hashedPassword,
     token,
+    role: "User",
   });
 }
 
@@ -144,12 +147,45 @@ async function updateUserProfile(profileInfo) {
   const { user_id, first_name, last_name, email, password, token, role } =
     profileInfo;
 
+  const user = await knex("users").where("user_id", user_id).first();
+
+  let newHashedPassword;
+  if (password === user.password) {
+    newHashedPassword = user.password;
+  } else {
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    newHashedPassword = passwordMatch
+      ? user.password
+      : await bcrypt.hash(password, 8);
+  }
+
+  const newRole =
+    role !== undefined && role !== null && role !== "" ? role : user.role;
+
   return knex("users").where("user_id", user_id).update({
     first_name,
     last_name,
     email,
-    password,
+    password: newHashedPassword,
     token,
-    role,
+    role: newRole,
   });
+}
+
+async function verifyAdminPassword(inputPassword) {
+  const admin = await knex("users")
+    .select()
+    .where("role", "Administrator")
+    .first();
+
+  if (!admin) {
+    throw new Error("Invalid password");
+  }
+
+  const passwordMatch = await bcrypt.compare(inputPassword, admin.password);
+  if (!passwordMatch) {
+    return false;
+  }
+
+  return true;
 }
