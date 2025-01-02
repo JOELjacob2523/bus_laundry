@@ -65,7 +65,7 @@ const Profile = ({ userInfo, setUserInfo, authData, setStatus }) => {
       setIsDisabled(true);
       setShowButtons(false);
       setIsModalOpen(false);
-      message.success("User updated successfully", 1.5);
+      message.success("User updated successfully", 2);
     } catch (error) {
       console.error("Error updating student:", error);
       navigate("/error500");
@@ -329,12 +329,14 @@ const Profile = ({ userInfo, setUserInfo, authData, setStatus }) => {
       >
         <div className="permission_container">
           <div className="permission_text">
-            Permission denied, Please enter admin password
+            Permission denied, Please enter admin password to continue. If you
+            do not have the password, please contact your administrator. Thank
+            you!
           </div>
           <div className="permission_input_container">
             <Input.Password
               key={key}
-              placeholder="Admin Password"
+              placeholder="Admin Password..."
               onChange={(e) => setPassword(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handlePermissionOk()}
             />

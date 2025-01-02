@@ -15,7 +15,7 @@ import { BsCurrencyDollar } from "react-icons/bs";
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import HebrewDatePicker from "../jewishDtaePicker/hebcalDatePicker";
 import { zmanGoalInfo } from "../../servers/postRequest";
-import { useNavigate, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import SedraSelect from "../sedraSelect/sedraSelect";
 import { FaPlus } from "react-icons/fa";
 
@@ -93,7 +93,7 @@ const ClosedWeeks = () => {
     try {
       setLoading(true);
       await zmanGoalInfo(values);
-      message.success("Zman goal added successfully", 1.5, () =>
+      message.success("Zman goal added successfully", 2, () =>
         navigate("/home/buses")
       );
     } catch (error) {
@@ -153,7 +153,8 @@ const ClosedWeeks = () => {
                 method="POST"
               >
                 <Form.Item
-                  label="זמן"
+                  label=":זמן"
+                  colon={false}
                   name="zman"
                   rules={[{ required: true, message: "Please select Zman!" }]}
                 >
@@ -167,7 +168,8 @@ const ClosedWeeks = () => {
                 </Form.Item>
 
                 <Form.Item
-                  label="אנפאנג / סוף זמן"
+                  label=":אנפאנג / סוף זמן"
+                  colon={false}
                   name="zman_starts_ends"
                   rules={[
                     {
@@ -179,7 +181,12 @@ const ClosedWeeks = () => {
                   <HebrewDatePicker onChange={handleDateChange} />
                 </Form.Item>
 
-                <Form.Item label="סדרה" name="closed_weeks" required>
+                <Form.Item
+                  label=":סדרה"
+                  colon={false}
+                  name="closed_weeks"
+                  required
+                >
                   <Space direction="vertical" style={{ width: "100%" }}>
                     {selectedSedras.map((sedra, index) => (
                       <Space key={index} align="baseline">
@@ -215,11 +222,12 @@ const ClosedWeeks = () => {
                 </Form.Item>
 
                 <Form.Item
-                  label="ראונד טריפ פרייז"
+                  label=":ראונד טריפ פרייז"
+                  colon={false}
                   name="bus_price"
                   rules={[
                     {
-                      // required: true,
+                      required: true,
                       message: "Please input bus round trip price!",
                     },
                   ]}
@@ -231,7 +239,8 @@ const ClosedWeeks = () => {
                 </Form.Item>
 
                 <Form.Item
-                  label="וואשן פרייז"
+                  label=":וואשן פרייז"
+                  colon={false}
                   name="wash_price"
                   rules={[
                     {
@@ -248,19 +257,35 @@ const ClosedWeeks = () => {
 
                 <Divider>Total</Divider>
 
-                <Form.Item label='ס"ה וואכן' name="total_zman_weeks">
+                <Form.Item
+                  label=':ס"ה וואכן'
+                  colon={false}
+                  name="total_zman_weeks"
+                >
                   <Input disabled />
                 </Form.Item>
 
-                <Form.Item label='ס"ה זמן פרייז' name="total_zman_goal">
+                <Form.Item
+                  label=':ס"ה זמן פרייז'
+                  colon={false}
+                  name="total_zman_goal"
+                >
                   <Input prefix={<BsCurrencyDollar />} disabled />
                 </Form.Item>
 
-                <Form.Item label='ס"ה באס פרייז' name="total_bus_goal">
+                <Form.Item
+                  label=':ס"ה באס פרייז'
+                  colon={false}
+                  name="total_bus_goal"
+                >
                   <Input prefix={<BsCurrencyDollar />} disabled />
                 </Form.Item>
 
-                <Form.Item label='ס"ה וואשן פרייז' name="total_wash_goal">
+                <Form.Item
+                  label=':ס"ה וואשן פרייז'
+                  colon={false}
+                  name="total_wash_goal"
+                >
                   <Input prefix={<BsCurrencyDollar />} disabled />
                 </Form.Item>
 

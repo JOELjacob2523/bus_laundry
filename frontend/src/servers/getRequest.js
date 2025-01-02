@@ -31,15 +31,15 @@ export const getUserInfoById = async (studentId, token) => {
 };
 
 //get user payment info by student ID
-export const getPaymentInfoByStudentId = async (studentId, token) => {
+export const getPaymentInfoByStudentId = async (studentId) => {
   try {
     const response = await axios.get(`${URL}/get_payment_info`, {
       params: {
         student_id: studentId,
       },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      // headers: {
+      //   Authorization: `Bearer ${token}`,
+      // },
     });
     return response.data;
   } catch (error) {

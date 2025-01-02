@@ -1,7 +1,7 @@
 import "./buses.css";
 import { Card, Checkbox, Divider, Modal } from "antd";
 import { EditOutlined, DollarOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditUser from "../editUser/editUser";
 import PaymentOptions from "../paymentsOptions/paymentsOptions";
 import { TbCreditCardPay } from "react-icons/tb";
@@ -9,6 +9,7 @@ import PaymentForm from "../payments/paymentForm";
 import DeleteUser from "../deleteUser/deleteUser";
 import UserCardInfo from "../userCardInfo/userCardInfo";
 import StudentBalance from "../balance/balance";
+import { getPaymentInfoByStudentId } from "../../servers/getRequest";
 
 const UserCard = ({
   student,
@@ -20,6 +21,24 @@ const UserCard = ({
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
   const [isCCModalVisible, setIsCCModalVisible] = useState(false);
+  const [userPaymentInfo, setUserPaymentInfo] = useState(null);
+
+  useEffect(() => {
+    if (!student.student_id) return;
+    const fetchData = async () => {
+      try {
+        const data = await getPaymentInfoByStudentId(student.student_id);
+        if (data && data.student_id) {
+          setUserPaymentInfo(data);
+        } else {
+          console.error("Invalid user data:", data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [student.student_id]);
 
   const URL =
     "https://secure.cardknox.com/kedishesyoel?AmountLocked=0&xCommand=cc%3Asale";
@@ -99,6 +118,8 @@ const UserCard = ({
             updatePayment={updatePayment}
             showPaymentModal={showPaymentModal}
             studentId={student.student_id}
+            userPaymentInfo={userPaymentInfo}
+            setUserPaymentInfo={setUserPaymentInfo}
           />
         </div>
         <Divider orientation="left">Balance</Divider>
@@ -135,6 +156,9 @@ const UserCard = ({
             studentId={student.student_id}
             token={student.token}
             handleCancel={handlePaymentCancel}
+            updatePayment={updatePayment}
+            setIsPaymentModalVisible={setIsPaymentModalVisible}
+            setUserPaymentInfo={setUserPaymentInfo}
           />
         </Modal>
         <Modal

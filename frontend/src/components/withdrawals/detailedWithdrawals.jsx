@@ -5,6 +5,7 @@ import { getAllWithdrawalInfo } from "../../servers/getRequest";
 import { updateWithdrawalInfo } from "../../servers/postRequest";
 import { EditOutlined } from "@ant-design/icons";
 import DeleteWithdrawal from "./deleteWithdrawal/deleteWithdrawal";
+import { useAuth } from "../AuthProvider/AuthProvider";
 
 const formatNumber = (number) => {
   return new Intl.NumberFormat("en-US").format(number);
@@ -12,13 +13,15 @@ const formatNumber = (number) => {
 
 const WithdrawalsDetials = ({
   handleEdit,
-  isEditing,
-  setIsEditing,
   showButtons,
   setShowButtons,
   handleEditCancel,
+  currentlyEditingId,
+  setCurrentlyEditingId,
 }) => {
   const [withdrawals, setWithdrawals] = useState([]);
+
+  const { authData } = useAuth();
 
   useEffect(() => {
     async function fetchData() {
@@ -39,7 +42,7 @@ const WithdrawalsDetials = ({
           return w;
         })
       );
-      setIsEditing(false);
+      setCurrentlyEditingId(null);
       setShowButtons(false);
       message.success("Withdrawal updated successfully", 1.5);
     } catch (error) {
@@ -54,22 +57,42 @@ const WithdrawalsDetials = ({
           <Descriptions.Item
             key={index}
             label={
-              <div className="withdrawal_display_container">
-                <div className="withdrawal_display_container_inner">
-                  <div style={{ paddingTop: "3px" }}>
-                    <EditOutlined
-                      onClick={handleEdit}
-                      className="withdrawal_edit_icon"
-                    />
+              <div
+                className={
+                  authData.role === "Administrator"
+                    ? "withdrawal_display_container_admin"
+                    : "withdrawal_display_container"
+                }
+              >
+                {authData.role === "Administrator" && (
+                  <div
+                    className={
+                      authData.role === "Administrator"
+                        ? "withdrawal_display_container_inner_admin"
+                        : "withdrawal_display_container_inner"
+                    }
+                  >
+                    <div style={{ paddingTop: "3px" }}>
+                      <EditOutlined
+                        onClick={() => handleEdit(withdrawal.withdrawal_id)}
+                        className="withdrawal_edit_icon"
+                      />
+                    </div>
+                    <div>
+                      <DeleteWithdrawal
+                        withdrawal={withdrawal}
+                        setWithdrawals={setWithdrawals}
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <DeleteWithdrawal
-                      withdrawal={withdrawal}
-                      setWithdrawals={setWithdrawals}
-                    />
-                  </div>
-                </div>
-                <div className="withdrawal_display_container_inner">
+                )}
+                <div
+                  className={
+                    authData.role === "Administrator"
+                      ? "withdrawal_display_container_inner_admin"
+                      : "withdrawal_display_container_inner"
+                  }
+                >
                   <strong>{withdrawal.withdrawal_to}</strong>
                   <div>:ארויס פאר</div>
                 </div>
@@ -79,8 +102,8 @@ const WithdrawalsDetials = ({
           >
             <Form initialValues={withdrawal} onFinish={onFinish}>
               <Form.Item name="withdrawal_id" hidden></Form.Item>
-              {isEditing ? (
-                <div className="withdrawal_display_container">
+              {currentlyEditingId === withdrawal.withdrawal_id ? (
+                <div className="withdrawal_display_container_inner">
                   <div>
                     <Form.Item name="amount">
                       <Input />
@@ -89,33 +112,34 @@ const WithdrawalsDetials = ({
                   <div>:סכום</div>
                 </div>
               ) : (
-                <div className="withdrawal_display_container">
+                <div className="withdrawal_display_container_inner">
                   <div>
                     <strong>${formatNumber(withdrawal.amount)}</strong>
                   </div>
                   <div>:סכום</div>
                 </div>
               )}
-              <div className="withdrawal_display_container">
+              <div className="withdrawal_display_container_inner">
                 <div>{withdrawal.hebrew_date}</div>
                 <div>:אידישע דאטום</div>
               </div>
-              <div className="withdrawal_display_container">
+              <div className="withdrawal_display_container_inner">
                 <div>{withdrawal.date}</div>
                 <div>:דאטום</div>
               </div>
-              {showButtons && (
-                <div className="edit_payment_btn_container">
-                  <div>
-                    <Button onClick={handleEditCancel}>Cancel</Button>
+              {showButtons &&
+                currentlyEditingId === withdrawal.withdrawal_id && (
+                  <div className="edit_payment_btn_container">
+                    <div>
+                      <Button onClick={handleEditCancel}>Cancel</Button>
+                    </div>
+                    <div>
+                      <Button type="primary" htmlType="submit">
+                        Save
+                      </Button>
+                    </div>
                   </div>
-                  <div>
-                    <Button type="primary" htmlType="submit">
-                      Save
-                    </Button>
-                  </div>
-                </div>
-              )}
+                )}
             </Form>
           </Descriptions.Item>
         ))}

@@ -1,12 +1,12 @@
 import "./editPaymetns.css";
 import React, { useState, useEffect } from "react";
-import { Button, Empty, Form, Input, message, Select, Spin } from "antd";
-import { getPaymentInfoByStudentId } from "../../servers/getRequest";
+import { Button, Empty, Flex, Form, Input, message, Select, Spin } from "antd";
 import { updateUserPaymentInfo } from "../../servers/postRequest";
 import { useNavigate } from "react-router-dom";
 import { CiCalendarDate, CiMoneyCheck1 } from "react-icons/ci";
 import { HiOutlineCash, HiOutlineCreditCard } from "react-icons/hi";
 import { useAuth } from "../AuthProvider/AuthProvider";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const layout = {
   labelCol: {
@@ -30,9 +30,14 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
+const EditUserPayment = ({
+  payment,
+  updatePayment,
+  userPaymentInfo,
+  setUserPaymentInfo,
+}) => {
   const { authData } = useAuth();
-  const [userPaymentInfo, setUserPaymentInfo] = useState(null);
+  // const [userPaymentInfo, setUserPaymentInfo] = useState(null);
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(true);
   const [paymentDisabled, setPaymentDisabled] = useState(true);
@@ -49,24 +54,6 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
   const [form] = Form.useForm();
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getPaymentInfoByStudentId(studentId, token);
-        if (data && data.student_id) {
-          setUserPaymentInfo(data);
-        } else {
-          console.error("Invalid user data:", data);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [studentId, token]);
 
   const parseValue = (value) => {
     const parsed = parseFloat(value);
@@ -143,7 +130,7 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
       setLoading(false);
       message.success(
         `Payment for ${userPaymentInfo.first_name} ${userPaymentInfo.last_name} updated successfully`,
-        1.5
+        2
       );
     } catch (error) {
       console.error("Error updating student:", error);
@@ -151,8 +138,14 @@ const EditUserPayment = ({ studentId, token, payment, updatePayment }) => {
     }
   };
 
+  // if (loading) {
+  //   return <Spin spinning="loading" tip="Loading..." fullscreen={true} />;
+  // }
+
   if (loading) {
-    return <Spin spinning="loading" tip="Loading..." fullscreen={true} />;
+    <Flex>
+      <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
+    </Flex>;
   }
 
   if (!userPaymentInfo)

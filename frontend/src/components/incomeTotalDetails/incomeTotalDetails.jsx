@@ -61,7 +61,7 @@ const IncomeTotalDetails = ({ paymentInfo }) => {
         <Descriptions title="סך הכל געלט דעטאלן" layout="vertical" bordered>
           <Descriptions.Item
             label={
-              <div className="withdrawal_display_container">
+              <div className="income_display_container">
                 <div>
                   <strong>${formatNumber(incomeDetails.total)}</strong>
                 </div>
@@ -70,19 +70,19 @@ const IncomeTotalDetails = ({ paymentInfo }) => {
             }
             span={3}
           >
-            <div className="withdrawal_display_container">
+            <div className="income_display_container">
               <div>
                 <strong>${formatNumber(incomeDetails.cash)}</strong>
               </div>
               <div>:קעש</div>
             </div>
-            <div className="withdrawal_display_container">
+            <div className="income_display_container">
               <div>
                 <strong>${formatNumber(incomeDetails.checks)}</strong>
               </div>
               <div>:טשעקס</div>
             </div>
-            <div className="withdrawal_display_container">
+            <div className="income_display_container">
               <div>
                 <strong>${formatNumber(incomeDetails.credit_card)}</strong>
               </div>

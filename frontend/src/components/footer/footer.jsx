@@ -7,7 +7,8 @@ const PageFooter = () => (
   <div className="layout">
     <div className="footer_container">
       <Footer className="footer">
-        &copy; {new Date().getFullYear()} Kadishes Yoel KJ. All Rights Reserved.
+        &copy; Copyright {new Date().getFullYear()} Kadishes Yoel KJ. All Rights
+        Reserved.
       </Footer>
     </div>
   </div>

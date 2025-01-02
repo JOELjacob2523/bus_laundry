@@ -1,6 +1,15 @@
 import "./updateZmanInfo.css";
 import React, { useState } from "react";
-import { Button, Divider, Form, Input, Select, Space, Modal } from "antd";
+import {
+  Button,
+  Divider,
+  Form,
+  Input,
+  Select,
+  Space,
+  Modal,
+  message,
+} from "antd";
 import { BsCurrencyDollar } from "react-icons/bs";
 import {
   PlusOutlined,
@@ -79,17 +88,9 @@ const UpdateClosedWeeks = () => {
     try {
       await zmanGoalInfo(values);
       console.log("Zman goal added successfully", values);
-      setTimeout(() => {
-        Modal.success(
-          {
-            title: "Success",
-            content: "Zman goal added successfully",
-            footer: null,
-          },
-          2000
-        );
-      });
-      navigate("/buses");
+      message.success("Zman goal added successfully", 2, () =>
+        navigate("/buses")
+      );
     } catch (error) {
       console.error("Error adding zman goal:", error);
       Modal.error({

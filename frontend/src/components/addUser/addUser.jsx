@@ -37,7 +37,7 @@ const FirstName = ({ handleCancel, onUserAdded }) => {
       onUserAdded(addedUser);
       setResetKey((prevKey) => prevKey + 1);
       handleCancel();
-      message.success("Student added successfully", 1.5);
+      message.success("Student added successfully", 2);
     } catch (error) {
       console.error("Error adding user:", error);
       navigate("/error500");

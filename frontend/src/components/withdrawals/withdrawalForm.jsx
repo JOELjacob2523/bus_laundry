@@ -29,10 +29,13 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const WithdrawalForm = () => {
+const WithdrawalForm = ({ key }) => {
   const [date, setDate] = useState(new Date().toLocaleString());
   const [hebrewDate, setHebrewDate] = useState("");
   const [userId, setUserId] = useState("");
+  const [isvisible, setIsVisible] = useState(null);
+  const [selectedValue, setSelectedValue] = useState("");
+  const [customValue, setCustomValue] = useState("");
 
   const navigate = useNavigate();
 
@@ -51,9 +54,21 @@ const WithdrawalForm = () => {
     updateDates();
   }, []);
 
+  const onSelectChange = (value) => {
+    setSelectedValue(value);
+    setIsVisible(value === "Change");
+  };
+
+  const onInputChange = (e) => {
+    setCustomValue(e.target.value);
+  };
+
   const onFinish = async (values) => {
     try {
-      await withdrawalInfo(values);
+      const valueToSave =
+        selectedValue === "Change" ? customValue : selectedValue;
+      const formData = { ...values, withdrawal_to: valueToSave };
+      await withdrawalInfo(formData);
       message.success("Withdrawal info added successfully", 1.5, () =>
         navigate("/home")
       );
@@ -68,7 +83,8 @@ const WithdrawalForm = () => {
       <Card>
         <Form
           {...layout}
-          key={hebrewDate}
+          // key={hebrewDate}
+          key={key}
           initialValues={{ date, hebrew_date: hebrewDate, user_id: userId }}
           name="nest-messages"
           onFinish={onFinish}
@@ -79,18 +95,20 @@ const WithdrawalForm = () => {
         >
           <Form.Item
             name="amount"
-            label="Amount"
+            label=":סכום"
+            colon={false}
             rules={[
               {
                 required: true,
               },
             ]}
           >
-            <Input prefix={<BsCurrencyDollar />} placeholder="Amount..." />
+            <Input prefix={<BsCurrencyDollar />} placeholder="...סכום" />
           </Form.Item>
           <Form.Item
             name="withdrawal_to"
-            label="Withdrawal to"
+            label=":ארויס פאר"
+            colon={false}
             rules={[
               {
                 required: true,
@@ -103,15 +121,32 @@ const WithdrawalForm = () => {
                 { value: "ספרינטער", label: "ספרינטער" },
                 { value: "קאר/מיני ווען", label: "קאר/מיני ווען" },
                 { value: "וואשן", label: "וואשן" },
+                {
+                  value: "Change",
+                  label: (
+                    <div>
+                      Change:{" "}
+                      <span style={{ fontSize: "10px" }}>
+                        ( שרייב אריין פאר וועם די געלט גייט )
+                      </span>
+                    </div>
+                  ),
+                },
               ]}
-              placeholder="Choose withdrawal to..."
+              onChange={onSelectChange}
               suffixIcon={<IoPersonSharp />}
+              placeholder="...קלויב אויס פאר וועם"
             />
+            {isvisible && (
+              <div style={{ paddingTop: "25px" }}>
+                <Input onChange={onInputChange} placeholder="...ארויס פאר" />
+              </div>
+            )}
           </Form.Item>
-          <Form.Item name="date" label="Date">
+          <Form.Item name="date" label=":דאטום" colon={false}>
             <Input value={date} disabled prefix={<CiCalendarDate />} />
           </Form.Item>
-          <Form.Item name="hebrew_date" label="Hebrew date">
+          <Form.Item name="hebrew_date" label=":אידישע דאטום" colon={false}>
             <Input value={hebrewDate} disabled prefix={<CiCalendarDate />} />
           </Form.Item>
           <Form.Item name="user_id">

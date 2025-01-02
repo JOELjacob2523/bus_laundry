@@ -70,36 +70,6 @@ const StudentBalance = ({ payment }) => {
       (Math.min(currentDate, zmanEnd) - zmanStart) / (7 * 24 * 60 * 60 * 1000)
     );
 
-    // let pastWashCost = 0;
-    // // Calculate costs for wash for the past weeks
-    // for (let i = 0; i < numberOfWeeksPassed; i++) {
-    //   pastWashCost += Number(zmanGoal[0].wash_price) || 0;
-    // }
-
-    // let pastBusCost = 0;
-    // // Calculate costs for bus for the past weeks
-    // zmanGoal[0].closed_weeks.forEach((closedWeek) => {
-    //   const closedDate = new Date(closedWeek.date);
-    //   closedDate.setHours(0, 0, 0, 0);
-
-    //   if (closedDate < currentDate) {
-    //     pastBusCost += Number(zmanGoal[0].bus_price) || 0;
-    //   }
-    // });
-
-    // let totalCost = 0;
-
-    // if (totalPayments === zmanGoal[0].total_wash_goal) {
-    //   totalCost = pastWashCost;
-    // } else if (totalPayments <= zmanGoal[0].total_bus_goal) {
-    //   totalCost = pastBusCost;
-    // } else if (
-    //   totalPayments >= zmanGoal[0].total_wash_goal &&
-    //   totalPayments <= zmanGoal[0].total_bus_goal + zmanGoal[0].total_wash_goal
-    // ) {
-    //   totalCost = pastWashCost + pastBusCost;
-    // }
-
     // Calculate closed bus weeks
     const closedBusWeeks = zmanGoal[0].closed_weeks.filter((closedWeek) => {
       const closedDate = new Date(closedWeek.date);

@@ -37,7 +37,14 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const PaymentOptions = ({ studentId, token, handleCancel }) => {
+const PaymentOptions = ({
+  studentId,
+  token,
+  handleCancel,
+  updatePayment,
+  setIsPaymentModalVisible,
+  setUserPaymentInfo,
+}) => {
   const [form] = Form.useForm();
   const [value, setValue] = useState("bus");
   const [userInfo, setUserInfo] = useState(null);
@@ -76,7 +83,10 @@ const PaymentOptions = ({ studentId, token, handleCancel }) => {
     try {
       const formData = { ...values, payment_type: value };
       await payments(formData);
-      message.success("Payment added successfully", 1.5, () => navigate(0));
+      updatePayment(formData);
+      setIsPaymentModalVisible(false);
+      setUserPaymentInfo(formData);
+      message.success("Payment added successfully", 2);
     } catch (error) {
       console.error("Error adding payment:", error);
       navigate("/error500");

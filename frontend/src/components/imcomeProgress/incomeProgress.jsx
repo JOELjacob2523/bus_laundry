@@ -29,8 +29,8 @@ const IncomeProgress = ({
   const [bus, setBus] = useState(0);
   const [wash, setWash] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
+  const [currentlyEditingId, setCurrentlyEditingId] = useState(null);
 
   const percentage = (currentAmount / goalAmount) * 100;
 
@@ -68,14 +68,15 @@ const IncomeProgress = ({
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  const handleEdit = () => {
-    setIsEditing(true);
+
+  const handleEdit = (withdrawalId) => {
+    setCurrentlyEditingId(withdrawalId);
     setShowButtons(true);
   };
 
   const handleEditCancel = () => {
+    setCurrentlyEditingId(null);
     setShowButtons(false);
-    setIsEditing(false);
   };
 
   return (
@@ -179,8 +180,8 @@ const IncomeProgress = ({
         >
           <WithdrawalsDetials
             handleEdit={handleEdit}
-            isEditing={isEditing}
-            setIsEditing={setIsEditing}
+            currentlyEditingId={currentlyEditingId}
+            setCurrentlyEditingId={setCurrentlyEditingId}
             showButtons={showButtons}
             setShowButtons={setShowButtons}
             handleEditCancel={handleEditCancel}

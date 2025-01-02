@@ -73,7 +73,7 @@ const EditUser = ({
       setModalOpen(false);
       message.success(
         `${userInfo.first_name} ${userInfo.last_name} updated successfully`,
-        1.5
+        2
       );
     } catch (error) {
       console.error("Error updating student:", error);

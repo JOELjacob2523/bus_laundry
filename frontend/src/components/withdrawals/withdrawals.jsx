@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const Withdrawals = () => {
   const [open, setOpen] = useState(false);
+  const [key, setKey] = useState(0);
   const navigate = useNavigate();
 
   const showDrawer = () => {
@@ -19,6 +20,7 @@ const Withdrawals = () => {
   };
   const closeDrawer = () => {
     setOpen(false);
+    setKey(key + 1);
   };
 
   return (
@@ -44,7 +46,7 @@ const Withdrawals = () => {
         footer={null}
         className="withdrawals_drawer"
       >
-        <div className="withdrawal_form">{<WithdrawalForm />}</div>
+        <div className="withdrawal_form">{<WithdrawalForm key={key} />}</div>
       </Drawer>
     </>
   );

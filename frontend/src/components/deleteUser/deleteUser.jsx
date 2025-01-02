@@ -5,9 +5,11 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import { CgDanger } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
 import { deleteUserInfo } from "../../servers/postRequest";
+import { useAuth } from "../AuthProvider/AuthProvider";
 
 const DeleteUser = ({ student }) => {
   const [visible, setVisible] = useState(false);
+  const { authData } = useAuth();
 
   const navigate = useNavigate();
 
@@ -15,13 +17,7 @@ const DeleteUser = ({ student }) => {
     console.log("Delete confirmed for student:", student.student_id);
     try {
       await deleteUserInfo(student.student_id);
-      message.open({
-        title: "success",
-        content: "Student deleted successfully",
-      });
-      setTimeout(() => {
-        navigate(0);
-      }, 2000);
+      message.success("Student deleted successfully", 2, () => navigate(0));
     } catch (error) {
       console.error("Failed to delete student:", error);
       navigate("/error500");
@@ -30,10 +26,12 @@ const DeleteUser = ({ student }) => {
 
   return (
     <div>
-      <RiDeleteBin5Line
-        onClick={() => setVisible(true)}
-        className="delete_icon_outer"
-      />
+      {authData.role === "Administrator" || authData.role === "Super Admin" ? (
+        <RiDeleteBin5Line
+          onClick={() => setVisible(true)}
+          className="delete_icon_outer"
+        />
+      ) : null}
       <Modal
         title={
           <div className="title_header">

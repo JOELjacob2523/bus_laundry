@@ -13,6 +13,8 @@ const UserCardInfo = ({
   showPaymentModal,
   studentId,
   updatePayment,
+  userPaymentInfo,
+  setUserPaymentInfo,
 }) => {
   const { authData } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
@@ -202,6 +204,8 @@ const UserCardInfo = ({
                           student={student}
                           payment={payment}
                           updatePayment={updatePayment}
+                          userPaymentInfo={userPaymentInfo}
+                          setUserPaymentInfo={setUserPaymentInfo}
                         />
                       </div>
                     </div>
