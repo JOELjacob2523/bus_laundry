@@ -84,8 +84,8 @@ const PaymentOptions = ({
       const formData = { ...values, payment_type: value };
       await payments(formData);
       updatePayment(formData);
-      setIsPaymentModalVisible(false);
       setUserPaymentInfo(formData);
+      setIsPaymentModalVisible(false);
       message.success("Payment added successfully", 2);
     } catch (error) {
       console.error("Error adding payment:", error);

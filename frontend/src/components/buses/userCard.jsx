@@ -17,6 +17,7 @@ const UserCard = ({
   isSelected,
   handleCheckboxChange,
   updatePayment,
+  setFilteredUserInfo,
 }) => {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
@@ -90,7 +91,10 @@ const UserCard = ({
           <div className="student_title_container">
             <div className="student_title_delete_options">
               <div>
-                <DeleteUser student={student} />
+                <DeleteUser
+                  student={student}
+                  setFilteredUserInfo={setFilteredUserInfo}
+                />
               </div>
               <div>
                 <Checkbox

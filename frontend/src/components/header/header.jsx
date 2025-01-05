@@ -30,8 +30,8 @@ const PageHeader = () => {
   useEffect(() => {
     if (authData.role === "Administrator") {
       setStatus("Administrator");
-    } else if (authData.role === "Super Admin") {
-      setStatus("Super Admin");
+    } else if (authData.role === "Manager") {
+      setStatus("Manager");
     } else {
       setStatus("User");
     }

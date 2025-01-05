@@ -158,8 +158,7 @@ const EditUserPayment = ({
   return (
     <div className="edit_payment_container">
       <div className="edit_payment_btn_div">
-        {authData.role === "Administrator" ||
-        authData.role === "Super Admin" ? (
+        {authData.role === "Administrator" || authData.role === "Manager" ? (
           <Button type="primary" onClick={handlePaymentEditClick}>
             Edit Payments
           </Button>
@@ -277,84 +276,69 @@ const EditUserPayment = ({
               )}
             </div>
           </div>
+
           {isEditingPayment ? (
             <div className="edit_user_form_item_container">
               {value === "bus" || value === "bus_wash" ? (
                 <div>
                   <div>Bus Amount:</div>
-                  <div>
-                    <Form.Item
-                      name="bus_amount"
-                      rules={[
-                        { required: value === "bus" || value === "bus_wash" },
-                      ]}
-                    >
-                      <Input
-                        placeholder="Enter bus amount..."
-                        style={{ width: "200px" }}
-                      />
-                    </Form.Item>
-                  </div>
+                  <Form.Item
+                    name="bus_amount"
+                    rules={[
+                      { required: value === "bus" || value === "bus_wash" },
+                    ]}
+                  >
+                    <Input
+                      placeholder="Enter bus amount..."
+                      style={{ width: "200px" }}
+                    />
+                  </Form.Item>
+                </div>
+              ) : null}
+
+              {value === "wash" || value === "bus_wash" ? (
+                <div>
+                  <div>Wash Amount:</div>
+                  <Form.Item
+                    name="wash_amount"
+                    rules={[
+                      { required: value === "wash" || value === "bus_wash" },
+                    ]}
+                  >
+                    <Input
+                      placeholder="Enter wash amount..."
+                      style={{ width: "200px" }}
+                    />
+                  </Form.Item>
                 </div>
               ) : null}
             </div>
           ) : (
             <div className="edit_user_form_item_container">
-              {aggregatedPayment.bus_amount > 0 ? (
+              {aggregatedPayment.bus_amount > 0 && (
                 <div>
                   <div>Bus Amount:</div>
                   <Input
-                    value={
-                      aggregatedPayment.bus_amount
-                        ? `$${aggregatedPayment.bus_amount.toFixed(2)}`
-                        : "N/A"
-                    }
+                    value={`$${aggregatedPayment.bus_amount.toFixed(2)}`}
                     disabled
                     style={{ width: "200px" }}
                   />
                 </div>
-              ) : null}
-            </div>
-          )}
-          {isEditingPayment ? (
-            <div>
-              {value === "wash" || value === "bus_wash" ? (
-                <div className="edit_user_form_item_container">
-                  <div>Wash Amount:</div>
-                  <div>
-                    <Form.Item
-                      name="wash_amount"
-                      rules={[
-                        { required: value === "wash" || value === "bus_wash" },
-                      ]}
-                    >
-                      <Input
-                        placeholder="Enter wash amount..."
-                        style={{ width: "200px" }}
-                      />
-                    </Form.Item>
-                  </div>
-                </div>
-              ) : null}
-            </div>
-          ) : (
-            <div className="edit_user_form_item_container">
-              {aggregatedPayment.wash_amount > 0 ? (
+              )}
+
+              {aggregatedPayment.wash_amount > 0 && (
                 <div>
                   <div>Wash Amount:</div>
                   <Input
-                    value={
-                      aggregatedPayment.wash_amount
-                        ? `$${aggregatedPayment.wash_amount.toFixed(2)}`
-                        : "N/A"
-                    }
+                    value={`$${aggregatedPayment.wash_amount.toFixed(2)}`}
                     disabled
                     style={{ width: "200px" }}
                   />
                 </div>
-              ) : null}
+              )}
             </div>
           )}
+
           <div className="edit_user_form_item_container">
             <div>Date Created:</div>
             <div>
@@ -391,7 +375,11 @@ const EditUserPayment = ({
             <Form.Item className="edit_user_form_btns">
               <div>
                 <Button onClick={handlePaymentEditCancel}>Cancel</Button>
-                <Button type="primary" htmlType="submit" loading={loading}>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  // loading={loading}
+                >
                   Save
                 </Button>
               </div>

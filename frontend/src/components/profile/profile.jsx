@@ -113,6 +113,7 @@ const Profile = ({ userInfo, setUserInfo, authData, setStatus }) => {
     setIsModalOpen(false);
     setModalType("");
     setIsDisabled(true);
+    setKey(key + 1);
   };
 
   const handleEditUserProfile = () => {
@@ -161,7 +162,6 @@ const Profile = ({ userInfo, setUserInfo, authData, setStatus }) => {
         onOk={handleOk}
         onCancel={handleCancel}
         footer={null}
-        key={key}
       >
         {modalType === "profile" ? (
           <div>
@@ -172,6 +172,7 @@ const Profile = ({ userInfo, setUserInfo, authData, setStatus }) => {
                   validateMessages={validateMessages}
                   initialValues={userInfo}
                   onFinish={onFinish}
+                  key={key}
                 >
                   <div className="edit_profile_btn">
                     <Button onClick={handleEditUserProfile}>
@@ -274,7 +275,7 @@ const Profile = ({ userInfo, setUserInfo, authData, setStatus }) => {
                               disabled={!isVerified}
                             >
                               <Radio value="Administrator">Administrator</Radio>
-                              <Radio value="Super Admin">Super Admin</Radio>
+                              <Radio value="Manager">Manager</Radio>
                               <Radio value="User">User</Radio>
                             </Radio.Group>
                           ) : (

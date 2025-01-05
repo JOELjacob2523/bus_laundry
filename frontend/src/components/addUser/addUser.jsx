@@ -27,7 +27,7 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const FirstName = ({ handleCancel, onUserAdded }) => {
+const AddUserForm = ({ handleCancel, onUserAdded }) => {
   const [resetKey, setResetKey] = useState(0);
   const navigate = useNavigate();
 
@@ -57,7 +57,8 @@ const FirstName = ({ handleCancel, onUserAdded }) => {
       >
         <Form.Item
           name="first_name"
-          label="First Name"
+          label=":ערשטע נאמען"
+          colon={false}
           rules={[
             {
               required: true,
@@ -68,7 +69,8 @@ const FirstName = ({ handleCancel, onUserAdded }) => {
         </Form.Item>
         <Form.Item
           name="last_name"
-          label="Last Name"
+          label=":לעצטע נאמען"
+          colon={false}
           rules={[
             {
               required: true,
@@ -79,7 +81,8 @@ const FirstName = ({ handleCancel, onUserAdded }) => {
         </Form.Item>
         <Form.Item
           name="age"
-          label="Age"
+          label=":יארגאנג"
+          colon={false}
           rules={[
             {
               required: true,
@@ -92,36 +95,39 @@ const FirstName = ({ handleCancel, onUserAdded }) => {
               { value: "'שיעור א", label: "'שיעור א" },
               { value: "'שיעור ב", label: "'שיעור ב" },
             ]}
-            placeholder="Choose age..."
+            placeholder="...יארגאנג"
           />
         </Form.Item>
         <Form.Item
           name="address1"
-          label="Address 1"
+          label=":אדרעסס 1"
+          colon={false}
           rules={[
             {
               required: true,
             },
           ]}
         >
-          <Input placeholder="... אדרעסס" />
+          <Input placeholder="... אדרעסס 1" />
         </Form.Item>
 
         <Form.Item
           name="address2"
-          label="Address 2"
+          label=":2 אדרעסס"
+          colon={false}
           rules={[
             {
               // required: true,
             },
           ]}
         >
-          <Input placeholder="... צווייטע אדרעסס" />
+          <Input placeholder="... אדרעסס 2" />
         </Form.Item>
 
         <Form.Item
           name="city"
-          label="City"
+          label=":סיטי"
+          colon={false}
           rules={[
             {
               required: true,
@@ -133,7 +139,8 @@ const FirstName = ({ handleCancel, onUserAdded }) => {
 
         <Form.Item
           name="state"
-          label="State"
+          label=":שטאט"
+          colon={false}
           rules={[
             {
               min: 0,
@@ -147,7 +154,8 @@ const FirstName = ({ handleCancel, onUserAdded }) => {
 
         <Form.Item
           name="zip_code"
-          label="Zip Code"
+          label=":זיפ קאוד"
+          colon={false}
           rules={[
             {
               required: true,
@@ -159,10 +167,11 @@ const FirstName = ({ handleCancel, onUserAdded }) => {
 
         <Form.Item
           name="phone"
-          label="Phone Number"
+          label=":טעל. נומער"
+          colon={false}
           rules={[
             {
-              // required: true,
+              required: true,
             },
           ]}
         >
@@ -187,4 +196,4 @@ const FirstName = ({ handleCancel, onUserAdded }) => {
   );
 };
 
-export default FirstName;
+export default AddUserForm;

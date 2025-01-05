@@ -145,7 +145,7 @@ const Buses = () => {
                   fontFamily: "OYoelTovia",
                 }}
               >
-                ~ עס זענען איינגעשריבן {userInfo.length} בחורים ~
+                ~ עס זענען איינגעשריבן {filteredUserInfo.length} בחורים ~
               </Title>
             </div>
             <div className="top_pagination">
@@ -206,6 +206,7 @@ const Buses = () => {
                       updatePayment={updatePayment}
                       isSelected={selectedUsers.includes(student.student_id)}
                       handleCheckboxChange={handleCheckboxChange}
+                      setFilteredUserInfo={setFilteredUserInfo}
                     />
                   </Col>
                 ))}

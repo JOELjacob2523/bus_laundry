@@ -22,6 +22,7 @@ function App() {
               <Route path="details" element={<Details />} />
               <Route path="buses" element={<Buses />} />
               <Route path="old_data" element={<MainOldDataPage />} />
+              <Route path="signup" element={<UserSignup />} />
               <Route path="error500" element={<Error500 />} />
             </Route>
             <Route path="/signup" element={<UserSignup />} />

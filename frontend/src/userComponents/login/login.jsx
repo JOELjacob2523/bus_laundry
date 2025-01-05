@@ -2,7 +2,17 @@ import "./login.css";
 import React, { useState } from "react";
 import { TbPasswordUser } from "react-icons/tb";
 import { MdOutlineEmail } from "react-icons/md";
-import { Button, Card, Form, Input, Modal, Spin, Watermark, Flex } from "antd";
+import {
+  Button,
+  Card,
+  Form,
+  Input,
+  Modal,
+  Spin,
+  Watermark,
+  Flex,
+  Checkbox,
+} from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../servers/userRequests/postUserRequest";
 import ErrorLogin from "../errorAlert/errorLogin";
@@ -93,7 +103,7 @@ const UserLogin = () => {
                   },
                 ]}
               >
-                <Input prefix={<MdOutlineEmail />} />
+                <Input prefix={<MdOutlineEmail />} placeholder="Email..." />
               </Form.Item>
               <Form.Item
                 name="password"
@@ -106,7 +116,10 @@ const UserLogin = () => {
                 ]}
                 hasFeedback
               >
-                <Input.Password prefix={<TbPasswordUser />} />
+                <Input.Password
+                  prefix={<TbPasswordUser />}
+                  placeholder="Password..."
+                />
               </Form.Item>
 
               <Form.Item>
@@ -132,10 +145,10 @@ const UserLogin = () => {
                   >
                     Login
                   </Button>
-                  <div className="signup_link">
+                  {/* <div className="signup_link">
                     Dont have an account?{" "}
                     <Link to="/signup">Register now!</Link>
-                  </div>
+                  </div> */}
                 </div>
               </Form.Item>
             </Form>

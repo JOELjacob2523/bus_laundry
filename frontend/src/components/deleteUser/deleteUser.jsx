@@ -7,17 +7,19 @@ import { useNavigate } from "react-router-dom";
 import { deleteUserInfo } from "../../servers/postRequest";
 import { useAuth } from "../AuthProvider/AuthProvider";
 
-const DeleteUser = ({ student }) => {
+const DeleteUser = ({ student, setFilteredUserInfo }) => {
   const [visible, setVisible] = useState(false);
   const { authData } = useAuth();
 
   const navigate = useNavigate();
 
   const handleDelete = async () => {
-    console.log("Delete confirmed for student:", student.student_id);
     try {
       await deleteUserInfo(student.student_id);
-      message.success("Student deleted successfully", 2, () => navigate(0));
+      setFilteredUserInfo((prev) =>
+        prev.filter((user) => user.student_id !== student.student_id)
+      );
+      message.success("Student deleted successfully", 2);
     } catch (error) {
       console.error("Failed to delete student:", error);
       navigate("/error500");
@@ -26,7 +28,7 @@ const DeleteUser = ({ student }) => {
 
   return (
     <div>
-      {authData.role === "Administrator" || authData.role === "Super Admin" ? (
+      {authData.role === "Administrator" || authData.role === "Manager" ? (
         <RiDeleteBin5Line
           onClick={() => setVisible(true)}
           className="delete_icon_outer"
@@ -42,10 +44,10 @@ const DeleteUser = ({ student }) => {
         onCancel={() => setVisible(false)}
         footer={[
           <Button key="cancel" onClick={() => setVisible(false)}>
-            Cancel
+            גיי צוריק
           </Button>,
           <Button key="delete" type="primary" danger onClick={handleDelete}>
-            Delete
+            מעק אויס
           </Button>,
         ]}
       >

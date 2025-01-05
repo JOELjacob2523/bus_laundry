@@ -2,7 +2,7 @@ import "./addUser.css";
 import React, { useRef, useState } from "react";
 import { Button, Modal } from "antd";
 import Draggable from "react-draggable";
-import FirstName from "./addUser";
+import AddUserForm from "./addUser";
 
 const AddUser = ({ onUserAdded }) => {
   const [open, setOpen] = useState(false);
@@ -45,7 +45,7 @@ const AddUser = ({ onUserAdded }) => {
     <>
       <div className="add_btn_container">
         <Button type="primary" className="add_btn" onClick={showModal}>
-          Add New User
+          לייג צו א בחור
         </Button>
       </div>
       <Modal
@@ -63,11 +63,8 @@ const AddUser = ({ onUserAdded }) => {
             onMouseOut={() => {
               setDisabled(true);
             }}
-            onFocus={() => {}}
-            onBlur={() => {}}
-            // end
           >
-            Add User
+            לייג צו א בחור
           </div>
         }
         open={open}
@@ -85,7 +82,7 @@ const AddUser = ({ onUserAdded }) => {
         )}
         footer={null}
       >
-        <FirstName handleCancel={handleCancel} onUserAdded={onUserAdded} />
+        <AddUserForm handleCancel={handleCancel} onUserAdded={onUserAdded} />
       </Modal>
     </>
   );

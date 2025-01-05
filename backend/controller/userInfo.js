@@ -24,7 +24,14 @@ module.exports = {
 };
 
 // create user
-async function createUser(first_name, last_name, email, password) {
+async function createUser(
+  first_name,
+  last_name,
+  email,
+  password,
+  parent_admin_id
+) {
+  // Check if email already exists
   const user = await knex("users").where("email", email).first();
   if (user) {
     throw new Error("Username already exists");
@@ -38,6 +45,7 @@ async function createUser(first_name, last_name, email, password) {
     email: email,
     password: hashedPassword,
     role: "User",
+    parent_admin_id: parent_admin_id,
   };
   const token = jwt.sign(payload, SECRET_KEY);
   await knex("users").insert({
@@ -47,6 +55,7 @@ async function createUser(first_name, last_name, email, password) {
     password: hashedPassword,
     token,
     role: "User",
+    parent_admin_id,
   });
 }
 
@@ -144,8 +153,16 @@ async function getStudentLoginInfo(id) {
 }
 
 async function updateUserProfile(profileInfo) {
-  const { user_id, first_name, last_name, email, password, token, role } =
-    profileInfo;
+  const {
+    user_id,
+    first_name,
+    last_name,
+    email,
+    password,
+    token,
+    role,
+    parent_admin_id,
+  } = profileInfo;
 
   const user = await knex("users").where("user_id", user_id).first();
 
@@ -162,14 +179,17 @@ async function updateUserProfile(profileInfo) {
   const newRole =
     role !== undefined && role !== null && role !== "" ? role : user.role;
 
-  return knex("users").where("user_id", user_id).update({
-    first_name,
-    last_name,
-    email,
-    password: newHashedPassword,
-    token,
-    role: newRole,
-  });
+  return knex("users")
+    .where("user_id", user_id)
+    .update({
+      first_name,
+      last_name,
+      email,
+      password: newHashedPassword,
+      token,
+      role: newRole,
+      parent_admin_id: newRole === "Administrator" ? null : parent_admin_id,
+    });
 }
 
 async function verifyAdminPassword(inputPassword) {

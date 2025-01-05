@@ -11,9 +11,9 @@
     align-items: center;
 }
 
-/* .user_info_main_container{
-    padding: 0px 15px 0px 15px;
-} */
+.user_info_main_container{
+    padding-top: 25px;
+}
 
 .user_info_options_btn_container{
     display: flex;

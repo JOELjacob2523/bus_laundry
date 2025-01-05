@@ -1,12 +1,13 @@
 import "./sidebar.css";
 import React, { useState } from "react";
-import items from "./sideBarItems";
+import Items from "./sideBarItems";
 import Sider from "antd/es/layout/Sider";
 import { Menu } from "antd";
 import { Link, NavLink } from "react-router-dom";
 
 const Sidebar = () => {
   const [selectedItem, setSelectedItem] = useState(null);
+  const items = Items();
 
   const onItemClick = (key) => {
     setSelectedItem(key);

@@ -136,32 +136,40 @@ const UserCardInfo = ({
         footer={null}
       >
         <div>
-          <Divider></Divider>
-          {authData.role === "Administrator" ||
-          authData.role === "Super Admin" ? (
-            <div className="user_info_options_btn_container">
-              <div className="user_info_options_btn">
-                <Button type="primary" onClick={handleEditClick}>
-                  Edit User
-                </Button>
-              </div>
-              {aggregatedPayment.total_paid > 0 ? null : (
+          {(authData.role === "Administrator" ||
+            authData.role === "Manager") && (
+            <div>
+              <Divider></Divider>
+              <div className="user_info_options_btn_container">
                 <div className="user_info_options_btn">
-                  <Button type="primary" onClick={() => showPaymentModal()}>
-                    Make a payment
+                  <Button type="primary" onClick={handleEditClick}>
+                    טויש אינפארמאציע
                   </Button>
                 </div>
-              )}
+                {aggregatedPayment.total_paid > 0 ? null : (
+                  <div className="user_info_options_btn">
+                    <Button type="primary" onClick={() => showPaymentModal()}>
+                      לייג אריין א פעימענט
+                    </Button>
+                  </div>
+                )}
 
-              <div className="user_info_options_btn">
-                <Button type="primary" onClick={creditCardPay}>
-                  Pay with CC
-                </Button>
+                <div className="user_info_options_btn">
+                  <Button type="primary" onClick={creditCardPay}>
+                    באצאל מיט קרעדיט קארד
+                  </Button>
+                </div>
               </div>
+              <Divider></Divider>
             </div>
-          ) : null}
-          <Divider></Divider>
-          <div className="user_info_main_container">
+          )}
+          <div
+            className={
+              authData.role === "Administrator" || authData.role === "Manager"
+                ? ""
+                : "user_info_main_container"
+            }
+          >
             <EditUser
               studentId={studentId}
               student={student}

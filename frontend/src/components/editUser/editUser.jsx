@@ -6,6 +6,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { CiCalendarDate } from "react-icons/ci";
 import { GiRotaryPhone } from "react-icons/gi";
+import { PiCityLight } from "react-icons/pi";
+import { FaMapMarkerAlt, FaCity } from "react-icons/fa";
 
 const layout = {
   labelCol: {
@@ -107,7 +109,9 @@ const EditUser = ({
           <Input />
         </Form.Item>
         <div>
-          <div>Address 1:</div>
+          <div style={{ textAlign: "right", paddingRight: "5px" }}>
+            :אדרעסס 1
+          </div>
           <div>
             <Form.Item
               name="address1"
@@ -117,20 +121,30 @@ const EditUser = ({
                 },
               ]}
             >
-              <Input disabled={disabled} style={{ width: "300px" }} />
+              <Input
+                disabled={disabled}
+                style={{ width: "300px" }}
+                prefix={<FaMapMarkerAlt />}
+              />
             </Form.Item>
           </div>
         </div>
         <div>
-          <div>Address 2:</div>
+          <div style={{ textAlign: "right", paddingRight: "5px" }}>
+            :אדרעסס 2
+          </div>
           <div>
             <Form.Item name="address2">
-              <Input style={{ width: "315px" }} disabled={disabled} />
+              <Input
+                style={{ width: "315px" }}
+                disabled={disabled}
+                prefix={<FaMapMarkerAlt />}
+              />
             </Form.Item>
           </div>
         </div>
         <div>
-          <div>City:</div>
+          <div style={{ textAlign: "right", paddingRight: "5px" }}>:סיטי</div>
           <div>
             <Form.Item
               name="city"
@@ -140,12 +154,16 @@ const EditUser = ({
                 },
               ]}
             >
-              <Input disabled={disabled} style={{ width: "200px" }} />
+              <Input
+                disabled={disabled}
+                style={{ width: "200px" }}
+                prefix={<PiCityLight />}
+              />
             </Form.Item>
           </div>
         </div>
         <div>
-          <div>State:</div>
+          <div style={{ textAlign: "right", paddingRight: "5px" }}>:שטאט</div>
           <div>
             <Form.Item
               name="state"
@@ -157,12 +175,18 @@ const EditUser = ({
                 },
               ]}
             >
-              <Input disabled={disabled} style={{ width: "200px" }} />
+              <Input
+                disabled={disabled}
+                style={{ width: "200px" }}
+                prefix={<FaCity />}
+              />
             </Form.Item>
           </div>
         </div>
         <div>
-          <div>Zip Code:</div>
+          <div style={{ textAlign: "right", paddingRight: "5px" }}>
+            :זיפ קאוד
+          </div>
           <div>
             <Form.Item
               name="zip_code"
@@ -172,12 +196,18 @@ const EditUser = ({
                 },
               ]}
             >
-              <Input disabled={disabled} style={{ width: "200px" }} />
+              <Input
+                disabled={disabled}
+                style={{ width: "200px" }}
+                prefix={<FaMapMarkerAlt />}
+              />
             </Form.Item>
           </div>
         </div>
         <div>
-          <div>Age:</div>
+          <div style={{ textAlign: "right", paddingRight: "5px" }}>
+            :יארגאנג
+          </div>
           <div>
             <Form.Item name="age">
               {isEditing ? (
@@ -197,7 +227,9 @@ const EditUser = ({
           </div>
         </div>
         <div>
-          <div>Phone Number:</div>
+          <div style={{ textAlign: "right", paddingRight: "5px" }}>
+            :טעל. נומער
+          </div>
           <div>
             {!isEditing ? (
               <Input
@@ -220,7 +252,7 @@ const EditUser = ({
           </div>
         </div>
         <div>
-          <div>Date Created:</div>
+          <div style={{ textAlign: "right", paddingRight: "5px" }}>:דאטום</div>
           <div>
             <Input
               value={
