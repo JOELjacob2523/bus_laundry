@@ -89,7 +89,7 @@ const MainPage2 = ({ cityCounts }) => {
     fetchNextSedra();
   }, [zmanGoal]);
 
-  if (!userInfo || !zmanGoal) {
+  if (!userInfo || !zmanGoal || !cityCounts) {
     return (
       <div>
         <Flex align="center" gap="middle">

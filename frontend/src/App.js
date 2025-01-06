@@ -9,6 +9,7 @@ import Buses from "./components/buses/buses";
 import Details from "./components/details/details";
 import MainOldDataPage from "./oldDataComponents/mainOldDataPage/mainOldDataPage";
 import { AuthProvider } from "./components/AuthProvider/AuthProvider";
+import Sidebar from "./components/sidebar/sidebar";
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
         <AuthProvider>
           <Routes>
             <Route path="/" element={<UserLogin />} />
-            <Route path="home" element={<StudentApp />}>
+            {/* <Route path="home" element={<StudentApp />}> */}
+            <Route path="home" element={<Sidebar />}>
               <Route index element={<CityTotal />} />
               <Route path="details" element={<Details />} />
               <Route path="buses" element={<Buses />} />

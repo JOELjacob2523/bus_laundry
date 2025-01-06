@@ -132,7 +132,7 @@ const Profile = ({ userInfo, setUserInfo, authData, setStatus }) => {
       showModal("profile");
     } else if (e.key === "2") {
       showModal("settings");
-    }
+    } else if (e.key === "3") navigate("/");
   };
 
   const toggleDarkMode = () => {
@@ -153,7 +153,7 @@ const Profile = ({ userInfo, setUserInfo, authData, setStatus }) => {
           placement="bottomLeft"
           className="dropdown"
         >
-          <Avatar size={48} icon={<UserOutlined />} className="profile" />
+          <Avatar size={36} icon={<UserOutlined />} className="profile" />
         </Dropdown>
       </div>
       <Modal

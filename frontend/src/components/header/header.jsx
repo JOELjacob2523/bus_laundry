@@ -39,11 +39,6 @@ const PageHeader = () => {
 
   return (
     <div className="header_container">
-      <div className="KY_symbol_container">
-        <a href="http://localhost:3000/" className="KY_symbol_container">
-          <img className="KY_symbol_img" alt="KYSymbol" src={KYSymbol} />
-        </a>
-      </div>
       <div className="hebrew_date">
         <HebrewDate />
       </div>
@@ -52,7 +47,9 @@ const PageHeader = () => {
           <div>
             Hello, {authData.first_name} {authData.last_name}
           </div>
-          <div>Status: {status}</div>
+          {/* <div>
+            {authData.first_name} {authData.last_name}
+          </div> */}
         </div>
         <Profile
           userInfo={userInfo}

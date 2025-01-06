@@ -1,17 +1,23 @@
-.sider_container{
-    display: flex;
+.sidebar_header{
     position: sticky;
     top: 0;
-    flex: 0 0 250px;
-    background-color: aliceblue;
-    filter: drop-shadow(3px 0 3px gray);
+    z-index: 1;
+    background-color: lightgray;
+    padding-top: 20px;
+    min-height: 100px;
 }
 
-.sider{
+.demo-logo-vertical{
+    padding-top: 20px;
+}
+
+.sidebar_collapse_container{
+    cursor: pointer;
+    padding: 10px 16px;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    position: absolute;
+    bottom: 0;
     width: 100%;
-}
-
-.sidebar_menu{
-    width: 250px;
-    background-color: aliceblue;
 }

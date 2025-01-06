@@ -3,6 +3,10 @@
   flex-direction: column;
 }
 
+.profile{
+  background-color: gray;
+}
+
 .edit_profile_btn{
   display: flex;
   justify-content: flex-start;

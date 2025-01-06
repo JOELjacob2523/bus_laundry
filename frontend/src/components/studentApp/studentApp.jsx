@@ -8,9 +8,9 @@ import PageFooter from "../footer/footer";
 const StudentApp = () => {
   return (
     <div className="main_root_container">
-      <div className="page_header">
+      {/* <div className="page_header">
         <PageHeader />
-      </div>
+      </div> */}
       <div className="sidebar">
         <Sidebar />
         <div className="main_page_container">
@@ -18,9 +18,9 @@ const StudentApp = () => {
         </div>
       </div>
 
-      <div className="footer">
+      {/* <div className="footer">
         <PageFooter />
-      </div>
+      </div> */}
     </div>
   );
 };

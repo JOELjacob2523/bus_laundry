@@ -1,40 +1,131 @@
 import "./sidebar.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../AuthProvider/AuthProvider";
 import Items from "./sideBarItems";
-import Sider from "antd/es/layout/Sider";
-import { Menu } from "antd";
-import { Link, NavLink } from "react-router-dom";
+import { Layout, Menu, theme } from "antd";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import PageHeader from "../header/header";
+import { Outlet, NavLink } from "react-router-dom";
+const { Header, Content, Footer, Sider } = Layout;
 
 const Sidebar = () => {
+  const [collapsed, setCollapsed] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [footerMessage, setFooterMessage] = useState("");
   const items = Items();
+  const { authData } = useAuth();
 
   const onItemClick = (key) => {
     setSelectedItem(key);
   };
 
+  useEffect(() => {
+    if (authData.role === "Administrator") {
+      setFooterMessage(
+        <div>
+          You are currently logged in as <strong>{authData.role}</strong>. If
+          you are an admin, you can manage students and users.
+        </div>
+      );
+    } else if (authData.role === "Manager") {
+      setFooterMessage(
+        <div>
+          You are currently logged in as <strong>{authData.role}</strong>. You
+          can view your profile and details and manage students.
+        </div>
+      );
+    } else {
+      setFooterMessage(
+        <div>
+          You are currently logged in as <strong>{authData.role}</strong>. You
+          can view your profile and details.
+        </div>
+      );
+    }
+  }, [authData.role]);
+
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
+
   return (
-    <div className="sider_container">
-      <Sider className="sider">
-        <Menu
-          className="sidebar_menu"
-          mode="inline"
-          defaultSelectedKeys={["1"]}
-          onSelect={({ key }) => onItemClick(key)}
+    <Layout
+    // style={{
+    //   minHeight: "100vh",
+    // }}
+    >
+      <Header className="sidebar_header">
+        <PageHeader />
+      </Header>
+      <Layout>
+        <Sider
+          trigger={null}
+          collapsible
+          collapsed={collapsed}
+          onCollapse={(value) => setCollapsed(value)}
+          style={{ position: "relative" }}
         >
-          {items.map((item) => (
-            <Menu.Item key={item.key} icon={item.icon}>
-              <NavLink to={item.path} style={{ textDecoration: "none" }}>
-                {item.label}
-              </NavLink>
-            </Menu.Item>
-          ))}
-        </Menu>
-      </Sider>
-      {selectedItem &&
-        items.find((item) => item.key === selectedItem)?.component}
-    </div>
+          <div className="demo-logo-vertical" />
+          <Menu
+            theme="dark"
+            mode="inline"
+            defaultSelectedKeys={["1"]}
+            onSelect={({ key }) => onItemClick(key)}
+          >
+            {items.map((item) => (
+              <Menu.Item key={item.key} icon={item.icon}>
+                <NavLink to={item.path} style={{ textDecoration: "none" }}>
+                  {item.label}
+                </NavLink>
+              </Menu.Item>
+            ))}
+          </Menu>
+          <div
+            onClick={() => setCollapsed(!collapsed)}
+            className="sidebar_collapse_container"
+          >
+            {collapsed ? <IoIosArrowForward /> : <IoIosArrowBack />}
+          </div>
+        </Sider>
+        <Layout>
+          <Content
+            style={{
+              margin: "0 16px",
+            }}
+          >
+            <div
+              style={{
+                padding: 24,
+                minHeight: 700,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                background: colorBgContainer,
+                borderRadius: borderRadiusLG,
+              }}
+            >
+              <Outlet />
+            </div>
+            {/* {selectedItem &&
+            items.find((item) => item.key === selectedItem)?.component} */}
+          </Content>
+        </Layout>
+      </Layout>
+      <Layout>
+        <Footer
+          style={{
+            textAlign: "center",
+            backgroundColor: "lightgray",
+          }}
+        >
+          <div>{footerMessage}</div>
+          <div>
+            &copy; Copyright {new Date().getFullYear()} Kadishes Yoel KJ. All
+            Rights Reserved.
+          </div>
+        </Footer>
+      </Layout>
+    </Layout>
   );
 };
-
 export default Sidebar;

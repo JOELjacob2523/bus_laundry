@@ -1,9 +1,11 @@
 import { TbWashMachine, TbBus, TbListDetails } from "react-icons/tb";
 import { AiFillDatabase } from "react-icons/ai";
+import KYSymbol from "../../images/KYSymbol.png";
 import { IoHome } from "react-icons/io5";
 import { UserOutlined } from "@ant-design/icons";
 import { useAuth } from "../AuthProvider/AuthProvider";
 import { useMemo } from "react";
+import { Divider } from "antd";
 
 const Items = () => {
   const { authData } = useAuth();
@@ -39,7 +41,7 @@ const Items = () => {
     if (authData.role === "Administrator") {
       baseItems.push({
         key: "5",
-        label: "Uaer לייג צו א",
+        label: "User לייג צו א",
         icon: <UserOutlined />,
         path: "signup",
       });
