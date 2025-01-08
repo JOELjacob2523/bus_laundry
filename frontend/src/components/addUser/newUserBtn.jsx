@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import { Button, Modal } from "antd";
 import Draggable from "react-draggable";
 import AddUserForm from "./addUser";
+import { useAuth } from "../AuthProvider/AuthProvider";
 
 const AddUser = ({ onUserAdded }) => {
   const [open, setOpen] = useState(false);
@@ -14,6 +15,7 @@ const AddUser = ({ onUserAdded }) => {
     right: 0,
   });
   const draggleRef = useRef(null);
+  const { authData } = useAuth();
 
   const showModal = () => {
     setOpen(true);
@@ -82,7 +84,11 @@ const AddUser = ({ onUserAdded }) => {
         )}
         footer={null}
       >
-        <AddUserForm handleCancel={handleCancel} onUserAdded={onUserAdded} />
+        <AddUserForm
+          handleCancel={handleCancel}
+          onUserAdded={onUserAdded}
+          authData={authData}
+        />
       </Modal>
     </>
   );

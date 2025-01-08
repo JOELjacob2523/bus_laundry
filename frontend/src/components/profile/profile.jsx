@@ -30,7 +30,13 @@ const validateMessages = {
 };
 /* eslint-disable no-template-curly-in-string */
 
-const Profile = ({ userInfo, setUserInfo, authData, setStatus }) => {
+const Profile = ({
+  userInfo,
+  setUserInfo,
+  authData,
+  setAuthData,
+  setStatus,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
@@ -65,6 +71,7 @@ const Profile = ({ userInfo, setUserInfo, authData, setStatus }) => {
       setIsDisabled(true);
       setShowButtons(false);
       setIsModalOpen(false);
+      setAuthData((prev) => ({ ...prev, ...formData }));
       message.success("User updated successfully", 2);
     } catch (error) {
       console.error("Error updating student:", error);
@@ -184,6 +191,7 @@ const Profile = ({ userInfo, setUserInfo, authData, setStatus }) => {
                       <Form.Item name="user_id" hidden={true}>
                         <Input />
                       </Form.Item>
+
                       <div>First Name:</div>
                       <div className="profile_input">
                         <Form.Item
@@ -198,6 +206,7 @@ const Profile = ({ userInfo, setUserInfo, authData, setStatus }) => {
                         </Form.Item>
                       </div>
                     </div>
+
                     <div className="profile_data_container">
                       <div>Last Name:</div>
                       <div className="profile_input">
@@ -213,6 +222,7 @@ const Profile = ({ userInfo, setUserInfo, authData, setStatus }) => {
                         </Form.Item>
                       </div>
                     </div>
+
                     <div className="profile_data_container">
                       <div>Password:</div>
                       <div className="profile_input">
@@ -244,6 +254,23 @@ const Profile = ({ userInfo, setUserInfo, authData, setStatus }) => {
                         </Form.Item>
                       </div>
                     </div>
+
+                    <div className="profile_data_container">
+                      <div>Yeshiva:</div>
+                      <div className="profile_input">
+                        <Form.Item
+                          name="yeshiva"
+                          rules={[
+                            {
+                              required: true,
+                            },
+                          ]}
+                        >
+                          <Input disabled={isDisabled} />
+                        </Form.Item>
+                      </div>
+                    </div>
+
                     {isDisabled && (
                       <div className="profile_data_container">
                         <div>Role:</div>
@@ -262,6 +289,7 @@ const Profile = ({ userInfo, setUserInfo, authData, setStatus }) => {
                       </div>
                     )}
                   </div>
+
                   {showButtons && (
                     <div>
                       <div className="profile_role_container">

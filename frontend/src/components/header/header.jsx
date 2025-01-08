@@ -8,7 +8,7 @@ import { useAuth } from "../AuthProvider/AuthProvider";
 import Profile from "../profile/profile";
 
 const PageHeader = () => {
-  const { authData } = useAuth();
+  const { authData, setAuthData } = useAuth();
   const [userInfo, setUserInfo] = useState("");
   const [status, setStatus] = useState("");
 
@@ -39,23 +39,35 @@ const PageHeader = () => {
 
   return (
     <div className="header_container">
+      <div className="header_yeshiva_container">
+        <div
+          className="header_yeshive_inner"
+          style={{ fontFamily: "OYoelTovia" }}
+        >
+          ביזט איינגעשריבן פאר ישיבה
+        </div>
+        <div
+          className="header_yeshive_name"
+          style={{ fontFamily: "OYoelToviaBold" }}
+        >
+          "{authData.yeshiva}"
+        </div>
+      </div>
       <div className="hebrew_date">
         <HebrewDate />
       </div>
       <div className="profile_container">
         <div className="profile_info">
           <div>
-            Hello, {authData.first_name} {authData.last_name}
+            {authData.first_name} {authData.last_name} ,א גוטן
           </div>
-          {/* <div>
-            {authData.first_name} {authData.last_name}
-          </div> */}
         </div>
         <Profile
           userInfo={userInfo}
           setUserInfo={setUserInfo}
           authData={authData}
           setStatus={setStatus}
+          setAuthData={setAuthData}
         />
       </div>
     </div>

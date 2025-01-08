@@ -5,12 +5,12 @@
     /* height: 100vh; */
 }
 
-.signup_card_container{
+/* .signup_card_container{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
-}
+} */
 
 .KY_letterhead_img_container_signup{
     display: flex;
@@ -18,8 +18,13 @@
 }
 
 .signup_card{
-    width: 80%;
-    padding-top: 25px;
+    width: 800px;
+}
+
+.signup_form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .signup_form_footer{
@@ -29,12 +34,12 @@
     gap: 10px;
 }
 
-.signup_form_forgot{
+/* .signup_form_forgot{
     float: right;
-}
+} */
 
 .signup_form_button{
-    width: 150px;
+    width: 200px;
 }
 
 .signup_link{

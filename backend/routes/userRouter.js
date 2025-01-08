@@ -15,7 +15,8 @@ router.post("/signup", upload.fields([]), async (req, res, next) => {
       req.body.last_name,
       req.body.email,
       req.body.password,
-      req.body.parent_admin_id
+      req.body.parent_admin_id,
+      req.body.yeshiva
     );
     res.status(200).json({
       message: "User created successfully",

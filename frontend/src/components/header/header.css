@@ -4,12 +4,29 @@
     justify-content: space-around;
 } 
 
-.KY_symbol_container{
+/* .KY_symbol_container{
     filter: drop-shadow(3px -3px 3px gray);
 }
 
 .KY_symbol_img {
     width: 250px;
+} */
+
+.header_yeshiva_container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5px;
+}
+
+.header_yeshive_inner{
+    line-height: 1;
+    font-size: large;
+}
+
+.header_yeshive_name{
+    line-height: 1;
+    font-size: x-large;
 }
 
 .hebrew_date{

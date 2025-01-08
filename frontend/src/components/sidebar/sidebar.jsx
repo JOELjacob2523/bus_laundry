@@ -50,9 +50,9 @@ const Sidebar = () => {
 
   return (
     <Layout
-    // style={{
-    //   minHeight: "100vh",
-    // }}
+      style={{
+        height: "100vh",
+      }}
     >
       <Header className="sidebar_header">
         <PageHeader />
@@ -96,9 +96,9 @@ const Sidebar = () => {
             <div
               style={{
                 padding: 24,
-                minHeight: 700,
+                minHeight: 725,
                 display: "flex",
-                justifyContent: "center",
+                // justifyContent: "center",
                 alignItems: "center",
                 background: colorBgContainer,
                 borderRadius: borderRadiusLG,
@@ -116,6 +116,8 @@ const Sidebar = () => {
           style={{
             textAlign: "center",
             backgroundColor: "lightgray",
+            borderTop: "2px solid #001529",
+            zIndex: 1000,
           }}
         >
           <div>{footerMessage}</div>

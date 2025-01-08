@@ -9,6 +9,7 @@ import AddUser from "../addUser/newUserBtn";
 import UserCard from "./userCard";
 import SearchBar from "../search/search";
 import { Helmet } from "react-helmet";
+import { useAuth } from "../AuthProvider/AuthProvider";
 
 const { Title } = Typography;
 
@@ -20,6 +21,7 @@ const Buses = () => {
   const [pageSize, setPageSize] = useState(30);
   const [selectedUsers, setSelectedUsers] = useState([]);
 
+  const { authData } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -162,16 +164,25 @@ const Buses = () => {
             </div>
           </div>
           <div className="add_user_container">
-            <div className="search_inner">
+            <div
+              className={
+                authData.role === "Administrator" || authData.role === "Manager"
+                  ? "search_inner_admin"
+                  : "search_inner"
+              }
+            >
               <SearchBar
                 input={filteredUserInfo}
                 onSearch={handleSearch}
                 resetSearch={resetSearch}
               />
             </div>
-            <div className="add_user_inner">
-              <AddUser onUserAdded={handleUserAdded} />
-            </div>
+            {(authData.role === "Administrator" ||
+              authData.role === "Manager") && (
+              <div className="add_user_inner">
+                <AddUser onUserAdded={handleUserAdded} />
+              </div>
+            )}
           </div>
 
           {selectedUsers.length > 0 && (

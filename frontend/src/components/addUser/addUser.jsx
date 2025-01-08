@@ -27,7 +27,7 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const AddUserForm = ({ handleCancel, onUserAdded }) => {
+const AddUserForm = ({ handleCancel, onUserAdded, authData }) => {
   const [resetKey, setResetKey] = useState(0);
   const navigate = useNavigate();
 
@@ -55,6 +55,17 @@ const AddUserForm = ({ handleCancel, onUserAdded }) => {
         action="student/student_info"
         method="POST"
       >
+        <Form.Item>
+          <Input
+            value={
+              authData.role === "Administrator"
+                ? authData.userId
+                : authData.parent_admin_id
+            }
+            hidden={true}
+          />
+        </Form.Item>
+
         <Form.Item
           name="first_name"
           label=":ערשטע נאמען"
@@ -67,6 +78,7 @@ const AddUserForm = ({ handleCancel, onUserAdded }) => {
         >
           <Input placeholder="...ערשטע נאמען" />
         </Form.Item>
+
         <Form.Item
           name="last_name"
           label=":לעצטע נאמען"
@@ -79,6 +91,7 @@ const AddUserForm = ({ handleCancel, onUserAdded }) => {
         >
           <Input placeholder="...לעצטע נאמען" />
         </Form.Item>
+
         <Form.Item
           name="age"
           label=":יארגאנג"
@@ -98,6 +111,7 @@ const AddUserForm = ({ handleCancel, onUserAdded }) => {
             placeholder="...יארגאנג"
           />
         </Form.Item>
+
         <Form.Item
           name="address1"
           label=":אדרעסס 1"

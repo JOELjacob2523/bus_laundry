@@ -29,7 +29,8 @@ async function createUser(
   last_name,
   email,
   password,
-  parent_admin_id
+  parent_admin_id,
+  yeshiva
 ) {
   // Check if email already exists
   const user = await knex("users").where("email", email).first();
@@ -46,6 +47,7 @@ async function createUser(
     password: hashedPassword,
     role: "User",
     parent_admin_id: parent_admin_id,
+    yeshiva: yeshiva,
   };
   const token = jwt.sign(payload, SECRET_KEY);
   await knex("users").insert({
@@ -56,6 +58,7 @@ async function createUser(
     token,
     role: "User",
     parent_admin_id,
+    yeshiva,
   });
 }
 
@@ -162,6 +165,7 @@ async function updateUserProfile(profileInfo) {
     token,
     role,
     parent_admin_id,
+    yeshiva,
   } = profileInfo;
 
   const user = await knex("users").where("user_id", user_id).first();
@@ -189,23 +193,25 @@ async function updateUserProfile(profileInfo) {
       token,
       role: newRole,
       parent_admin_id: newRole === "Administrator" ? null : parent_admin_id,
+      yeshiva,
     });
 }
 
 async function verifyAdminPassword(inputPassword) {
-  const admin = await knex("users")
-    .select()
-    .where("role", "Administrator")
-    .first();
+  const admins = await knex("users").select().where("role", "Administrator");
 
-  if (!admin) {
+  if (!admins) {
     throw new Error("Invalid password");
   }
 
-  const passwordMatch = await bcrypt.compare(inputPassword, admin.password);
-  if (!passwordMatch) {
-    return false;
-  }
+  // Check passwords and return true if any match
+  const results = await Promise.all(
+    admins.map(async (admin) => {
+      const isValid = await bcrypt.compare(inputPassword, admin.password);
+      return isValid;
+    })
+  );
 
-  return true;
+  // If any match, return true
+  return results.some((isValid) => isValid);
 }

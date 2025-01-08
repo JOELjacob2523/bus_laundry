@@ -2,7 +2,6 @@
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: 100vh;
     box-sizing: border-box;
   }
   
@@ -11,6 +10,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    height: 70vh;
   }
 
   .student_title_delete_options{
@@ -32,6 +32,7 @@
   .bocherim_count_container{
     display: flex;
     justify-content: center;
+    align-items: center;
     flex: 1;
     padding-left: 275px;
   }
@@ -42,8 +43,8 @@
 
   .add_user_container{
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
     padding: 0 100px 30px 100px;
   }
 
@@ -53,12 +54,16 @@
     align-items: center;
     width: 30%;
   }
-
+  
   .data_not_found{
     padding-top: 50px;
   }
-
+  
   .search_inner{
+    width: 70%;
+  }
+
+  .search_inner_admin{
     padding-left: 100px;
     width: 70%;
   }

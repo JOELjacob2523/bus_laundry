@@ -42,6 +42,7 @@ async function insertUserInfo(userInfo) {
       zip_code: userInfo.zip_code,
       date: new Date(),
       phone: userInfo.phone,
+      user_id: userInfo.user_id,
     });
 
     const token = jwt.sign({ student_id: studentId }, SECRET_KEY, {

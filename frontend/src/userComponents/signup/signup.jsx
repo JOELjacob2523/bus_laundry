@@ -3,10 +3,10 @@ import React from "react";
 import { UserOutlined } from "@ant-design/icons";
 import { TbPasswordUser } from "react-icons/tb";
 import { MdOutlineEmail } from "react-icons/md";
+import { BiSolidSchool } from "react-icons/bi";
 import { Button, Card, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { userInfo } from "../../servers/userRequests/postUserRequest";
-import KYLetterhead from "../../images/KY_Letterhead.png";
 import { useAuth } from "../../components/AuthProvider/AuthProvider";
 import { Helmet } from "react-helmet";
 import { useState } from "react";
@@ -43,19 +43,12 @@ const UserSignup = () => {
   };
 
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       <div className="signup_main_container">
         <Helmet>
           <title>Add user - Kadishes Yoel Bus & Laundry</title>
         </Helmet>
         <div className="signup_card_container">
-          <div className="KY_letterhead_img_container_signup">
-            <img
-              className="KY_letterhead_img"
-              alt="KYLetterhead"
-              src={KYLetterhead}
-            />
-          </div>
           <div className="signup_card">
             <Card title="Signup">
               <Form
@@ -70,13 +63,9 @@ const UserSignup = () => {
                 }}
                 onFinish={onFinish}
               >
-                <Form.Item
-                  name="parent_admin_id"
-                  // value={value || null}
-                >
+                <Form.Item name="parent_admin_id">
                   <Input hidden={true} />
                 </Form.Item>
-
                 <Form.Item
                   name="first_name"
                   label=":ערשטע נאמען"
@@ -93,7 +82,6 @@ const UserSignup = () => {
                     placeholder="...ערשטע נאמען"
                   />
                 </Form.Item>
-
                 <Form.Item
                   name="last_name"
                   label=":לעצטע נאמען"
@@ -171,6 +159,23 @@ const UserSignup = () => {
                   ]}
                 >
                   <Input prefix={<MdOutlineEmail />} placeholder="...אימעיל" />
+                </Form.Item>
+
+                <Form.Item
+                  name="yeshiva"
+                  label=":ישיבה"
+                  colon={false}
+                  rules={[
+                    {
+                      required: true,
+                      message: "!ביטע אריין לייגט אייער ישיבה נאמען",
+                    },
+                  ]}
+                >
+                  <Input
+                    prefix={<BiSolidSchool className="site-form-item-icon" />}
+                    placeholder="...ישיבה"
+                  />
                 </Form.Item>
 
                 <Form.Item>
