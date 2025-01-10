@@ -10,7 +10,6 @@ import Profile from "../profile/profile";
 const PageHeader = () => {
   const { authData, setAuthData } = useAuth();
   const [userInfo, setUserInfo] = useState("");
-  const [status, setStatus] = useState("");
 
   const navigate = useNavigate();
 
@@ -26,16 +25,6 @@ const PageHeader = () => {
     };
     fetchData();
   }, [authData.userId, navigate]);
-
-  useEffect(() => {
-    if (authData.role === "Administrator") {
-      setStatus("Administrator");
-    } else if (authData.role === "Manager") {
-      setStatus("Manager");
-    } else {
-      setStatus("User");
-    }
-  }, [authData.role]);
 
   return (
     <div className="header_container">
@@ -66,7 +55,6 @@ const PageHeader = () => {
           userInfo={userInfo}
           setUserInfo={setUserInfo}
           authData={authData}
-          setStatus={setStatus}
           setAuthData={setAuthData}
         />
       </div>

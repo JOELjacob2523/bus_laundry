@@ -27,6 +27,7 @@ module.exports = {
   updateUserPaymentInfo,
   deleteWithdrawal,
   updateWithdrawalInfo,
+  getAllStudentInfoByAdminID,
 };
 
 async function insertUserInfo(userInfo) {
@@ -59,6 +60,10 @@ async function insertUserInfo(userInfo) {
 
 async function getAllUserInfo() {
   return await knex("students").select();
+}
+
+async function getAllStudentInfoByAdminID(adminId) {
+  return await knex("students").select().where("user_id", adminId);
 }
 
 async function getUserInfoById(id) {
@@ -244,6 +249,7 @@ async function migrateOldData(selectedStudents) {
           phone: name.phone,
           token: name.token,
           date: name.date,
+          user_id: name.user_id,
         };
         await trx("old_students").insert(studentData);
       }

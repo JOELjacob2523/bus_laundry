@@ -1,42 +1,35 @@
-.signup_main_container{
+.signup_card_container{
     display: flex;
     justify-content: center;
     align-items: center;
-    /* height: 100vh; */
-}
-
-/* .signup_card_container{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-} */
-
-.KY_letterhead_img_container_signup{
-    display: flex;
-    justify-content: center;
 }
 
 .signup_card{
-    width: 800px;
+    width: 80%;
 }
 
 .signup_form{
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: row-reverse;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    height: 300px;
+}
+
+.signup_form_inner{
+   display: flex;
+   flex-direction: column;
+   width: 550px;
+   padding: 15px;
 }
 
 .signup_form_footer{
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 10px;
+    gap: 35px;
+    padding-top: 25px;
 }
-
-/* .signup_form_forgot{
-    float: right;
-} */
 
 .signup_form_button{
     width: 200px;

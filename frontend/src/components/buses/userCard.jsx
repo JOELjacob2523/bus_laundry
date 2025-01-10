@@ -87,6 +87,7 @@ const UserCard = ({
   return (
     <div className="main_card_container">
       <Card
+        type="inner"
         title={
           <div className="student_title_container">
             <div className="student_title_delete_options">

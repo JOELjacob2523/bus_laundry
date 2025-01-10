@@ -32,6 +32,18 @@ router.get("/get_all_user_info", async (req, res, next) => {
   }
 });
 
+// router get all student info by admin id
+router.get("/get_all_student_info_by_admin_id", async (req, res, next) => {
+  try {
+    const { user_id } = req.query;
+    let studentInfo = await CONTORLLER.getAllStudentInfoByAdminID(user_id);
+    res.status(200).json(studentInfo);
+  } catch (err) {
+    console.error("Error getting user credentials:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // router get student info by ID
 router.get("/get_user_info", async (req, res, next) => {
   try {

@@ -5,18 +5,18 @@ import { CiLogout } from "react-icons/ci";
 const items = [
   {
     key: 1,
-    label: "Profile",
-    icon: <CgProfile />,
+    label: <div style={{ fontSize: "medium" }}>Profile</div>,
+    icon: <CgProfile style={{ fontSize: "large" }} />,
   },
   {
     key: 2,
-    label: "Settings",
-    icon: <IoMdSettings />,
+    label: <div style={{ fontSize: "medium" }}>Settings</div>,
+    icon: <IoMdSettings style={{ fontSize: "large" }} />,
   },
   {
     key: 3,
-    label: "Logout",
-    icon: <CiLogout />,
+    label: <div style={{ fontSize: "medium" }}>Logout</div>,
+    icon: <CiLogout style={{ fontSize: "large" }} />,
   },
 ];
 

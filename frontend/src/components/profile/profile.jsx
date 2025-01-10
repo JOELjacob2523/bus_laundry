@@ -12,6 +12,7 @@ import {
   message,
   Modal,
   Radio,
+  Space,
 } from "antd";
 import { UserOutlined, EditOutlined } from "@ant-design/icons";
 import items from "../header/headerItems";
@@ -30,13 +31,7 @@ const validateMessages = {
 };
 /* eslint-disable no-template-curly-in-string */
 
-const Profile = ({
-  userInfo,
-  setUserInfo,
-  authData,
-  setAuthData,
-  setStatus,
-}) => {
+const Profile = ({ userInfo, setUserInfo, authData, setAuthData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
@@ -67,7 +62,6 @@ const Profile = ({
       await updateUserProfile(formData);
       setUserInfo((prev) => ({ ...prev, ...formData }));
       form.setFieldsValue(formData);
-      setStatus(value);
       setIsDisabled(true);
       setShowButtons(false);
       setIsModalOpen(false);
@@ -156,11 +150,15 @@ const Profile = ({
           menu={{
             items,
             onClick: handleMenuClick,
+            style: { width: "175px" },
           }}
+          arrow={true}
           placement="bottomLeft"
           className="dropdown"
         >
-          <Avatar size={36} icon={<UserOutlined />} className="profile" />
+          <Space>
+            <Avatar size={36} icon={<UserOutlined />} className="profile" />
+          </Space>
         </Dropdown>
       </div>
       <Modal

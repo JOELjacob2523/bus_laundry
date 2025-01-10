@@ -217,6 +217,7 @@ function Directions() {
   return (
     <div>
       <Card
+        type="inner"
         title="Calculate Your Routes"
         size="small"
         className="google_maps_directions_container"

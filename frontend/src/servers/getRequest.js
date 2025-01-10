@@ -12,6 +12,20 @@ export const getAllUserInfo = async () => {
   }
 };
 
+//get user info by admin id
+export const getAllStudentInfoByAdminID = async (adminId) => {
+  try {
+    const response = await axios.get(
+      `${URL}/get_all_student_info_by_admin_id`,
+      { params: { user_id: adminId } }
+    );
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
 //get user info by ID
 export const getUserInfoById = async (studentId, token) => {
   try {

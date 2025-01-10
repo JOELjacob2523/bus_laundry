@@ -39,6 +39,7 @@ const EditUserPayment = ({
   const { authData } = useAuth();
   // const [userPaymentInfo, setUserPaymentInfo] = useState(null);
   const [value, setValue] = useState("");
+  const [paymentTypeValue, setPaymentTypeValue] = useState("");
   const [loading, setLoading] = useState(true);
   const [paymentDisabled, setPaymentDisabled] = useState(true);
   const [showPaymentButtons, setShowPaymentButtons] = useState(false);
@@ -75,7 +76,7 @@ const EditUserPayment = ({
           acc.cash += parseValue(pay.cash);
           acc.checks += parseValue(pay.checks);
           acc.credit_card += parseValue(pay.credit_card);
-          acc.payment_type = formatPaymentType(pay.payment_type);
+          acc.payment_type = pay.payment_type || acc.payment_type || "N/A";
           acc.pay_date = acc.pay_date || pay.pay_date || "N/A";
           acc.total_paid += parseValue(pay.total_paid);
           acc.bus_amount += parseValue(pay.bus_amount);
@@ -93,10 +94,25 @@ const EditUserPayment = ({
         }
       );
       setAggregatedPayment(aggregated);
+      if (isEditingPayment === true) {
+        setValue(aggregated.payment_type);
+      }
     };
 
     calculateAggregatedPayment();
-  }, [payment]);
+  }, [payment, isEditingPayment]);
+
+  useEffect(() => {
+    if (aggregatedPayment.payment_type === "bus") {
+      setPaymentTypeValue("באס");
+    } else if (aggregatedPayment.payment_type === "wash") {
+      setPaymentTypeValue("וואשן");
+    } else if (aggregatedPayment.payment_type === "bus_wash") {
+      setPaymentTypeValue("באס און וואשן");
+    } else {
+      setPaymentTypeValue("N/A");
+    }
+  }, [aggregatedPayment]);
 
   const handlePaymentEditClick = () => {
     setPaymentDisabled(false);
@@ -180,7 +196,7 @@ const EditUserPayment = ({
             <Input />
           </Form.Item>
           <div className="edit_user_form_item_container">
-            <div>Cash:</div>
+            <div style={{ textAlign: "right", paddingRight: "5px" }}>:קעש</div>
             <div>
               {isEditingPayment ? (
                 <Form.Item name="cash">
@@ -204,7 +220,7 @@ const EditUserPayment = ({
             </div>
           </div>
           <div className="edit_user_form_item_container">
-            <div>Check:</div>
+            <div style={{ textAlign: "right", paddingRight: "5px" }}>:טשעק</div>
             <div>
               {isEditingPayment ? (
                 <Form.Item name="checks">
@@ -228,7 +244,9 @@ const EditUserPayment = ({
             </div>
           </div>
           <div className="edit_user_form_item_container">
-            <div>Credit Card:</div>
+            <div style={{ textAlign: "right", paddingRight: "5px" }}>
+              :קרעדיט קארד
+            </div>
             <div>
               {isEditingPayment ? (
                 <Form.Item name="credit_card">
@@ -252,7 +270,9 @@ const EditUserPayment = ({
             </div>
           </div>
           <div className="edit_user_form_item_container">
-            <div>Payment Type:</div>
+            <div style={{ textAlign: "right", paddingRight: "5px" }}>
+              :באצאלט פאר
+            </div>
             <div>
               {isEditingPayment ? (
                 <Form.Item name="payment_type" rules={[{ required: true }]}>
@@ -262,14 +282,16 @@ const EditUserPayment = ({
                       { value: "wash", label: "וואשן" },
                       { value: "bus_wash", label: "באס און וואשן" },
                     ]}
-                    onChange={(value) => setValue(value)}
+                    onChange={(newValue) => setValue(newValue)}
                     disabled={paymentDisabled}
+                    value={value}
                     style={{ width: "200px" }}
                   />
                 </Form.Item>
               ) : (
                 <Input
-                  value={aggregatedPayment.payment_type}
+                  // value={formatPaymentType(aggregatedPayment.payment_type)}
+                  value={paymentTypeValue}
                   disabled
                   style={{ width: "200px" }}
                 />
@@ -281,12 +303,15 @@ const EditUserPayment = ({
             <div className="edit_user_form_item_container">
               {value === "bus" || value === "bus_wash" ? (
                 <div>
-                  <div>Bus Amount:</div>
+                  <div style={{ textAlign: "right", paddingRight: "5px" }}>
+                    :באס סכום
+                  </div>
                   <Form.Item
                     name="bus_amount"
                     rules={[
                       { required: value === "bus" || value === "bus_wash" },
                     ]}
+                    // initialValue={aggregatedPayment.bus_amount || ""}
                   >
                     <Input
                       placeholder="Enter bus amount..."
@@ -298,12 +323,15 @@ const EditUserPayment = ({
 
               {value === "wash" || value === "bus_wash" ? (
                 <div>
-                  <div>Wash Amount:</div>
+                  <div style={{ textAlign: "right", paddingRight: "5px" }}>
+                    :וואשן סכום
+                  </div>
                   <Form.Item
                     name="wash_amount"
                     rules={[
                       { required: value === "wash" || value === "bus_wash" },
                     ]}
+                    // initialValue={aggregatedPayment.wash_amount || ""}
                   >
                     <Input
                       placeholder="Enter wash amount..."
@@ -317,7 +345,9 @@ const EditUserPayment = ({
             <div className="edit_user_form_item_container">
               {aggregatedPayment.bus_amount > 0 && (
                 <div>
-                  <div>Bus Amount:</div>
+                  <div style={{ textAlign: "right", paddingRight: "5px" }}>
+                    :באס סכום
+                  </div>
                   <Input
                     value={`$${aggregatedPayment.bus_amount.toFixed(2)}`}
                     disabled
@@ -328,7 +358,9 @@ const EditUserPayment = ({
 
               {aggregatedPayment.wash_amount > 0 && (
                 <div>
-                  <div>Wash Amount:</div>
+                  <div style={{ textAlign: "right", paddingRight: "5px" }}>
+                    :וואשן סכום
+                  </div>
                   <Input
                     value={`$${aggregatedPayment.wash_amount.toFixed(2)}`}
                     disabled
@@ -340,7 +372,9 @@ const EditUserPayment = ({
           )}
 
           <div className="edit_user_form_item_container">
-            <div>Date Created:</div>
+            <div style={{ textAlign: "right", paddingRight: "5px" }}>
+              :דאטום באצאלט
+            </div>
             <div>
               <Input
                 value={aggregatedPayment.pay_date || "N/A"}
@@ -350,7 +384,9 @@ const EditUserPayment = ({
             </div>
           </div>
           <div className="edit_user_form_item_container">
-            <div>Total:</div>
+            <div style={{ textAlign: "right", paddingRight: "5px" }}>
+              :סך הכל
+            </div>
             <div>
               {isEditingPayment ? (
                 <Form.Item name="total_paid">

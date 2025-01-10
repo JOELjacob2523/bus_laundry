@@ -106,6 +106,7 @@ const MainPage2 = ({ cityCounts }) => {
       </Helmet>
       <div className="main_page_header_container">
         <Card
+          type="inner"
           title={
             <div>
               {zmanGoal.map((goal, index) => (
@@ -161,13 +162,17 @@ const MainPage2 = ({ cityCounts }) => {
         </Card>
 
         <div className="student_amount_container">
-          <Card title="וויליאמסבורג" style={{ textAlign: "right" }}>
+          <Card
+            title="וויליאמסבורג"
+            style={{ textAlign: "right" }}
+            type="inner"
+          >
             <div>
               עס איז איינגעשריבן <strong>{cityCounts.brooklyn}</strong>{" "}
               {cityCounts.brooklyn > 1 ? "בחורים" : "בחור"} קיין וויליאמסבורג
             </div>
           </Card>
-          <Card title="מאנסי" style={{ textAlign: "right" }}>
+          <Card title="מאנסי" style={{ textAlign: "right" }} type="inner">
             <div>
               עס איז איינגעשריבן{" "}
               <strong>
@@ -186,7 +191,7 @@ const MainPage2 = ({ cityCounts }) => {
               קיין מאנסי
             </div>
           </Card>
-          <Card title="בארא פארק" style={{ textAlign: "right" }}>
+          <Card title="בארא פארק" style={{ textAlign: "right" }} type="inner">
             <div>
               עס איז איינגעשריבן <strong>{cityCounts.boropark}</strong>{" "}
               {cityCounts.boropark > 1 ? "בחורים" : "בחור"} קיין בארא פארק

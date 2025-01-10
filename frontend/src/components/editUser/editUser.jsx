@@ -221,7 +221,7 @@ const EditUser = ({
                   style={{ width: "200px" }}
                 />
               ) : (
-                <Input disabled={disabled} style={{ width: "200px" }} />
+                <Input disabled={disabled} style={{ width: "180px" }} />
               )}
             </Form.Item>
           </div>
@@ -267,7 +267,7 @@ const EditUser = ({
                     })
                   : "N/A"
               }
-              style={{ width: "235px" }}
+              style={{ width: "250px" }}
               prefix={<CiCalendarDate />}
               disabled
             />

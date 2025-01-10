@@ -1,3 +1,7 @@
+.dropdown{
+  line-height: 1;
+}
+
 .main_profile_container{
   display: flex;
   flex-direction: column;

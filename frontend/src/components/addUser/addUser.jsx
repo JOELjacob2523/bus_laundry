@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.css";
 import { Button, Form, Input, message, Select } from "antd";
 import { userInfo } from "../../servers/postRequest";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./addUser.css";
 
@@ -29,11 +29,19 @@ const validateMessages = {
 
 const AddUserForm = ({ handleCancel, onUserAdded, authData }) => {
   const [resetKey, setResetKey] = useState(0);
+  const [parentAdminId, setParentAdminId] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    authData.role === "Administrator"
+      ? setParentAdminId(authData.userId)
+      : setParentAdminId(authData.parent_admin_id);
+  }, [authData]);
 
   const onFinish = async (values) => {
     try {
-      const addedUser = await userInfo(values);
+      const formData = { ...values, user_id: parentAdminId };
+      const addedUser = await userInfo(formData);
       onUserAdded(addedUser);
       setResetKey((prevKey) => prevKey + 1);
       handleCancel();
@@ -55,15 +63,8 @@ const AddUserForm = ({ handleCancel, onUserAdded, authData }) => {
         action="student/student_info"
         method="POST"
       >
-        <Form.Item>
-          <Input
-            value={
-              authData.role === "Administrator"
-                ? authData.userId
-                : authData.parent_admin_id
-            }
-            hidden={true}
-          />
+        <Form.Item name="user_id" value={parentAdminId}>
+          <Input hidden={true} />
         </Form.Item>
 
         <Form.Item

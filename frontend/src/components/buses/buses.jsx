@@ -3,7 +3,11 @@ import "./buses.css";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Row, Col, Pagination, Empty, Button, message, Typography } from "antd";
-import { getAllPaymentInfo, getAllUserInfo } from "../../servers/getRequest";
+import {
+  getAllPaymentInfo,
+  getAllUserInfo,
+  getAllStudentInfoByAdminID,
+} from "../../servers/getRequest";
 import { archiveOldStudentPayments } from "../../servers/postRequest";
 import AddUser from "../addUser/newUserBtn";
 import UserCard from "./userCard";
@@ -29,6 +33,7 @@ const Buses = () => {
       try {
         const data = await getAllUserInfo();
         const payments = await getAllPaymentInfo();
+        const adminIdData = await getAllStudentInfoByAdminID(authData.userId);
 
         const paymentMap = payments.reduce((acc, payment) => {
           const { student_id } = payment;
@@ -43,15 +48,17 @@ const Buses = () => {
           return acc;
         }, {});
 
-        setUserInfo(data);
+        // setUserInfo(data);
+        setUserInfo(adminIdData);
         setPaymentInfo(paymentMap);
-        setFilteredUserInfo(data);
+        // setFilteredUserInfo(data);
+        setFilteredUserInfo(adminIdData);
       } catch (err) {
         console.error("Error fetching data:", err);
       }
     };
     fetchData();
-  }, []);
+  }, [authData.userId]);
 
   const handleUserAdded = async (newUser) => {
     try {

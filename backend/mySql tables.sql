@@ -6,6 +6,9 @@ CREATE TABLE users (
   email VARCHAR(255) NULL,
   password VARCHAR(255) NULL,
   token TEXT NULL,
+  role VARCHAR(255),
+  parent_admin_id BIGINT,
+  yeshiva VARCHAR(255) NULL,
   PRIMARY KEY (user_id)
 );
 
@@ -20,6 +23,10 @@ CREATE TABLE students (
   state VARCHAR(255) NULL,
   zip_code VARCHAR(255) NULL,
   token TEXT NULL,
+  date VARCHAR(255) NULL,
+  phone VARCHAR(255) NULL,
+  user_id BIGINT,
+  FOREIGN KEY(user_id) REFERENCES users(user_id),
   PRIMARY KEY (student_id)
 );
 
@@ -42,12 +49,11 @@ CREATE TABLE payments (
   first_name VARCHAR (255) NULL,
   last_name VARCHAR (255) NULL,
   payment_type VARCHAR (255) NULL,
-  bus VARCHAR (255) NULL,
-  wash VARCHAR (255) NULL,
-  bus_wash VARCHAR (255) NULL,
   cash VARCHAR (255) NULL,
   checks VARCHAR (255) NULL,
   credit_card VARCHAR (255) NULL,
+  bus_amount VARCHAR(255) NULL,
+  wash_amount VARCHAR(255) NULL,
   total_paid VARCHAR (255) NULL,
   pay_date VARCHAR (255) NULL,
   token TEXT NULL,
@@ -60,26 +66,11 @@ CREATE TABLE Withdrawals (
   withdrawal_id BIGINT NOT NULL AUTO_INCREMENT,
   amount VARCHAR(255) NULL,
   withdrawal_to VARCHAR (255) NULL,
-  date DATE NULL,
+  date VARCHAR(255) NULL,
   hebrew_date VARCHAR (255) NULL,
   user_id BIGINT,
   FOREIGN KEY(user_id) REFERENCES users(user_id),
   PRIMARY KEY (Withdrawal_id)
-);
-
-CREATE TABLE orderitems (
-  orderitemsId BIGINT NOT NULL AUTO_INCREMENT,
-  amount VARCHAR (255) NULL,
-  productdesc VARCHAR (255) NULL,
-  qty VARCHAR (255) NULL,
-  price VARCHAR (255) NULL,
-  totalrowprice VARCHAR (255) NULL,
-  date DATETIME NULL,
-  vendorId BIGINT,
-  orderId BIGINT,
-  FOREIGN KEY(orderId) REFERENCES orders(orderId),
-  FOREIGN KEY(vendorId) REFERENCES vendors(vendorId),
-  PRIMARY KEY (orderitemsId)
 );
 
 CREATE TABLE old_students (
@@ -93,6 +84,8 @@ CREATE TABLE old_students (
   state VARCHAR(255) NULL,
   zip_code VARCHAR(255) NULL,
   token TEXT NULL,
+  phone VARCHAR(255) NULL,
+  date VARCHAR(255) NULL,
   PRIMARY KEY (student_id)
 );
 
@@ -115,15 +108,15 @@ CREATE TABLE old_payments (
   first_name VARCHAR (255) NULL,
   last_name VARCHAR (255) NULL,
   payment_type VARCHAR (255) NULL,
-  bus VARCHAR (255) NULL,
-  wash VARCHAR (255) NULL,
-  bus_wash VARCHAR (255) NULL,
   cash VARCHAR (255) NULL,
   checks VARCHAR (255) NULL,
   credit_card VARCHAR (255) NULL,
+  bus_amount VARCHAR(255) NULL,
+  wash_amount VARCHAR(255) NULL,
   total_paid VARCHAR (255) NULL,
   pay_date VARCHAR (255) NULL,
   token TEXT NULL,
+  date VARCHAR(255) NULL,
   student_id BIGINT,
   FOREIGN KEY(student_id) REFERENCES students(student_id),
   PRIMARY KEY (payment_id)

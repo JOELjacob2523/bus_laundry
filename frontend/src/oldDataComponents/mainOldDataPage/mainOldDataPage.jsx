@@ -91,6 +91,7 @@ const MainOldDataPage = () => {
         setOldZmanGoal={setOldZmanGoal}
       />
       <Card
+        type="inner"
         title={<div className="modal_title">אינפארמאציע לויט די יארן</div>}
         className="main_old_data_card"
       >

@@ -50,144 +50,171 @@ const UserSignup = () => {
         </Helmet>
         <div className="signup_card_container">
           <div className="signup_card">
-            <Card title="Signup">
+            <Card
+              title={
+                <div style={{ textAlign: "right" }}>User לייג צו א נייע</div>
+              }
+              type="inner"
+            >
               <Form
                 name="normal_login"
-                className="signup_form"
+                // className="signup_form"
                 action="/signup"
                 method="POST"
                 key={key}
                 initialValues={{
                   remember: true,
-                  // parent_admin_id: authData.userId,
                 }}
                 onFinish={onFinish}
               >
                 <Form.Item name="parent_admin_id">
                   <Input hidden={true} />
                 </Form.Item>
-                <Form.Item
-                  name="first_name"
-                  label=":ערשטע נאמען"
-                  colon={false}
-                  rules={[
-                    {
-                      required: true,
-                      message: "!ביטע אריין לייגט אייער ערשטע נאמען",
-                    },
-                  ]}
-                >
-                  <Input
-                    prefix={<UserOutlined className="site-form-item-icon" />}
-                    placeholder="...ערשטע נאמען"
-                  />
-                </Form.Item>
-                <Form.Item
-                  name="last_name"
-                  label=":לעצטע נאמען"
-                  colon={false}
-                  rules={[
-                    {
-                      required: true,
-                      message: "!ביטע אריין לייגט אייער לעצטע נאמען",
-                    },
-                  ]}
-                >
-                  <Input
-                    prefix={<UserOutlined className="site-form-item-icon" />}
-                    placeholder="...לעצטע נאמען"
-                  />
-                </Form.Item>
-
-                <Form.Item
-                  name="password"
-                  label="Password"
-                  rules={[
-                    {
-                      required: true,
-                      message: "!Passowrd ביטע אריין לייגט אייער",
-                    },
-                  ]}
-                  hasFeedback
-                >
-                  <Input.Password
-                    prefix={<TbPasswordUser />}
-                    placeholder="Password..."
-                  />
-                </Form.Item>
-
-                <Form.Item
-                  name="confirm"
-                  label="Confirm Password"
-                  dependencies={["password"]}
-                  hasFeedback
-                  rules={[
-                    {
-                      required: true,
-                      message: "!Password ביטע אריין לייגט איבער אייער",
-                    },
-                    ({ getFieldValue }) => ({
-                      validator(_, value) {
-                        if (!value || getFieldValue("password") === value) {
-                          return Promise.resolve();
+                <div className="signup_form">
+                  <div className="signup_form_inner">
+                    <Form.Item
+                      name="first_name"
+                      label=":ערשטע נאמען"
+                      colon={false}
+                      rules={[
+                        {
+                          required: true,
+                          message: "!ביטע אריין לייגט אייער ערשטע נאמען",
+                        },
+                      ]}
+                    >
+                      <Input
+                        prefix={
+                          <UserOutlined className="site-form-item-icon" />
                         }
-                        return Promise.reject(
-                          new Error(
-                            "The new password that you entered do not match!"
-                          )
-                        );
-                      },
-                    }),
-                  ]}
-                >
-                  <Input.Password
-                    prefix={<TbPasswordUser />}
-                    placeholder="Confirm Password..."
-                  />
-                </Form.Item>
+                        placeholder="...ערשטע נאמען"
+                      />
+                    </Form.Item>
+                  </div>
 
-                <Form.Item
-                  name="email"
-                  label=":אימעיל"
-                  colon={false}
-                  rules={[
-                    {
-                      required: true,
-                      type: "email",
-                      message: "!ביטע אריין לייגט אייער אימעיל",
-                    },
-                  ]}
-                >
-                  <Input prefix={<MdOutlineEmail />} placeholder="...אימעיל" />
-                </Form.Item>
+                  <div className="signup_form_inner">
+                    <Form.Item
+                      name="last_name"
+                      label=":לעצטע נאמען"
+                      colon={false}
+                      rules={[
+                        {
+                          required: true,
+                          message: "!ביטע אריין לייגט אייער לעצטע נאמען",
+                        },
+                      ]}
+                    >
+                      <Input
+                        prefix={
+                          <UserOutlined className="site-form-item-icon" />
+                        }
+                        placeholder="...לעצטע נאמען"
+                      />
+                    </Form.Item>
+                  </div>
 
-                <Form.Item
-                  name="yeshiva"
-                  label=":ישיבה"
-                  colon={false}
-                  rules={[
-                    {
-                      required: true,
-                      message: "!ביטע אריין לייגט אייער ישיבה נאמען",
-                    },
-                  ]}
-                >
-                  <Input
-                    prefix={<BiSolidSchool className="site-form-item-icon" />}
-                    placeholder="...ישיבה"
-                  />
-                </Form.Item>
+                  <div className="signup_form_inner">
+                    <Form.Item
+                      name="password"
+                      label="Password"
+                      rules={[
+                        {
+                          required: true,
+                          message: "!Passowrd ביטע אריין לייגט אייער",
+                        },
+                      ]}
+                      hasFeedback
+                    >
+                      <Input.Password
+                        prefix={<TbPasswordUser />}
+                        placeholder="Password..."
+                      />
+                    </Form.Item>
+                  </div>
 
+                  <div className="signup_form_inner">
+                    <Form.Item
+                      name="confirm"
+                      label="Confirm Password"
+                      dependencies={["password"]}
+                      hasFeedback
+                      rules={[
+                        {
+                          required: true,
+                          message: "!Password ביטע אריין לייגט איבער אייער",
+                        },
+                        ({ getFieldValue }) => ({
+                          validator(_, value) {
+                            if (!value || getFieldValue("password") === value) {
+                              return Promise.resolve();
+                            }
+                            return Promise.reject(
+                              new Error(
+                                "The new password that you entered do not match!"
+                              )
+                            );
+                          },
+                        }),
+                      ]}
+                    >
+                      <Input.Password
+                        prefix={<TbPasswordUser />}
+                        placeholder="Confirm Password..."
+                      />
+                    </Form.Item>
+                  </div>
+
+                  <div className="signup_form_inner">
+                    <Form.Item
+                      name="email"
+                      label=":אימעיל"
+                      colon={false}
+                      rules={[
+                        {
+                          required: true,
+                          type: "email",
+                          message: "!ביטע אריין לייגט אייער אימעיל",
+                        },
+                      ]}
+                    >
+                      <Input
+                        prefix={<MdOutlineEmail />}
+                        placeholder="...אימעיל"
+                      />
+                    </Form.Item>
+                  </div>
+
+                  <div className="signup_form_inner">
+                    <Form.Item
+                      name="yeshiva"
+                      label=":ישיבה"
+                      colon={false}
+                      rules={[
+                        {
+                          required: true,
+                          message: "!ביטע אריין לייגט אייער ישיבה נאמען",
+                        },
+                      ]}
+                    >
+                      <Input
+                        prefix={
+                          <BiSolidSchool className="site-form-item-icon" />
+                        }
+                        placeholder="...ישיבה"
+                      />
+                    </Form.Item>
+                  </div>
+                </div>
                 <Form.Item>
                   <div className="signup_form_footer">
-                    {/* <div>
+                    <div>
                       <Button
                         className="signup_form_button"
-                        onClick={() => navigate("/")}
+                        onClick={() => setKey(key + 1)}
                       >
                         Cancel
                       </Button>
-                    </div> */}
+                    </div>
                     <div>
                       <Button
                         type="primary"
