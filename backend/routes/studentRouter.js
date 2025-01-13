@@ -167,6 +167,24 @@ router.post("/zman_goal", upload.fields([]), async (req, res, next) => {
   }
 });
 
+// router to create the zman goal by admin id
+router.post(
+  "/zman_goal_by_admin_id",
+  upload.fields([]),
+  async (req, res, next) => {
+    try {
+      await CONTORLLER.migrateOldZmanGoalDataByAdminId(req.body.user_id);
+      await CONTORLLER.insertZmanGoalInfo(req.body);
+      res.status(200).json({ message: "Zman goal created successfully" });
+    } catch (err) {
+      console.error("Error inserting zman goal credentials:", err);
+      res
+        .status(500)
+        .json({ message: "Error inserting zman goal", error: err.message });
+    }
+  }
+);
+
 // router to archive old students & payment
 router.post(
   "/archive_oldStudent_payments",

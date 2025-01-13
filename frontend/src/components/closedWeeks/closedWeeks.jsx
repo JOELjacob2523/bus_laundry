@@ -14,7 +14,7 @@ import {
 import { BsCurrencyDollar } from "react-icons/bs";
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import HebrewDatePicker from "../jewishDtaePicker/hebcalDatePicker";
-import { zmanGoalInfo } from "../../servers/postRequest";
+import { zmanGoalInfo, zmanGoalInfoByAdminId } from "../../servers/postRequest";
 import { useNavigate } from "react-router-dom";
 import SedraSelect from "../sedraSelect/sedraSelect";
 import { FaPlus } from "react-icons/fa";
@@ -95,7 +95,8 @@ const ClosedWeeks = () => {
     try {
       setLoading(true);
       const formData = { ...values, user_id: authData.parent_admin_id };
-      await zmanGoalInfo(formData);
+      await zmanGoalInfoByAdminId(formData);
+      // await zmanGoalInfo(formData);
       message.success("Zman goal added successfully", 2, () =>
         navigate("/home/buses")
       );
@@ -155,6 +156,9 @@ const ClosedWeeks = () => {
                 action="/zman_goal"
                 method="POST"
               >
+                <Form.Item name="user_id" style={{ lineHeight: 1 }}>
+                  <Input hidden={true} />
+                </Form.Item>
                 <Form.Item
                   label=":זמן"
                   colon={false}

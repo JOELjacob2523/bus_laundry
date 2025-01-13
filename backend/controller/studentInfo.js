@@ -30,6 +30,7 @@ module.exports = {
   getAllStudentInfoByAdminID,
   getAllPaymentInfoByAdminId,
   getAllZmanGoalInfoByAdminId,
+  migrateOldZmanGoalDataByAdminId,
 };
 
 async function insertUserInfo(userInfo) {
@@ -114,9 +115,90 @@ async function insertZmanGoalInfo(zmanInfo) {
       total_zman_goal: zmanInfo.total_zman_goal,
       total_bus_goal: zmanInfo.total_bus_goal,
       total_wash_goal: zmanInfo.total_wash_goal,
+      user_id: zmanInfo.user_id,
     });
   } catch (error) {
     console.error("Error inserting zman goal info:", error);
+    throw error;
+  }
+}
+
+//archiving old data into old data tables
+async function migrateOldZmanGoalData() {
+  try {
+    let zmanGoals = await knex("zman_goal").select();
+
+    let closedWeeks = zmanGoals[0]?.closed_weeks;
+
+    for (const goal of zmanGoals) {
+      const zmanGoalData = {
+        zman: goal.zman,
+        zman_starts_ends: goal.zman_starts_ends,
+        closed_weeks: JSON.stringify(closedWeeks),
+        bus_price: goal.bus_price,
+        wash_price: goal.wash_price,
+        total_zman_weeks: goal.total_zman_weeks,
+        total_zman_goal: goal.total_zman_goal,
+        total_bus_goal: goal.total_bus_goal,
+        total_wash_goal: goal.total_wash_goal,
+        user_id: goal.user_id,
+      };
+      await knex("old_zman_goal").insert(zmanGoalData);
+    }
+
+    //removing safty mode while deleting old data
+    await knex.transaction(async (trx) => {
+      await trx.raw("SET FOREIGN_KEY_CHECKS = 0");
+
+      await knex("zman_goal").del();
+
+      //returning safty mode after deleting old data
+      await trx.raw("SET FOREIGN_KEY_CHECKS = 1");
+    });
+    console.log("Data migration completed successfully.");
+  } catch (error) {
+    console.error("Error migrating data:", error);
+    throw error;
+  }
+}
+
+//archiving old data into old data tables
+async function migrateOldZmanGoalDataByAdminId(adminId) {
+  try {
+    let zmanGoals = await knex("zman_goal").select().where("user_id", adminId);
+
+    console.log(zmanGoals);
+
+    let closedWeeks = zmanGoals[0]?.closed_weeks;
+
+    for (const goal of zmanGoals) {
+      const zmanGoalData = {
+        zman: goal.zman,
+        zman_starts_ends: goal.zman_starts_ends,
+        closed_weeks: JSON.stringify(closedWeeks),
+        bus_price: goal.bus_price,
+        wash_price: goal.wash_price,
+        total_zman_weeks: goal.total_zman_weeks,
+        total_zman_goal: goal.total_zman_goal,
+        total_bus_goal: goal.total_bus_goal,
+        total_wash_goal: goal.total_wash_goal,
+        user_id: goal.user_id,
+      };
+      await knex("old_zman_goal").insert(zmanGoalData);
+    }
+
+    //removing safty mode while deleting old data
+    await knex.transaction(async (trx) => {
+      await trx.raw("SET FOREIGN_KEY_CHECKS = 0");
+
+      await knex("zman_goal").del().where("user_id", adminId);
+
+      //returning safty mode after deleting old data
+      await trx.raw("SET FOREIGN_KEY_CHECKS = 1");
+    });
+    console.log("Data migration completed successfully.");
+  } catch (error) {
+    console.error("Error migrating data:", error);
     throw error;
   }
 }
@@ -196,44 +278,6 @@ async function updateUserPaymentInfo(paymentInfo) {
     total_paid,
     payment_type,
   });
-}
-
-//archiving old data into old data tables
-async function migrateOldZmanGoalData() {
-  try {
-    let zmanGoals = await knex("zman_goal").select();
-
-    let closedWeeks = zmanGoals[0]?.closed_weeks;
-
-    for (const goal of zmanGoals) {
-      const zmanGoalData = {
-        zman: goal.zman,
-        zman_starts_ends: goal.zman_starts_ends,
-        closed_weeks: JSON.stringify(closedWeeks),
-        bus_price: goal.bus_price,
-        wash_price: goal.wash_price,
-        total_zman_weeks: goal.total_zman_weeks,
-        total_zman_goal: goal.total_zman_goal,
-        total_bus_goal: goal.total_bus_goal,
-        total_wash_goal: goal.total_wash_goal,
-      };
-      await knex("old_zman_goal").insert(zmanGoalData);
-    }
-
-    //removing safty mode while deleting old data
-    await knex.transaction(async (trx) => {
-      await trx.raw("SET FOREIGN_KEY_CHECKS = 0");
-
-      await knex("zman_goal").del();
-
-      //returning safty mode after deleting old data
-      await trx.raw("SET FOREIGN_KEY_CHECKS = 1");
-    });
-    console.log("Data migration completed successfully.");
-  } catch (error) {
-    console.error("Error migrating data:", error);
-    throw error;
-  }
 }
 
 async function migrateOldData(selectedStudents) {
