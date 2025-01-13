@@ -44,6 +44,7 @@ const PaymentOptions = ({
   updatePayment,
   setIsPaymentModalVisible,
   setUserPaymentInfo,
+  authData,
 }) => {
   const [form] = Form.useForm();
   const [value, setValue] = useState("bus");
@@ -119,6 +120,9 @@ const PaymentOptions = ({
         validateMessages={validateMessages}
         initialValues={userInfo}
       >
+        <Form.Item name="user_id" hidden={true} value={authData.userId}>
+          <Input />
+        </Form.Item>
         <Form.Item name="student_id" hidden={true}>
           <Input />
         </Form.Item>

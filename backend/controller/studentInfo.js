@@ -28,6 +28,8 @@ module.exports = {
   deleteWithdrawal,
   updateWithdrawalInfo,
   getAllStudentInfoByAdminID,
+  getAllPaymentInfoByAdminId,
+  getAllZmanGoalInfoByAdminId,
 };
 
 async function insertUserInfo(userInfo) {
@@ -70,10 +72,6 @@ async function getUserInfoById(id) {
   return await knex("students").select().where("student_id", id).first();
 }
 
-async function getPaymentInfoByStudentId(id) {
-  return await knex("payments").select().where("student_id", id).first();
-}
-
 async function updateUserInfo(student) {
   const {
     student_id,
@@ -97,29 +95,6 @@ async function updateUserInfo(student) {
     state,
     zip_code,
     phone,
-  });
-}
-
-async function updateUserPaymentInfo(paymentInfo) {
-  const {
-    student_id,
-    cash,
-    checks,
-    credit_card,
-    wash_amount,
-    bus_amount,
-    total_paid,
-    payment_type,
-  } = paymentInfo;
-
-  return knex("payments").where("student_id", student_id).update({
-    cash,
-    checks,
-    credit_card,
-    wash_amount,
-    bus_amount,
-    total_paid,
-    payment_type,
   });
 }
 
@@ -150,6 +125,10 @@ async function getAllZmanGoalInfo() {
   return await knex("zman_goal").select();
 }
 
+async function getAllZmanGoalInfoByAdminId(adminId) {
+  return await knex("zman_goal").select().where("user_id", adminId);
+}
+
 async function insertPaymentInfo(paymentInfo) {
   const hd = new HDate(new Date());
   const ev = new HebrewDateEvent(hd);
@@ -169,6 +148,7 @@ async function insertPaymentInfo(paymentInfo) {
       total_paid: paymentInfo.total_paid,
       pay_date: hebrewDate,
       date: new Date(),
+      user_id: paymentInfo.user_id,
     });
 
     const token = jwt.sign({ payment_id: payment_id }, SECRET_KEY, {
@@ -183,8 +163,39 @@ async function insertPaymentInfo(paymentInfo) {
   }
 }
 
+async function getPaymentInfoByStudentId(id) {
+  return await knex("payments").select().where("student_id", id).first();
+}
+
 async function getAllPaymentInfo() {
   return await knex("payments").select();
+}
+
+async function getAllPaymentInfoByAdminId(adminId) {
+  return await knex("payments").select().where("user_id", adminId);
+}
+
+async function updateUserPaymentInfo(paymentInfo) {
+  const {
+    student_id,
+    cash,
+    checks,
+    credit_card,
+    wash_amount,
+    bus_amount,
+    total_paid,
+    payment_type,
+  } = paymentInfo;
+
+  return knex("payments").where("student_id", student_id).update({
+    cash,
+    checks,
+    credit_card,
+    wash_amount,
+    bus_amount,
+    total_paid,
+    payment_type,
+  });
 }
 
 //archiving old data into old data tables

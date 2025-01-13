@@ -1,19 +1,29 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAllUserInfo } from "../servers/getRequest";
+import {
+  getAllStudentInfoByAdminID,
+  getAllUserInfo,
+} from "../servers/getRequest";
 import MainPage2 from "./mainPage2/main_page2";
+import { useAuth } from "./AuthProvider/AuthProvider";
 
 const CityTotal = () => {
   const [userInfo, setUserInfo] = useState([]);
   const [cityData, setCitiData] = useState([]);
+
+  const { authData } = useAuth();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getAllUserInfo();
-        setUserInfo(data);
+        // const data = await getAllUserInfo();
+        const adminIdData = await getAllStudentInfoByAdminID(
+          authData.parent_admin_id
+        );
+        // setUserInfo(data);
+        setUserInfo(adminIdData);
       } catch (err) {
         console.error("Error fetching data:", err);
         navigate("/error500");
@@ -21,7 +31,7 @@ const CityTotal = () => {
     };
 
     fetchData();
-  }, [navigate]);
+  }, [navigate, authData.parent_admin_id, authData.role, authData.userId]);
 
   useEffect(() => {
     const data = userInfo.map((user) => ({
@@ -47,7 +57,11 @@ const CityTotal = () => {
     }
   });
 
-  return <>{cityCounts && <MainPage2 cityCounts={cityCounts} />}</>;
+  return (
+    <>
+      {cityCounts && <MainPage2 cityCounts={cityCounts} authData={authData} />}
+    </>
+  );
 };
 
 export default CityTotal;

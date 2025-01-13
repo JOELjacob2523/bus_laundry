@@ -192,7 +192,7 @@ async function updateUserProfile(profileInfo) {
       password: newHashedPassword,
       token,
       role: newRole,
-      parent_admin_id: newRole === "Administrator" ? null : parent_admin_id,
+      parent_admin_id: newRole === "Administrator" ? user_id : parent_admin_id,
       yeshiva,
     });
 }

@@ -1,7 +1,10 @@
 import "./profile.css";
 import React, { useEffect, useState } from "react";
 import { updateUserProfile } from "../../servers/userRequests/postUserRequest";
-import { verifyAdminPassword } from "../../servers/userRequests/getUserRequest";
+import {
+  getStudentLoginInfo,
+  verifyAdminPassword,
+} from "../../servers/userRequests/getUserRequest";
 import {
   Avatar,
   Button,
@@ -31,7 +34,7 @@ const validateMessages = {
 };
 /* eslint-disable no-template-curly-in-string */
 
-const Profile = ({ userInfo, setUserInfo, authData, setAuthData }) => {
+const Profile = ({ authData, setAuthData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
@@ -42,6 +45,7 @@ const Profile = ({ userInfo, setUserInfo, authData, setAuthData }) => {
   const [password, setPassword] = useState("");
   const [key, setKey] = useState(0);
   const [isVerified, setIsVerified] = useState(false);
+  const [userInfo, setUserInfo] = useState("");
 
   const [form] = Form.useForm();
 
@@ -55,6 +59,19 @@ const Profile = ({ userInfo, setUserInfo, authData, setAuthData }) => {
         savedMode === "true" ? "dark_mode" : "light_mode";
     }
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getStudentLoginInfo(authData.userId);
+        setUserInfo(data);
+      } catch (err) {
+        console.error(err);
+        navigate("/error500");
+      }
+    };
+    fetchData();
+  }, [authData.userId, navigate]);
 
   const onFinish = async (values) => {
     try {

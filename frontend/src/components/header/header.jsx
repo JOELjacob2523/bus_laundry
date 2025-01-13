@@ -1,30 +1,11 @@
 import "./header.css";
-import KYSymbol from "../../images/KYSymbol.png";
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import HebrewDate from "../hebrewDate/hebrewDate";
-import { getStudentLoginInfo } from "../../servers/userRequests/getUserRequest";
 import { useAuth } from "../AuthProvider/AuthProvider";
 import Profile from "../profile/profile";
 
 const PageHeader = () => {
   const { authData, setAuthData } = useAuth();
-  const [userInfo, setUserInfo] = useState("");
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getStudentLoginInfo(authData.userId);
-        setUserInfo(data);
-      } catch (err) {
-        console.error(err);
-        navigate("/error500");
-      }
-    };
-    fetchData();
-  }, [authData.userId, navigate]);
 
   return (
     <div className="header_container">
@@ -51,12 +32,7 @@ const PageHeader = () => {
             {authData.first_name} {authData.last_name} ,א גוטן
           </div>
         </div>
-        <Profile
-          userInfo={userInfo}
-          setUserInfo={setUserInfo}
-          authData={authData}
-          setAuthData={setAuthData}
-        />
+        <Profile authData={authData} setAuthData={setAuthData} />
       </div>
     </div>
   );

@@ -18,6 +18,7 @@ import { zmanGoalInfo } from "../../servers/postRequest";
 import { useNavigate } from "react-router-dom";
 import SedraSelect from "../sedraSelect/sedraSelect";
 import { FaPlus } from "react-icons/fa";
+import { useAuth } from "../AuthProvider/AuthProvider";
 
 const formItemLayout = {
   labelCol: {
@@ -37,6 +38,7 @@ const ClosedWeeks = () => {
   const [zmanGoalOpen, setZmanGoalOpen] = useState(false);
 
   const navigate = useNavigate();
+  const { authData } = useAuth();
 
   const calculateWeeksBetweenDates = (start, end) => {
     const startDate = new Date(start);
@@ -92,7 +94,8 @@ const ClosedWeeks = () => {
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
-      await zmanGoalInfo(values);
+      const formData = { ...values, user_id: authData.parent_admin_id };
+      await zmanGoalInfo(formData);
       message.success("Zman goal added successfully", 2, () =>
         navigate("/home/buses")
       );

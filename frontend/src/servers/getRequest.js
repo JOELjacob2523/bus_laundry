@@ -44,6 +44,20 @@ export const getUserInfoById = async (studentId, token) => {
   }
 };
 
+//get payment info by admin id
+export const getAllPaymentInfoByAdminID = async (adminId) => {
+  try {
+    const response = await axios.get(
+      `${URL}/get_all_payment_info_by_admin_id`,
+      { params: { user_id: adminId } }
+    );
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
 //get user payment info by student ID
 export const getPaymentInfoByStudentId = async (studentId) => {
   try {
@@ -66,6 +80,21 @@ export const getPaymentInfoByStudentId = async (studentId) => {
 export const getAllZmanGoalInfo = async () => {
   try {
     const response = await axios.get(`${URL}/get_zman_goal`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
+//get zman goal info by admin id
+export const getAllZmanGoalInfoByAdminId = async (adminId) => {
+  try {
+    const response = await axios.get(`${URL}/get_zman_goal_by_admin_id`, {
+      params: {
+        user_id: adminId,
+      },
+    });
     const data = response.data;
     return data;
   } catch (error) {

@@ -18,6 +18,7 @@ const UserCard = ({
   handleCheckboxChange,
   updatePayment,
   setFilteredUserInfo,
+  authData,
 }) => {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
@@ -164,6 +165,7 @@ const UserCard = ({
             updatePayment={updatePayment}
             setIsPaymentModalVisible={setIsPaymentModalVisible}
             setUserPaymentInfo={setUserPaymentInfo}
+            authData={authData}
           />
         </Modal>
         <Modal

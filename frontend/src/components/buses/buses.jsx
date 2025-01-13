@@ -33,7 +33,9 @@ const Buses = () => {
       try {
         const data = await getAllUserInfo();
         const payments = await getAllPaymentInfo();
-        const adminIdData = await getAllStudentInfoByAdminID(authData.userId);
+        const adminIdData = await getAllStudentInfoByAdminID(
+          authData.parent_admin_id
+        );
 
         const paymentMap = payments.reduce((acc, payment) => {
           const { student_id } = payment;
@@ -58,7 +60,7 @@ const Buses = () => {
       }
     };
     fetchData();
-  }, [authData.userId]);
+  }, [authData.userId, authData.parent_admin_id, authData.role]);
 
   const handleUserAdded = async (newUser) => {
     try {
@@ -225,6 +227,7 @@ const Buses = () => {
                       isSelected={selectedUsers.includes(student.student_id)}
                       handleCheckboxChange={handleCheckboxChange}
                       setFilteredUserInfo={setFilteredUserInfo}
+                      authData={authData}
                     />
                   </Col>
                 ))}

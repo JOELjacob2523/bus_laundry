@@ -1,17 +1,23 @@
 import "../../Fonts/fonts.css";
 import "./main_page2.css";
 import React, { useState, useEffect } from "react";
-import { getAllUserInfo } from "../../servers/getRequest";
+import {
+  getAllPaymentInfoByAdminID,
+  getAllStudentInfoByAdminID,
+  getAllUserInfo,
+  getAllZmanGoalInfoByAdminId,
+} from "../../servers/getRequest";
 import { getAllZmanGoalInfo } from "../../servers/getRequest";
 import { getAllPaymentInfo } from "../../servers/getRequest";
-import { Card, Flex, Spin } from "antd";
+import { Button, Card, Empty, Flex, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import IncomeProgress from "../imcomeProgress/incomeProgress";
 import Error500 from "../error/error";
 import { Helmet } from "react-helmet";
 import TotalClosedWeeks from "../totalClosedWeeks/totalClosedWeeks";
+import MissingZmanInfo from "../missingZmanInfo/missingZmanInfo";
 
-const MainPage2 = ({ cityCounts }) => {
+const MainPage2 = ({ cityCounts, authData }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [zmanGoal, setZmanGoal] = useState(null);
   const [paymentInfo, setPaymentInfo] = useState(null);
@@ -22,19 +28,31 @@ const MainPage2 = ({ cityCounts }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userData = await getAllUserInfo();
+        // const userData = await getAllUserInfo();
+        const adminIdData = await getAllStudentInfoByAdminID(
+          authData.parent_admin_id
+        );
         const zmanGoalData = await getAllZmanGoalInfo();
-        const paymentInfoData = await getAllPaymentInfo();
-        setUserInfo(userData);
-        setZmanGoal(zmanGoalData);
-        setPaymentInfo(paymentInfoData);
+        const zmanGoalDataByAdminId = await getAllZmanGoalInfoByAdminId(
+          authData.parent_admin_id
+        );
+        // const paymentInfoData = await getAllPaymentInfo();
+        const paymentInfoDataByAdminId = await getAllPaymentInfoByAdminID(
+          authData.parent_admin_id
+        );
+        // setUserInfo(userData);
+        setUserInfo(adminIdData);
+        // setZmanGoal(zmanGoalData);
+        setZmanGoal(zmanGoalDataByAdminId);
+        // setPaymentInfo(paymentInfoData);
+        setPaymentInfo(paymentInfoDataByAdminId);
       } catch (err) {
         console.error("Error fetching data:", err);
         <Error500 />;
       }
     };
     fetchData();
-  }, []);
+  }, [authData.userId, authData.parent_admin_id, authData.role]);
 
   useEffect(() => {
     if (zmanGoal && Array.isArray(zmanGoal) && zmanGoal.length > 0) {
@@ -125,39 +143,64 @@ const MainPage2 = ({ cityCounts }) => {
           style={{ textAlign: "right" }}
         >
           <div className="zman_info_details">
-            {zmanGoal.map((goal, index) => (
-              <div key={index}>
-                <h3 className="rest_weeks" style={{ fontFamily: "OYoelTovia" }}>
-                  {new Date() > zmanEndingDate ? (
-                    <>עס איז יעצט בין הזמנים</>
-                  ) : (
-                    <>
-                      עס איז נאך דא{" "}
-                      {restWeeks > 1 ? `${restWeeks} וואכן` : "1 וואך"} אינעם
-                      זמן ה{goal.zman}
-                    </>
-                  )}
-                </h3>
-                <h4
-                  key={index}
-                  className="header2"
-                  style={{ fontFamily: "OYoelTovia" }}
-                >
-                  די קומענדיגע מאל וואס מען פארט אהיים איז{" "}
-                  <strong style={{ fontFamily: "OYoelToviaBold" }}>
-                    {nextSedra
-                      ? `פרשת ${nextSedra && nextSedra.sedra}`
-                      : `סוף זמן`}
-                  </strong>
-                </h4>
-                <IncomeProgress
-                  zmanGoal={zmanGoal}
-                  paymentInfo={paymentInfo}
-                  currentAmount={total}
-                  goalAmount={goal.total_zman_goal * userInfo.length}
-                />{" "}
+            {zmanGoal && zmanGoal.length > 0 ? (
+              zmanGoal.map((goal, index) => (
+                <div key={index}>
+                  <h3
+                    className="rest_weeks"
+                    style={{ fontFamily: "OYoelTovia" }}
+                  >
+                    {new Date() > zmanEndingDate ? (
+                      <>עס איז יעצט בין הזמנים</>
+                    ) : (
+                      <>
+                        עס איז נאך דא{" "}
+                        {restWeeks > 1 ? `${restWeeks} וואכן` : "1 וואך"} אינעם
+                        זמן ה{goal.zman}
+                      </>
+                    )}
+                  </h3>
+                  <h4
+                    key={index}
+                    className="header2"
+                    style={{ fontFamily: "OYoelTovia" }}
+                  >
+                    די קומענדיגע מאל וואס מען פארט אהיים איז{" "}
+                    <strong style={{ fontFamily: "OYoelToviaBold" }}>
+                      {nextSedra
+                        ? `פרשת ${nextSedra && nextSedra.sedra}`
+                        : `סוף זמן`}
+                    </strong>
+                  </h4>
+                  <IncomeProgress
+                    zmanGoal={zmanGoal}
+                    paymentInfo={paymentInfo}
+                    currentAmount={total}
+                    goalAmount={goal.total_zman_goal * userInfo.length}
+                  />
+                </div>
+              ))
+            ) : (
+              <div>
+                {authData.role === "Administrator" ? (
+                  <div>
+                    <MissingZmanInfo />
+                  </div>
+                ) : (
+                  <div>
+                    <Empty
+                      description={
+                        <div
+                          style={{ fontFamily: "OYoelTovia", fontSize: "20px" }}
+                        >
+                          עס איז נאכנישט דא קיין זמן אינפארמאציע
+                        </div>
+                      }
+                    />
+                  </div>
+                )}
               </div>
-            ))}
+            )}
           </div>
         </Card>
 

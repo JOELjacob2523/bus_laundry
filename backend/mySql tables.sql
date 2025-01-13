@@ -41,6 +41,8 @@ CREATE TABLE zman_goal (
   total_zman_goal VARCHAR (255) NULL,
   total_bus_goal VARCHAR (255) NULL,
   total_wash_goal VARCHAR (255) NULL,
+  user_id BIGINT
+  FOREIGN KEY(user_id) REFERENCES users(user_id)
   PRIMARY KEY (zman_goal_id)
 );
 
@@ -58,7 +60,9 @@ CREATE TABLE payments (
   pay_date VARCHAR (255) NULL,
   token TEXT NULL,
   student_id BIGINT,
+  user_id BIGINT,
   FOREIGN KEY(student_id) REFERENCES students(student_id),
+  FOREIGN KEY(user_id) REFERENCES users(user_id),
   PRIMARY KEY (payment_id)
 );
 

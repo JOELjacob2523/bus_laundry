@@ -83,6 +83,18 @@ router.post("/update_user_info", upload.fields([]), async (req, res, next) => {
   }
 });
 
+// router get all payment info by admin id
+router.get("/get_all_payment_info_by_admin_id", async (req, res, next) => {
+  try {
+    const { user_id } = req.query;
+    let paymentInfo = await CONTORLLER.getAllPaymentInfoByAdminId(user_id);
+    res.status(200).json(paymentInfo);
+  } catch (err) {
+    console.error("Error getting payment credentials:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // router to update student payment
 router.post(
   "/update_user_payment_info",
@@ -180,6 +192,18 @@ router.post(
 router.get("/get_zman_goal", async (req, res, next) => {
   try {
     let zmanGoal = await CONTORLLER.getAllZmanGoalInfo();
+    res.status(200).json(zmanGoal);
+  } catch (err) {
+    console.error("Error getting zman goal credentials:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// router get all zman goal info by admin id
+router.get("/get_zman_goal_by_admin_id", async (req, res, next) => {
+  try {
+    const { user_id } = req.query;
+    let zmanGoal = await CONTORLLER.getAllZmanGoalInfoByAdminId(user_id);
     res.status(200).json(zmanGoal);
   } catch (err) {
     console.error("Error getting zman goal credentials:", err);
