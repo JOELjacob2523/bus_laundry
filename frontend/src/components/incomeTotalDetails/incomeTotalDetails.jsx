@@ -32,7 +32,7 @@ const IncomeTotalDetails = ({ paymentInfo }) => {
       setIncomeDetails({
         cash: 0,
         checks: 0,
-        creditCard: 0,
+        credit_card: 0,
         total: 0,
         total_paid: 0,
       });

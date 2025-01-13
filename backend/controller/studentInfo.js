@@ -31,6 +31,7 @@ module.exports = {
   getAllPaymentInfoByAdminId,
   getAllZmanGoalInfoByAdminId,
   migrateOldZmanGoalDataByAdminId,
+  getAllWithdrawalInfoByAdminId,
 };
 
 async function insertUserInfo(userInfo) {
@@ -166,8 +167,6 @@ async function migrateOldZmanGoalData() {
 async function migrateOldZmanGoalDataByAdminId(adminId) {
   try {
     let zmanGoals = await knex("zman_goal").select().where("user_id", adminId);
-
-    console.log(zmanGoals);
 
     let closedWeeks = zmanGoals[0]?.closed_weeks;
 
@@ -363,6 +362,11 @@ async function insertWithdrawalInfo(withdrawalInfo) {
 //get withdrawal information
 async function getAllWithdrawalInfo() {
   return await knex("withdrawals").select();
+}
+
+//get withdrawal information by admin id
+async function getAllWithdrawalInfoByAdminId(adminId) {
+  return await knex("withdrawals").select().where("user_id", adminId);
 }
 
 async function deleteWithdrawal(id) {

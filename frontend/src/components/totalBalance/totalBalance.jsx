@@ -1,15 +1,15 @@
 import "./totalBalance.css";
 import React, { useState, useEffect } from "react";
 import {
-  getAllWithdrawalInfo,
   getOldPaymentInfo,
+  getAllWithdrawalInfoByAdminId,
 } from "../../servers/getRequest";
 
 const formatNumber = (number) => {
   return new Intl.NumberFormat("en-US").format(number);
 };
 
-const TotalBalance = ({ paymentInfo }) => {
+const TotalBalance = ({ paymentInfo, authData }) => {
   const [withdrawalData, setWithdrawalData] = useState([]);
   const [busMoney, setBusMoney] = useState(0);
   const [washMoney, setWashMoney] = useState(0);
@@ -19,16 +19,18 @@ const TotalBalance = ({ paymentInfo }) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await getAllWithdrawalInfo();
+        const adminIdData = await getAllWithdrawalInfoByAdminId(
+          authData.parent_admin_id
+        );
         const oldData = await getOldPaymentInfo();
-        setWithdrawalData(data);
+        setWithdrawalData(adminIdData);
         setOldPayments(oldData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     }
     fetchData();
-  }, [withdrawalData]);
+  }, [withdrawalData, authData.parent_admin_id]);
 
   useEffect(() => {
     if (paymentInfo.length > 0) {

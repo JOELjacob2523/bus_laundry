@@ -124,6 +124,21 @@ export const getAllWithdrawalInfo = async () => {
   }
 };
 
+//get withdrawal info by admin id
+export const getAllWithdrawalInfoByAdminId = async (adminId) => {
+  try {
+    const response = await axios.get(`${URL}/get_withdrawal_by_admin_id`, {
+      params: {
+        user_id: adminId,
+      },
+    });
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
 //get old zman goal info
 export const getOldZmanGoalInfo = async () => {
   try {

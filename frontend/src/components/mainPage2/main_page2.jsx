@@ -4,12 +4,9 @@ import React, { useState, useEffect } from "react";
 import {
   getAllPaymentInfoByAdminID,
   getAllStudentInfoByAdminID,
-  getAllUserInfo,
   getAllZmanGoalInfoByAdminId,
 } from "../../servers/getRequest";
-import { getAllZmanGoalInfo } from "../../servers/getRequest";
-import { getAllPaymentInfo } from "../../servers/getRequest";
-import { Button, Card, Empty, Flex, Spin } from "antd";
+import { Card, Empty, Flex, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import IncomeProgress from "../imcomeProgress/incomeProgress";
 import Error500 from "../error/error";
@@ -28,23 +25,17 @@ const MainPage2 = ({ cityCounts, authData }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const userData = await getAllUserInfo();
         const adminIdData = await getAllStudentInfoByAdminID(
           authData.parent_admin_id
         );
-        const zmanGoalData = await getAllZmanGoalInfo();
         const zmanGoalDataByAdminId = await getAllZmanGoalInfoByAdminId(
           authData.parent_admin_id
         );
-        // const paymentInfoData = await getAllPaymentInfo();
         const paymentInfoDataByAdminId = await getAllPaymentInfoByAdminID(
           authData.parent_admin_id
         );
-        // setUserInfo(userData);
         setUserInfo(adminIdData);
-        // setZmanGoal(zmanGoalData);
         setZmanGoal(zmanGoalDataByAdminId);
-        // setPaymentInfo(paymentInfoData);
         setPaymentInfo(paymentInfoDataByAdminId);
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -177,6 +168,7 @@ const MainPage2 = ({ cityCounts, authData }) => {
                     paymentInfo={paymentInfo}
                     currentAmount={total}
                     goalAmount={goal.total_zman_goal * userInfo.length}
+                    authData={authData}
                   />
                 </div>
               ))

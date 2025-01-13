@@ -25,6 +25,7 @@ const IncomeProgress = ({
   goalAmount,
   paymentInfo,
   zmanGoal,
+  authData,
 }) => {
   const [bus, setBus] = useState(0);
   const [wash, setWash] = useState(0);
@@ -113,7 +114,7 @@ const IncomeProgress = ({
           }
           className="total_balance_card"
         >
-          <TotalBalance paymentInfo={paymentInfo} />
+          <TotalBalance paymentInfo={paymentInfo} authData={authData} />
         </Card>
 
         <Card

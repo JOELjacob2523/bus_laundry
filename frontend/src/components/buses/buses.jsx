@@ -31,7 +31,6 @@ const Buses = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getAllUserInfo();
         const payments = await getAllPaymentInfo();
         const adminIdData = await getAllStudentInfoByAdminID(
           authData.parent_admin_id
@@ -50,10 +49,8 @@ const Buses = () => {
           return acc;
         }, {});
 
-        // setUserInfo(data);
         setUserInfo(adminIdData);
         setPaymentInfo(paymentMap);
-        // setFilteredUserInfo(data);
         setFilteredUserInfo(adminIdData);
       } catch (err) {
         console.error("Error fetching data:", err);

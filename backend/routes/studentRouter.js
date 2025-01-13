@@ -322,6 +322,18 @@ router.get("/get_withdrawal", async (req, res, next) => {
   }
 });
 
+// router get all withdrawal info by admin id
+router.get("/get_withdrawal_by_admin_id", async (req, res, next) => {
+  try {
+    const { user_id } = req.query;
+    let withdrawal = await CONTORLLER.getAllWithdrawalInfoByAdminId(user_id);
+    res.status(200).json(withdrawal);
+  } catch (err) {
+    console.error("Error getting withdrawal credentials:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // router to delete a withdrawal info
 router.post("/delete_withdrawal", async (req, res, next) => {
   try {
