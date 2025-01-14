@@ -131,7 +131,7 @@ const UserCard = ({
         <Divider orientation="left">Balance</Divider>
         <div className="balance_container">
           <div>
-            <StudentBalance payment={payment} />
+            <StudentBalance payment={payment} authData={authData} />
           </div>
         </div>
       </Card>

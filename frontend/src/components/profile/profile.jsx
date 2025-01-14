@@ -75,7 +75,7 @@ const Profile = ({ authData, setAuthData }) => {
 
   const onFinish = async (values) => {
     try {
-      const formData = { ...values, role: value };
+      const formData = { ...values, role: value || userInfo.role };
       await updateUserProfile(formData);
       setUserInfo((prev) => ({ ...prev, ...formData }));
       form.setFieldsValue(formData);

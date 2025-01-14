@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
-import { getAllZmanGoalInfo } from "../../servers/getRequest";
+import {
+  getAllZmanGoalInfo,
+  getAllZmanGoalInfoByAdminId,
+} from "../../servers/getRequest";
 import "./balance.css";
 
-const StudentBalance = ({ payment }) => {
+const StudentBalance = ({ payment, authData }) => {
   const [zmanGoal, setZmanGoal] = useState(null);
   const [zmanStart, setZmanStart] = useState(0);
   const [zmanEnd, setZmanEnd] = useState(0);
@@ -10,7 +13,10 @@ const StudentBalance = ({ payment }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const zmanGoalData = await getAllZmanGoalInfo();
+        // const zmanGoalData = await getAllZmanGoalInfo();
+        const zmanGoalData = await getAllZmanGoalInfoByAdminId(
+          authData.parent_admin_id
+        );
 
         if (zmanGoalData && zmanGoalData[0]) {
           // Convert relevant fields to numbers
@@ -33,7 +39,7 @@ const StudentBalance = ({ payment }) => {
       }
     };
     fetchData();
-  }, []);
+  }, [authData.parent_admin_id]);
 
   useEffect(() => {
     if (!zmanGoal || !zmanGoal.length === 0) return;

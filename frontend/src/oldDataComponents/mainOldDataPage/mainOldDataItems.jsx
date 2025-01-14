@@ -34,7 +34,7 @@ const OldZmanData = ({
         const { day, month, year } = zmanGoal.zman_starts_ends.end.jewishDate;
         const hd = new HDate(day, month, year);
         const ev = new HebrewDateEvent(hd);
-        const hebrewYear = ev.render("he-x-NoNikud").split(" ")[3];
+        const hebrewYear = ev.render("he-x-NoNikud").split(" ")[2];
 
         return {
           key: zmanGoal.zman_goal_id,

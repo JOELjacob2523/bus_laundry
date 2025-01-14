@@ -22,7 +22,7 @@ const MainOldDataPage = () => {
 
   const normalizeString = (str) => {
     return str
-      .trim()
+      ?.trim()
       .toLowerCase()
       .normalize("NFC")
       .replace(/״/g, '"')
@@ -36,7 +36,7 @@ const MainOldDataPage = () => {
       const normalizedValue = normalizeString(value);
       const filteredItems = originalItems.filter((item) => {
         const itemLabel = normalizeString(item.label);
-        return itemLabel.includes(normalizedValue);
+        return itemLabel?.includes(normalizedValue);
       });
       setItems(filteredItems);
     }
