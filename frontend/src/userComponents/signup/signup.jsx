@@ -46,7 +46,7 @@ const UserSignup = () => {
     <div style={{ width: "100%" }}>
       <div className="signup_main_container">
         <Helmet>
-          <title>Add user - Kadishes Yoel Bus & Laundry</title>
+          <title>Add user - KJ Mesivta Bus & Laundry</title>
         </Helmet>
         <div className="signup_card_container">
           <div className="signup_card">

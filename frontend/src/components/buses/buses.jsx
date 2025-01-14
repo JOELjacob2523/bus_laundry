@@ -141,7 +141,7 @@ const Buses = () => {
   return (
     <div className="main_buses_container">
       <Helmet>
-        <title>Bus & Wash - Kadishes Yoel Bus & Laundry</title>
+        <title>Bus & Wash - KJ Mesivta Bus & Laundry</title>
       </Helmet>
       <div className="content_container">
         <div className="scrollable_cards">

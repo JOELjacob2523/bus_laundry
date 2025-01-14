@@ -8,7 +8,7 @@ const Details = () => {
   return (
     <div className="main_details_container">
       <Helmet>
-        <title>Details - Kadishes Yoel Bus & Laundry</title>
+        <title>Details - KJ Mesivta Bus & Laundry</title>
       </Helmet>
       <div className="card_container">
         <div>

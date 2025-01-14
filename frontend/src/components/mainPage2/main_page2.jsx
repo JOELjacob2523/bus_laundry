@@ -111,7 +111,7 @@ const MainPage2 = ({ cityCounts, authData }) => {
   return (
     <div className="main_container">
       <Helmet>
-        <title>Home - Kadishes Yoel Bus & Laundry</title>
+        <title>Home - KJ Mesivta Bus & Laundry</title>
       </Helmet>
       <div className="main_page_header_container">
         <Card

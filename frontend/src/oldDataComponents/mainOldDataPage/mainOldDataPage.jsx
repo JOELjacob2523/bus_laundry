@@ -82,7 +82,7 @@ const MainOldDataPage = () => {
   return (
     <div className="main_old_data_container">
       <Helmet>
-        <title>Old Information - Kadishes Yoel Bus & Laundry</title>
+        <title>Old Information - KJ Mesivta Bus & Laundry</title>
       </Helmet>
       <OldZmanData
         setItems={setItems}
