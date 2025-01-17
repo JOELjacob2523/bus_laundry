@@ -171,3 +171,48 @@ export const getOldStudentInfo = async () => {
     console.error("Error fetching data:", error);
   }
 };
+
+//get old zman goal info by admin id
+export const getOldZmanGoalInfoByAdminId = async (adminId) => {
+  try {
+    const response = await axios.get(`${URL}/get_old_zman_goal_by_admin_id`, {
+      params: {
+        user_id: adminId,
+      },
+    });
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
+//get old payments info by admin id
+export const getOldPaymentsInfoByAdminId = async (adminId) => {
+  try {
+    const response = await axios.get(`${URL}/get_old_payments_by_admin_id`, {
+      params: {
+        user_id: adminId,
+      },
+    });
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
+//get old students info by admin id
+export const getOldStudentsInfoByAdminId = async (adminId) => {
+  try {
+    const response = await axios.get(`${URL}/get_old_students_by_admin_id`, {
+      params: {
+        user_id: adminId,
+      },
+    });
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};

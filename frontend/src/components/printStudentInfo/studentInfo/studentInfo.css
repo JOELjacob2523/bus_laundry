@@ -3,40 +3,65 @@
     padding: 10px;
 }
 
-.KY_letterhead_img_container{
-    display: flex;
-    justify-content: center;
-    flex: 1;
-}
-
-.KY_letterhead_img{
-    width: 60%;
+.KY_letterhead_img_container.print_only{
+  display: none;
 }
 
 .print_list_data_container{
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 15px;
+    gap: 25px;
+    color: gray;
 }
 
-.title_container{
+.print_list_titel_container{
     display: flex;
     justify-content: space-around;
     text-align: center;
+    font-size: 1.5rem;
 }
 
-.column_title{
-    width: 100%;
-    text-align: left;
-    padding-left: 10px;
-    font-weight: bold;
+.print_card_item{
+  padding-top: 10px;
 }
 
-.card_container{
-    width: 100%;
+.label-container{
+  padding: 3px;
 }
 
-.card{
-    width: 100%;
+.strong-container{
+  padding: 3px;
 }
+
+@media print {
+    .student_info_to_print_container {
+      width: 100%;
+      padding: 15px;
+    }
+    .KY_letterhead_img_container.print_only{
+      display: block;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+  
+    .print_list_container {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+  
+    .print_card_item {
+      margin-bottom: 10px;
+    }
+  
+    .print_page {
+      page-break-after: always;
+    }
+
+    .print_page:last-of-type {
+      page-break-after: auto; 
+    }
+  }
+  
+  

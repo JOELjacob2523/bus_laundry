@@ -29,7 +29,7 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const WithdrawalForm = ({ key }) => {
+const WithdrawalForm = ({ keyNumber }) => {
   const [date, setDate] = useState(new Date().toLocaleString());
   const [hebrewDate, setHebrewDate] = useState("");
   const [userId, setUserId] = useState("");
@@ -84,7 +84,7 @@ const WithdrawalForm = ({ key }) => {
         <Form
           {...layout}
           // key={hebrewDate}
-          key={key}
+          key={keyNumber}
           initialValues={{ date, hebrew_date: hebrewDate, user_id: userId }}
           name="nest-messages"
           onFinish={onFinish}

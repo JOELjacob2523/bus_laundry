@@ -214,12 +214,14 @@ const MainPage2 = ({ cityCounts, authData }) => {
                 {cityCounts.monsey +
                   cityCounts.airmont +
                   cityCounts.springvalley +
-                  cityCounts.suffern}
+                  cityCounts.suffern +
+                  cityCounts.newcity}
               </strong>{" "}
               {cityCounts.monsey +
                 cityCounts.airmont +
                 cityCounts.springvalley +
-                cityCounts.suffern >
+                cityCounts.suffern +
+                cityCounts.newcity >
               1
                 ? "בחורים"
                 : "בחור"}{" "}

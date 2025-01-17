@@ -9,10 +9,25 @@
 .print_container{
     display: flex;
     flex-direction: row;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: white;
+    padding: 15px;
+    border-bottom: solid 1px lightgray;
+}
+
+.KY_letterhead_img_container{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.KY_letterhead_img{
+    width: 60%;
 }
 
 .print_student_info_container{
-    width: 80%;
+    padding-top: 10px;
 }
 
 .print_student_table_info_btn{

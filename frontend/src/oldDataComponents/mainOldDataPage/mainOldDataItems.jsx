@@ -1,33 +1,16 @@
-import { useEffect, useState, useCallback } from "react";
-import { getOldZmanGoalInfo } from "../../servers/getRequest";
+import { useEffect } from "react";
+import {
+  getOldZmanGoalInfo,
+  getOldZmanGoalInfoByAdminId,
+} from "../../servers/getRequest";
 import { HDate, HebrewDateEvent } from "@hebcal/core";
 import { Radio } from "antd";
 
-const OldZmanData = ({
-  setItems,
-  setOldZmanGoal,
-  showSummerModal,
-  showWinterModal,
-}) => {
-  const [value, setValue] = useState("");
-
-  // const onChange = useCallback(
-  //   (e) => {
-  //     const newValue = e.target.value;
-  //     console.log(newValue);
-  //     setValue(newValue);
-  //     if (newValue === "קיץ") {
-  //       showSummerModal();
-  //     } else if (newValue === "חורף") {
-  //       showWinterModal();
-  //     }
-  //   },
-  //   [showSummerModal, showWinterModal]
-  // );
-
+const OldZmanData = ({ setItems, setOldZmanGoal, authData }) => {
   useEffect(() => {
     const fetchOldZmanData = async () => {
-      const data = await getOldZmanGoalInfo();
+      // const data = await getOldZmanGoalInfo();
+      const data = await getOldZmanGoalInfoByAdminId(authData.parent_admin_id);
       setOldZmanGoal(data);
 
       const newItems = data.map((zmanGoal) => {
@@ -40,10 +23,7 @@ const OldZmanData = ({
           key: zmanGoal.zman_goal_id,
           label: hebrewYear,
           items: (
-            <Radio.Group
-            // value={value}
-            // onChange={onChange}
-            >
+            <Radio.Group>
               <Radio value="חורף">חורף</Radio>
               <Radio value="קיץ">קיץ</Radio>
             </Radio.Group>
@@ -53,12 +33,7 @@ const OldZmanData = ({
       setItems(newItems);
     };
     fetchOldZmanData();
-  }, [
-    setItems,
-    // onChange,
-    // value,
-    setOldZmanGoal,
-  ]);
+  }, [setItems, setOldZmanGoal, authData.parent_admin_id]);
 
   return null;
 };

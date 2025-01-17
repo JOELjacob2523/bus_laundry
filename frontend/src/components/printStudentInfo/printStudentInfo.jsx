@@ -5,6 +5,7 @@ import { Button, Card, Modal } from "antd";
 import { IoMdPrint } from "react-icons/io";
 import StudentInfoToPrint from "./studentInfo/studentInfo";
 import GoogleMaps from "../googleMapRoutes/googleMaps";
+import KYLetterhead from "../../images/KY_Letterhead.png";
 
 const PrintStudentInfo = () => {
   const [open, setOpen] = useState(false);
@@ -33,7 +34,7 @@ const PrintStudentInfo = () => {
         centered
         open={open}
         onCancel={() => setOpen(false)}
-        width={1600}
+        width={1100}
         footer={null}
       >
         <div className="print_container">
@@ -42,7 +43,11 @@ const PrintStudentInfo = () => {
               trigger={() => (
                 <div className="print_student_table_info_container">
                   <div className="print_student_table_info_btn">
-                    <Button type="primary" className="print_student_table_info">
+                    <Button
+                      type="primary"
+                      className="print_student_table_info"
+                      // onClick={() => console.log(componentRef.current)}
+                    >
                       Print this page
                     </Button>
                   </div>
@@ -51,8 +56,13 @@ const PrintStudentInfo = () => {
               content={() => componentRef.current}
             />
           </div>
-          <div className="print_student_info_container">
-            <StudentInfoToPrint ref={componentRef} />
+
+          <div className="KY_letterhead_img_container">
+            <img
+              className="KY_letterhead_img"
+              alt="KYLetterhead"
+              src={KYLetterhead}
+            />
           </div>
 
           <div className="google_maps_btn_container">
@@ -60,6 +70,9 @@ const PrintStudentInfo = () => {
               Google Maps
             </Button>
           </div>
+        </div>
+        <div className="print_student_info_container">
+          <StudentInfoToPrint ref={componentRef} />
         </div>
         <Modal
           open={googleMpasModalOpen}

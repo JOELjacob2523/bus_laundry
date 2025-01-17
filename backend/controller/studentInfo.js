@@ -32,6 +32,9 @@ module.exports = {
   getAllZmanGoalInfoByAdminId,
   migrateOldZmanGoalDataByAdminId,
   getAllWithdrawalInfoByAdminId,
+  getOldPaymentsInfoByAdminId,
+  getOldStudentsInfoByAdminId,
+  getOldZmanGoalInfoByAdminId,
 };
 
 async function insertUserInfo(userInfo) {
@@ -322,6 +325,7 @@ async function migrateOldData(selectedStudents) {
           payment_type: pay.payment_type,
           pay_date: pay.pay_date,
           date: pay.date,
+          user_id: pay.user_id,
         };
         await trx("old_payments").insert(paymentData);
       }
@@ -398,4 +402,19 @@ async function getOldPaymentsInfo() {
 //get old students information
 async function getOldStudentsInfo() {
   return await knex("old_students").select();
+}
+
+//get old zman goal information by admin id
+async function getOldZmanGoalInfoByAdminId(adminId) {
+  return await knex("old_zman_goal").select().where("user_id", adminId);
+}
+
+//get old payments information by admin id
+async function getOldPaymentsInfoByAdminId(adminId) {
+  return await knex("old_payments").select().where("user_id", adminId);
+}
+
+//get old students information by admin
+async function getOldStudentsInfoByAdminId(adminId) {
+  return await knex("old_students").select().where("user_id", adminId);
 }

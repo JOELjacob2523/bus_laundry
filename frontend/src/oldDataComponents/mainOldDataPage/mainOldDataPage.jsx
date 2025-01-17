@@ -4,6 +4,7 @@ import { Card, Collapse, Empty, Input, Modal, Radio } from "antd";
 import OldZmanData from "./mainOldDataItems";
 import OldSummerPayments from "../oldSummerPayments/oldSummerPayments";
 import { Helmet } from "react-helmet";
+import { useAuth } from "../../components/AuthProvider/AuthProvider";
 
 const MainOldDataPage = () => {
   const [items, setItems] = useState([]);
@@ -13,6 +14,8 @@ const MainOldDataPage = () => {
   const [isWinterModalOpen, setIsWinterModalOpen] = useState(false);
   const [selectedHebrewYear, setSelectedHebrewYear] = useState("");
   const [selectedZman, setSelectedZman] = useState("");
+
+  const { authData } = useAuth();
 
   useEffect(() => {
     if (originalItems.length === 0 && items.length > 0) {
@@ -89,6 +92,7 @@ const MainOldDataPage = () => {
         showSummerModal={showSummerModal}
         showWinterModal={showWinterModal}
         setOldZmanGoal={setOldZmanGoal}
+        authData={authData}
       />
       <Card
         type="inner"
@@ -135,6 +139,7 @@ const MainOldDataPage = () => {
             items={items}
             selectedHebrewYear={selectedHebrewYear}
             selectedZman={selectedZman}
+            authData={authData}
           />
         </Modal>
         <Modal
@@ -150,6 +155,7 @@ const MainOldDataPage = () => {
             items={items}
             selectedHebrewYear={selectedHebrewYear}
             selectedZman={selectedZman}
+            authData={authData}
             isWinter
           />
         </Modal>

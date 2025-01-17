@@ -61,7 +61,10 @@ const Buses = () => {
 
   const handleUserAdded = async (newUser) => {
     try {
-      const updatedUserInfo = await getAllUserInfo();
+      // const updatedUserInfo = await getAllUserInfo();
+      const updatedUserInfo = await getAllStudentInfoByAdminID(
+        authData.parent_admin_id
+      );
       setUserInfo(updatedUserInfo);
       setFilteredUserInfo(updatedUserInfo);
     } catch (err) {

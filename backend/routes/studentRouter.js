@@ -400,4 +400,40 @@ router.get("/get_old_students", async (req, res, next) => {
   }
 });
 
+// router get old zman goal info by admin id
+router.get("/get_old_zman_goal_by_admin_id", async (req, res, next) => {
+  try {
+    const { user_id } = req.query;
+    let oldZmanGoal = await CONTORLLER.getOldZmanGoalInfoByAdminId(user_id);
+    res.status(200).json(oldZmanGoal);
+  } catch (err) {
+    console.error("Error getting old zman goal credentials:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// router get old payment info by admin id
+router.get("/get_old_payments_by_admin_id", async (req, res, next) => {
+  try {
+    const { user_id } = req.query;
+    let oldPayments = await CONTORLLER.getOldPaymentsInfoByAdminId(user_id);
+    res.status(200).json(oldPayments);
+  } catch (err) {
+    console.error("Error getting old payments credentials:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// router get old student info by admin id
+router.get("/get_old_students_by_admin_id", async (req, res, next) => {
+  try {
+    const { user_id } = req.query;
+    let oldStudents = await CONTORLLER.getOldStudentsInfoByAdminId(user_id);
+    res.status(200).json(oldStudents);
+  } catch (err) {
+    console.error("Error getting old students credentials:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 module.exports = router;

@@ -48,6 +48,7 @@ const CityTotal = () => {
     airmont: 0,
     suffern: 0,
     boropark: 0,
+    newcity: 0,
   };
 
   cityData.forEach((cityItem) => {

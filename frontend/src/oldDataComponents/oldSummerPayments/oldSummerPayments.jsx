@@ -1,7 +1,12 @@
 import "../../Fonts/fonts.css";
 import "./oldSummerPayments.css";
 import { useEffect, useState } from "react";
-import { getOldPaymentInfo, getOldStudentInfo } from "../../servers/getRequest";
+import {
+  getOldPaymentInfo,
+  getOldPaymentsInfoByAdminId,
+  getOldStudentInfo,
+  getOldStudentsInfoByAdminId,
+} from "../../servers/getRequest";
 import { Card, Descriptions, Empty } from "antd";
 
 const formatNumber = (number) => {
@@ -11,7 +16,7 @@ const formatNumber = (number) => {
   }).format(number);
 };
 
-const OldSummerPayments = ({ oldZmanGoal, selectedZman }) => {
+const OldSummerPayments = ({ oldZmanGoal, selectedZman, authData }) => {
   const [paymentData, setPaymentData] = useState([]);
   const [studentData, setStudentData] = useState({});
   const [startDate, setStartDate] = useState([]);
@@ -20,14 +25,20 @@ const OldSummerPayments = ({ oldZmanGoal, selectedZman }) => {
   useEffect(() => {
     const fetchOldPayments = async () => {
       try {
-        const payments = await getOldPaymentInfo();
+        // const payments = await getOldPaymentInfo();
+        const payments = await getOldPaymentsInfoByAdminId(
+          authData.parent_admin_id
+        );
         setPaymentData(payments);
 
         const studentIds = [
           ...new Set(payments.map((payment) => payment.student_id)),
         ];
         const studentDetailsArrays = await Promise.all(
-          studentIds.map((id) => getOldStudentInfo(id))
+          studentIds.map((id) =>
+            // getOldStudentInfo(id)
+            getOldStudentsInfoByAdminId(authData.parent_admin_id, id)
+          )
         );
 
         const studentDetails = studentDetailsArrays.flat();
@@ -54,7 +65,7 @@ const OldSummerPayments = ({ oldZmanGoal, selectedZman }) => {
       }
     };
     fetchOldPayments();
-  }, [oldZmanGoal, selectedZman]);
+  }, [oldZmanGoal, selectedZman, authData.parent_admin_id]);
 
   const isDateInRange = (date) => {
     return (
