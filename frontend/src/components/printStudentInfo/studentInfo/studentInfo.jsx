@@ -1,34 +1,24 @@
 import "./studentInfo.css";
-import React, { useEffect, useRef, useState, forwardRef } from "react";
-import {
-  getAllStudentInfoByAdminID,
-  getAllPaymentInfoByAdminID,
-} from "../../../servers/getRequest";
-import { Card, List } from "antd";
+import React, { useEffect, useState, forwardRef } from "react";
+import { Card, List, Checkbox } from "antd";
 import KYLetterhead from "../../../images/KY_Letterhead.png";
 import { useAuth } from "../../AuthProvider/AuthProvider";
 
 const StudentInfoToPrint = forwardRef((props, ref) => {
-  const [studentInfo, setStudentInfo] = useState([]);
-  const [paymentInfo, setPaymentInfo] = useState([]);
   const [mergedData, setMergedData] = useState([]);
-  const searchInput = useRef(null);
+  const [indeterminate, setIndeterminate] = useState([]);
+  const [zmanGoal, setZmanGoal] = useState([]);
 
-  const { authData } = useAuth();
+  const { authData, studentData, paymentData, zmanGoalData } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const students = await getAllStudentInfoByAdminID(
-          authData.parent_admin_id
-        );
-        const payments = await getAllPaymentInfoByAdminID(
-          authData.parent_admin_id
-        );
+        const students = studentData;
+        const payments = paymentData;
+        const zmanGoalInfo = zmanGoalData;
 
-        setStudentInfo(students);
-        setPaymentInfo(payments);
-
+        setZmanGoal(zmanGoalInfo);
         const merged = students.map((student, index) => {
           return {
             key: index,
@@ -45,141 +35,23 @@ const StudentInfoToPrint = forwardRef((props, ref) => {
       }
     };
     fetchData();
-  }, [authData.parent_admin_id]);
+  }, [authData.parent_admin_id, studentData, paymentData, zmanGoalData]);
+
+  useEffect(() => {
+    if (!zmanGoal?.[0]?.total_zman_goal || !mergedData?.length) {
+      setIndeterminate([]);
+      return;
+    }
+    const newStates = mergedData.map((student) => {
+      const totalPaid = Number(student?.payment?.total_paid) || 0;
+      const totalGoal = Number(zmanGoal[0]?.total_zman_goal);
+      return totalPaid >= totalGoal;
+    });
+
+    setIndeterminate(newStates);
+  }, [mergedData, zmanGoal]);
 
   return (
-    // <div ref={ref} className="student_info_to_print_container">
-    //   <div className="KY_letterhead_img_container">
-    //     <img
-    //       className="KY_letterhead_img"
-    //       alt="KYLetterhead"
-    //       src={KYLetterhead}
-    //     />
-    //   </div>
-    //   <div className="print_main_container">
-    //     <List
-    //       itemLayout="vertical"
-    //       className="print_list_container"
-    //       dataSource={mergedData}
-    //       bordered
-    //       renderItem={(student, index) => (
-    //         <>
-    //           <List.Item className="print_list_item">
-    //             <List.Item.Meta
-    //               title={
-    //                 <div className="print_list_titel_container">
-    //                   {student.first_name} {student.last_name}{" "}
-    //                 </div>
-    //               }
-    //               description={
-    //                 <div className="print_list_data_container">
-    //                   <div className="label-container">
-    //                     Age:{" "}
-    //                     <div className="strong-container">
-    //                       <strong>{student.age}</strong>
-    //                     </div>
-    //                   </div>
-
-    //                   <div className="label-container">
-    //                     Address:
-    //                     <div className="strong-container">
-    //                       <strong>{student.address1}</strong>
-    //                     </div>
-    //                   </div>
-
-    //                   <div className="label-container">
-    //                     City-State-Zip:
-    //                     <div className="strong-container">
-    //                       <strong>{student.city_state_zip}</strong>
-    //                     </div>
-    //                   </div>
-
-    //                   <div className="label-container">
-    //                     Phone Number:
-    //                     <div className="strong-container">
-    //                       <strong>
-    //                         {student.phone
-    //                           ? student.phone.replace(
-    //                               /^(\d{3})(\d{3})(\d{4})/,
-    //                               "$1-$2-$3"
-    //                             )
-    //                           : "N/A"}
-    //                       </strong>
-    //                     </div>
-    //                   </div>
-
-    //                   <div className="label-container">
-    //                     Paid For Bus:
-    //                     <div className="strong-container">
-    //                       {student.payment ? (
-    //                         <strong>
-    //                           $
-    //                           {(student.payment &&
-    //                             student.payment.bus_amount) ||
-    //                             0}
-    //                         </strong>
-    //                       ) : (
-    //                         <strong>$0</strong>
-    //                       )}
-    //                     </div>
-    //                   </div>
-
-    //                   <div className="label-container">
-    //                     Paid For Wash:
-    //                     <div className="strong-container">
-    //                       {student.payment ? (
-    //                         <strong>
-    //                           $
-    //                           {(student.payment &&
-    //                             student.payment.wash_amount) ||
-    //                             0}
-    //                         </strong>
-    //                       ) : (
-    //                         <strong>$0</strong>
-    //                       )}
-    //                     </div>
-    //                   </div>
-
-    //                   <div className="label-container">
-    //                     Total Paid:
-    //                     <div className="strong-container">
-    //                       {student.payment ? (
-    //                         <strong>
-    //                           ${student.payment && student.payment.total_paid}
-    //                         </strong>
-    //                       ) : (
-    //                         <strong>$0</strong>
-    //                       )}
-    //                     </div>
-    //                   </div>
-
-    //                   <div className="label-container">
-    //                     Payment Date:
-    //                     <div className="strong-container">
-    //                       {student.payment ? (
-    //                         <strong>
-    //                           {student.payment && student.payment.pay_date}
-    //                         </strong>
-    //                       ) : (
-    //                         <strong>N/A</strong>
-    //                       )}
-    //                     </div>
-    //                   </div>
-    //                 </div>
-    //               }
-    //             />
-    //           </List.Item>
-    //           {(index + 1) % 5 === 0 && (
-    //             <div
-    //               className="page_break"
-    //               style={{ pageBreakAfter: "always" }}
-    //             ></div>
-    //           )}
-    //         </>
-    //       )}
-    //     />
-    //   </div>
-    // </div>
     <div ref={ref} className="student_info_to_print_container">
       {Array.from({ length: Math.ceil(mergedData.length / 4) }).map(
         (_, pageIndex) => {
@@ -200,18 +72,27 @@ const StudentInfoToPrint = forwardRef((props, ref) => {
                 itemLayout="vertical"
                 className="print_list_container"
                 dataSource={pageItems}
-                renderItem={(student) => (
-                  // <List.Item className="print_list_item">
+                renderItem={(student, index) => (
                   <div className="print_card_item">
                     <Card
                       type="inner"
                       size="small"
                       title={
-                        <div
-                          className="print_list_titel_container"
-                          style={{ fontFamily: "OYoelTovia" }}
-                        >
-                          {student.first_name} {student.last_name}
+                        <div className="print_list_titel_container">
+                          <div className="print_list_titel_checkbox">
+                            <Checkbox
+                              key={student.student_id || start + index}
+                              indeterminate={
+                                indeterminate[start + index] || false
+                              }
+                            />
+                          </div>
+                          <div
+                            className="print_list_titel_inner"
+                            style={{ fontFamily: "OYoelTovia" }}
+                          >
+                            {student.first_name} {student.last_name}
+                          </div>
                         </div>
                       }
                     >
@@ -305,7 +186,6 @@ const StudentInfoToPrint = forwardRef((props, ref) => {
                       />
                     </Card>
                   </div>
-                  // </List.Item>
                 )}
               />
             </div>

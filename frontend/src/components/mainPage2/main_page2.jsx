@@ -1,11 +1,6 @@
 import "../../Fonts/fonts.css";
 import "./main_page2.css";
 import React, { useState, useEffect } from "react";
-import {
-  getAllPaymentInfoByAdminID,
-  getAllStudentInfoByAdminID,
-  getAllZmanGoalInfoByAdminId,
-} from "../../servers/getRequest";
 import { Card, Empty, Flex, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import IncomeProgress from "../imcomeProgress/incomeProgress";
@@ -14,7 +9,13 @@ import { Helmet } from "react-helmet";
 import TotalClosedWeeks from "../totalClosedWeeks/totalClosedWeeks";
 import MissingZmanInfo from "../missingZmanInfo/missingZmanInfo";
 
-const MainPage2 = ({ cityCounts, authData }) => {
+const MainPage2 = ({
+  cityCounts,
+  authData,
+  studentData,
+  paymentData,
+  zmanGoalData,
+}) => {
   const [userInfo, setUserInfo] = useState(null);
   const [zmanGoal, setZmanGoal] = useState(null);
   const [paymentInfo, setPaymentInfo] = useState(null);
@@ -25,15 +26,9 @@ const MainPage2 = ({ cityCounts, authData }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const adminIdData = await getAllStudentInfoByAdminID(
-          authData.parent_admin_id
-        );
-        const zmanGoalDataByAdminId = await getAllZmanGoalInfoByAdminId(
-          authData.parent_admin_id
-        );
-        const paymentInfoDataByAdminId = await getAllPaymentInfoByAdminID(
-          authData.parent_admin_id
-        );
+        const adminIdData = studentData;
+        const zmanGoalDataByAdminId = zmanGoalData;
+        const paymentInfoDataByAdminId = paymentData;
         setUserInfo(adminIdData);
         setZmanGoal(zmanGoalDataByAdminId);
         setPaymentInfo(paymentInfoDataByAdminId);
@@ -43,7 +38,7 @@ const MainPage2 = ({ cityCounts, authData }) => {
       }
     };
     fetchData();
-  }, [authData.userId, authData.parent_admin_id, authData.role]);
+  }, [studentData, paymentData, zmanGoalData]);
 
   useEffect(() => {
     if (zmanGoal && Array.isArray(zmanGoal) && zmanGoal.length > 0) {

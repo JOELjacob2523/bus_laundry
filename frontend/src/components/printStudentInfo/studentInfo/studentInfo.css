@@ -17,9 +17,18 @@
 
 .print_list_titel_container{
     display: flex;
-    justify-content: space-around;
-    text-align: center;
+    justify-content:center;
     font-size: 1.5rem;
+}
+
+.print_list_titel_checkbox{
+  display: flex;
+}
+
+.print_list_titel_inner{
+  display: flex;
+  justify-content: center;
+  flex: 1;
 }
 
 .print_card_item{

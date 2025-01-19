@@ -1,9 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  getAllStudentInfoByAdminID,
-  getAllUserInfo,
-} from "../servers/getRequest";
 import MainPage2 from "./mainPage2/main_page2";
 import { useAuth } from "./AuthProvider/AuthProvider";
 
@@ -11,18 +7,14 @@ const CityTotal = () => {
   const [userInfo, setUserInfo] = useState([]);
   const [cityData, setCitiData] = useState([]);
 
-  const { authData } = useAuth();
+  const { authData, studentData, paymentData, zmanGoalData } = useAuth();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const data = await getAllUserInfo();
-        const adminIdData = await getAllStudentInfoByAdminID(
-          authData.parent_admin_id
-        );
-        // setUserInfo(data);
+        const adminIdData = studentData;
         setUserInfo(adminIdData);
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -31,7 +23,7 @@ const CityTotal = () => {
     };
 
     fetchData();
-  }, [navigate, authData.parent_admin_id, authData.role, authData.userId]);
+  }, [navigate, studentData]);
 
   useEffect(() => {
     const data = userInfo.map((user) => ({
@@ -60,7 +52,15 @@ const CityTotal = () => {
 
   return (
     <>
-      {cityCounts && <MainPage2 cityCounts={cityCounts} authData={authData} />}
+      {cityCounts && (
+        <MainPage2
+          cityCounts={cityCounts}
+          authData={authData}
+          studentData={studentData}
+          paymentData={paymentData}
+          zmanGoalData={zmanGoalData}
+        />
+      )}
     </>
   );
 };

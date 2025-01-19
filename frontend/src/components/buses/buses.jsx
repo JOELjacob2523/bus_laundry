@@ -3,11 +3,6 @@ import "./buses.css";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Row, Col, Pagination, Empty, Button, message, Typography } from "antd";
-import {
-  getAllPaymentInfo,
-  getAllUserInfo,
-  getAllStudentInfoByAdminID,
-} from "../../servers/getRequest";
 import { archiveOldStudentPayments } from "../../servers/postRequest";
 import AddUser from "../addUser/newUserBtn";
 import UserCard from "./userCard";
@@ -25,16 +20,14 @@ const Buses = () => {
   const [pageSize, setPageSize] = useState(30);
   const [selectedUsers, setSelectedUsers] = useState([]);
 
-  const { authData } = useAuth();
+  const { authData, studentData, paymentData } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const payments = await getAllPaymentInfo();
-        const adminIdData = await getAllStudentInfoByAdminID(
-          authData.parent_admin_id
-        );
+        const payments = paymentData;
+        const adminIdData = studentData;
 
         const paymentMap = payments.reduce((acc, payment) => {
           const { student_id } = payment;
@@ -57,14 +50,11 @@ const Buses = () => {
       }
     };
     fetchData();
-  }, [authData.userId, authData.parent_admin_id, authData.role]);
+  }, [studentData, paymentData]);
 
   const handleUserAdded = async (newUser) => {
     try {
-      // const updatedUserInfo = await getAllUserInfo();
-      const updatedUserInfo = await getAllStudentInfoByAdminID(
-        authData.parent_admin_id
-      );
+      const updatedUserInfo = studentData;
       setUserInfo(updatedUserInfo);
       setFilteredUserInfo(updatedUserInfo);
     } catch (err) {
