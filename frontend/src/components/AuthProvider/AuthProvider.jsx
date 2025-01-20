@@ -28,21 +28,34 @@ export const AuthProvider = ({ children }) => {
   const [paymentData, setPaymentData] = useState([]);
   const [zmanGoalData, setZmanGoalData] = useState([]);
 
-  const fetchData = useCallback(async () => {
+  const fetchStudentData = useCallback(async () => {
     try {
       const studentInfo = await getAllStudentInfoByAdminID(
         authData.parent_admin_id
       );
-      const paymentInfo = await getAllPaymentInfoByAdminID(
-        authData.parent_admin_id
-      );
+      setStudentData(studentInfo);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, [authData.parent_admin_id]);
 
+  const fetchZmanGoalData = useCallback(async () => {
+    try {
       const zmanGoalInfo = await getAllZmanGoalInfoByAdminId(
         authData.parent_admin_id
       );
-      setStudentData(studentInfo);
-      setPaymentData(paymentInfo);
       setZmanGoalData(zmanGoalInfo);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, [authData.parent_admin_id]);
+
+  const fetchPaymentData = useCallback(async () => {
+    try {
+      const paymentInfo = await getAllPaymentInfoByAdminID(
+        authData.parent_admin_id
+      );
+      setPaymentData(paymentInfo);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -50,13 +63,28 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (authData.parent_admin_id) {
-      fetchData();
+      fetchStudentData();
+      fetchPaymentData();
+      fetchZmanGoalData();
     }
-  }, [authData.parent_admin_id, fetchData]);
+  }, [
+    authData.parent_admin_id,
+    fetchStudentData,
+    fetchPaymentData,
+    fetchZmanGoalData,
+  ]);
 
   return (
     <AuthContext.Provider
-      value={{ authData, setAuthData, studentData, paymentData, zmanGoalData }}
+      value={{
+        authData,
+        setAuthData,
+        setStudentData,
+        studentData,
+        paymentData,
+        zmanGoalData,
+        fetchStudentData,
+      }}
     >
       {children}
     </AuthContext.Provider>

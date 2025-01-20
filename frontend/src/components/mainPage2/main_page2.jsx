@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 import { Card, Empty, Flex, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import IncomeProgress from "../imcomeProgress/incomeProgress";
-import Error500 from "../error/error";
 import { Helmet } from "react-helmet";
+import { useNavigate } from "react-router-dom";
 import TotalClosedWeeks from "../totalClosedWeeks/totalClosedWeeks";
 import MissingZmanInfo from "../missingZmanInfo/missingZmanInfo";
 
@@ -23,6 +23,8 @@ const MainPage2 = ({
   const [nextSedra, setNextSedra] = useState(null);
   const [zmanEndingDate, setZmanEndingDate] = useState(null);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -34,11 +36,11 @@ const MainPage2 = ({
         setPaymentInfo(paymentInfoDataByAdminId);
       } catch (err) {
         console.error("Error fetching data:", err);
-        <Error500 />;
+        navigate("/error500");
       }
     };
     fetchData();
-  }, [studentData, paymentData, zmanGoalData]);
+  }, [studentData, paymentData, zmanGoalData, navigate]);
 
   useEffect(() => {
     if (zmanGoal && Array.isArray(zmanGoal) && zmanGoal.length > 0) {
@@ -95,11 +97,10 @@ const MainPage2 = ({
 
   if (!userInfo || !zmanGoal || !cityCounts) {
     return (
-      <div>
-        <Flex align="center" gap="middle">
-          <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
-        </Flex>
-      </div>
+      <Flex className="loading_flax">
+        <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />{" "}
+        Loading...
+      </Flex>
     );
   }
 

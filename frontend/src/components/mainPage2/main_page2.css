@@ -48,3 +48,10 @@
     font-size: 20px;
     margin-right: 1px;
 }
+
+.loading_flax{
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}

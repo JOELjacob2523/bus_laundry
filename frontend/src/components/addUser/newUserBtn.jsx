@@ -5,7 +5,7 @@ import Draggable from "react-draggable";
 import AddUserForm from "./addUser";
 import { useAuth } from "../AuthProvider/AuthProvider";
 
-const AddUser = ({ onUserAdded }) => {
+const AddUser = ({ onUserAdded, setFilteredUserInfo }) => {
   const [open, setOpen] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [bounds, setBounds] = useState({
@@ -88,6 +88,7 @@ const AddUser = ({ onUserAdded }) => {
           handleCancel={handleCancel}
           onUserAdded={onUserAdded}
           authData={authData}
+          setFilteredUserInfo={setFilteredUserInfo}
         />
       </Modal>
     </>

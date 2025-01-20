@@ -1,9 +1,10 @@
+import "./addUser.css";
 import "bootstrap/dist/css/bootstrap.css";
 import { Button, Form, Input, message, Select } from "antd";
 import { userInfo } from "../../servers/postRequest";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./addUser.css";
+import { useAuth } from "../AuthProvider/AuthProvider";
 
 const layout = {
   labelCol: {
@@ -32,6 +33,8 @@ const AddUserForm = ({ handleCancel, onUserAdded, authData }) => {
   const [parentAdminId, setParentAdminId] = useState("");
   const navigate = useNavigate();
 
+  const { fetchStudentData } = useAuth();
+
   useEffect(() => {
     authData.role === "Administrator"
       ? setParentAdminId(authData.userId)
@@ -44,6 +47,7 @@ const AddUserForm = ({ handleCancel, onUserAdded, authData }) => {
       const addedUser = await userInfo(formData);
       onUserAdded(addedUser);
       setResetKey((prevKey) => prevKey + 1);
+      await fetchStudentData();
       handleCancel();
       message.success("Student added successfully", 2);
     } catch (error) {

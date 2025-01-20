@@ -2,7 +2,18 @@ import "../../Fonts/fonts.css";
 import "./buses.css";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Row, Col, Pagination, Empty, Button, message, Typography } from "antd";
+import {
+  Row,
+  Col,
+  Pagination,
+  Empty,
+  Button,
+  message,
+  Typography,
+  Flex,
+  Spin,
+} from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import { archiveOldStudentPayments } from "../../servers/postRequest";
 import AddUser from "../addUser/newUserBtn";
 import UserCard from "./userCard";
@@ -19,6 +30,7 @@ const Buses = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(30);
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const { authData, studentData, paymentData } = useAuth();
   const navigate = useNavigate();
@@ -28,6 +40,10 @@ const Buses = () => {
       try {
         const payments = paymentData;
         const adminIdData = studentData;
+
+        if (!adminIdData || !paymentData) {
+          setLoading(true);
+        }
 
         const paymentMap = payments.reduce((acc, payment) => {
           const { student_id } = payment;
@@ -126,6 +142,13 @@ const Buses = () => {
     });
   };
 
+  if (loading) {
+    <Flex className="loading_flax">
+      <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />{" "}
+      Loading...
+    </Flex>;
+  }
+
   // Calculate the cards to display on the current page
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
@@ -179,7 +202,10 @@ const Buses = () => {
             {(authData.role === "Administrator" ||
               authData.role === "Manager") && (
               <div className="add_user_inner">
-                <AddUser onUserAdded={handleUserAdded} />
+                <AddUser
+                  onUserAdded={handleUserAdded}
+                  setFilteredUserInfo={setFilteredUserInfo}
+                />
               </div>
             )}
           </div>

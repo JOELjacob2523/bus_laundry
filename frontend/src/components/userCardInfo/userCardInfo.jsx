@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Button, Modal, Collapse, theme, Divider, Empty, Spin } from "antd";
+import React, { useState } from "react";
+import { Button, Modal, Collapse, theme, Divider, Empty } from "antd";
 import { CaretRightOutlined } from "@ant-design/icons";
 import "./userCardInfo.css";
-import { getUserInfoById } from "../../servers/getRequest";
 import EditUser from "../editUser/editUser";
 import EditUserPayment from "../editPayments/editPayments";
 import { useAuth } from "../AuthProvider/AuthProvider";
@@ -20,28 +19,8 @@ const UserCardInfo = ({
   const [modalOpen, setModalOpen] = useState(false);
   const [userDisabled, setUserDisabled] = useState(true);
   const [showButtons, setShowButtons] = useState(false);
-  const [userInfo, setUserInfo] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [loading, setLoading] = useState(true);
   const { token } = theme.useToken();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getUserInfoById(studentId, token);
-        if (data && data.student_id) {
-          setUserInfo(data);
-        } else {
-          console.error("Invalid user data:", data);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [studentId, token]);
 
   const handleEditClick = () => {
     setUserDisabled(false);
@@ -55,11 +34,7 @@ const UserCardInfo = ({
     setIsEditing(false);
   };
 
-  if (loading) {
-    return <Spin spinning="loading" tip="Loading..." fullscreen={true} />;
-  }
-
-  if (!userInfo)
+  if (!student)
     return (
       <div>
         <Empty description="User not found" />
