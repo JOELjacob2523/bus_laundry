@@ -37,7 +37,6 @@ const EditUserPayment = ({
   setUserPaymentInfo,
 }) => {
   const { authData } = useAuth();
-  // const [userPaymentInfo, setUserPaymentInfo] = useState(null);
   const [value, setValue] = useState("");
   const [paymentTypeValue, setPaymentTypeValue] = useState("");
   const [loading, setLoading] = useState(true);
@@ -154,13 +153,10 @@ const EditUserPayment = ({
     }
   };
 
-  // if (loading) {
-  //   return <Spin spinning="loading" tip="Loading..." fullscreen={true} />;
-  // }
-
   if (loading) {
-    <Flex>
-      <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
+    <Flex className="loading_flax">
+      <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />{" "}
+      Loading...
     </Flex>;
   }
 
@@ -176,7 +172,7 @@ const EditUserPayment = ({
       <div className="edit_payment_btn_div">
         {authData.role === "Administrator" || authData.role === "Manager" ? (
           <Button type="primary" onClick={handlePaymentEditClick}>
-            Edit Payments
+            טויש פעימענט
           </Button>
         ) : null}
       </div>
@@ -322,7 +318,7 @@ const EditUserPayment = ({
               ) : null}
 
               {value === "wash" || value === "bus_wash" ? (
-                <div>
+                <div style={{ paddingTop: "20px" }}>
                   <div style={{ textAlign: "right", paddingRight: "5px" }}>
                     :וואשן סכום
                   </div>
@@ -357,7 +353,7 @@ const EditUserPayment = ({
               )}
 
               {aggregatedPayment.wash_amount > 0 && (
-                <div>
+                <div style={{ paddingTop: "20px" }}>
                   <div style={{ textAlign: "right", paddingRight: "5px" }}>
                     :וואשן סכום
                   </div>
@@ -390,7 +386,7 @@ const EditUserPayment = ({
             <div>
               {isEditingPayment ? (
                 <Form.Item name="total_paid">
-                  <Input disabled style={{ width: "200px" }} />
+                  <Input disabled style={{ width: "350px" }} />
                 </Form.Item>
               ) : (
                 <Input
@@ -399,7 +395,7 @@ const EditUserPayment = ({
                       ? `$${aggregatedPayment.total_paid.toFixed(2)}`
                       : "N/A"
                   }
-                  style={{ width: "200px" }}
+                  style={{ width: "350px" }}
                   disabled
                 />
               )}

@@ -12,6 +12,7 @@ import {
   Typography,
   Flex,
   Spin,
+  ConfigProvider,
 } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { archiveOldStudentPayments } from "../../servers/postRequest";
@@ -22,6 +23,15 @@ import { Helmet } from "react-helmet";
 import { useAuth } from "../AuthProvider/AuthProvider";
 
 const { Title } = Typography;
+
+const customLocale = {
+  Pagination: {
+    items_per_page: "- בלעטער",
+    jump_to: "גיי צו",
+    jump_to_confirm: "באַשטעטיקן",
+    page: "בלאט",
+  },
+};
 
 const Buses = () => {
   const [userInfo, setUserInfo] = useState([]);
@@ -169,19 +179,22 @@ const Buses = () => {
                   fontFamily: "OYoelTovia",
                 }}
               >
-                ~ עס זענען איינגעשריבן {filteredUserInfo.length} בחורים ~
+                ~ עס איז איינגעשריבן {filteredUserInfo.length}{" "}
+                {filteredUserInfo.length > 1 ? "בחורים" : "בחור"} ~
               </Title>
             </div>
             <div className="top_pagination">
               {filteredUserInfo.length > pageSize && (
-                <Pagination
-                  current={currentPage}
-                  pageSize={pageSize}
-                  total={filteredUserInfo.length}
-                  onChange={handlePageChange}
-                  showSizeChanger
-                  pageSizeOptions={["30", "50", "100", "200"]}
-                />
+                <ConfigProvider locale={{ ...customLocale }}>
+                  <Pagination
+                    current={currentPage}
+                    pageSize={pageSize}
+                    total={filteredUserInfo.length}
+                    onChange={handlePageChange}
+                    showSizeChanger={true}
+                    pageSizeOptions={["30", "50", "100", "200"]}
+                  />
+                </ConfigProvider>
               )}
             </div>
           </div>
@@ -250,14 +263,16 @@ const Buses = () => {
               </Row>
               {filteredUserInfo.length > pageSize && (
                 <div className="pagination">
-                  <Pagination
-                    current={currentPage}
-                    pageSize={pageSize}
-                    total={filteredUserInfo.length}
-                    onChange={handlePageChange}
-                    showSizeChanger
-                    pageSizeOptions={["30", "50", "100", "200"]}
-                  />
+                  <ConfigProvider locale={{ ...customLocale }}>
+                    <Pagination
+                      current={currentPage}
+                      pageSize={pageSize}
+                      total={filteredUserInfo.length}
+                      onChange={handlePageChange}
+                      showSizeChanger={true}
+                      pageSizeOptions={["30", "50", "100", "200"]}
+                    />
+                  </ConfigProvider>
                 </div>
               )}
             </>

@@ -20,6 +20,7 @@ const UserCardInfo = ({
   const [userDisabled, setUserDisabled] = useState(true);
   const [showButtons, setShowButtons] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [key, setKey] = useState(0);
   const { token } = theme.useToken();
 
   const handleEditClick = () => {
@@ -32,6 +33,11 @@ const UserCardInfo = ({
     setUserDisabled(true);
     setShowButtons(false);
     setIsEditing(false);
+  };
+
+  const handleStudentModalCancel = () => {
+    setModalOpen(false);
+    setKey(key + 1);
   };
 
   if (!student)
@@ -107,7 +113,8 @@ const UserCardInfo = ({
         width={800}
         open={modalOpen}
         // onOk={() => setModalOpen(false)}
-        onCancel={() => setModalOpen(false)}
+        onCancel={handleStudentModalCancel}
+        key={key}
         footer={null}
       >
         <div>
@@ -173,11 +180,17 @@ const UserCardInfo = ({
             items={[
               {
                 // key: "1",
-                label: "Payment Information",
+                label: "פעימענט אינפארמאציע",
                 children:
                   aggregatedPayment.total_paid === 0 ? (
                     <div>
-                      <Empty description="No payments found" />
+                      <Empty
+                        description={
+                          <div>
+                            "עס איז נאכנישט געמאכט געווארן קיין פעימענט"
+                          </div>
+                        }
+                      />
                     </div>
                   ) : (
                     <div>

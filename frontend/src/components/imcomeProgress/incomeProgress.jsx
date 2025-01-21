@@ -108,7 +108,14 @@ const IncomeProgress = ({
         <Card
           title={
             <div className="withdrawal_title_container">
-              <div>{<TbListDetails onClick={showModal} />}</div>
+              <div>
+                {
+                  <TbListDetails
+                    onClick={showModal}
+                    style={{ cursor: "pointer" }}
+                  />
+                }
+              </div>
               <div className="modal_title">ס"ה געלט ארויס</div>
             </div>
           }

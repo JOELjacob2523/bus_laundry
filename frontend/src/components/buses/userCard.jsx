@@ -103,7 +103,7 @@ const UserCard = ({
                   checked={isSelected}
                   onChange={() => handleCheckboxChange(student.student_id)}
                 >
-                  Archive
+                  לייג אין די ארכיוון
                 </Checkbox>
               </div>
             </div>
@@ -131,7 +131,7 @@ const UserCard = ({
         <Divider orientation="left">Balance</Divider>
         <div className="balance_container">
           <div>
-            <StudentBalance payment={payment} authData={authData} />
+            <StudentBalance payment={payment} />
           </div>
         </div>
       </Card>

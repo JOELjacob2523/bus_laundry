@@ -51,7 +51,9 @@ const IncomeTotalDetails = ({ paymentInfo }) => {
 
   return (
     <div>
-      <div>{<TbListDetails onClick={showModal} />}</div>
+      <div>
+        {<TbListDetails onClick={showModal} style={{ cursor: "pointer" }} />}
+      </div>
       <Modal
         open={isModalOpen}
         onOk={handleOk}

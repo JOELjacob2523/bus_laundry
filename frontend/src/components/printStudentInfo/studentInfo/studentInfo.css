@@ -46,7 +46,7 @@
 @media print {
     .student_info_to_print_container {
       width: 100%;
-      padding: 15px;
+      padding: 25px;
     }
     .KY_letterhead_img_container.print_only{
       display: block;

@@ -1,45 +1,41 @@
-import { useEffect, useState } from "react";
-import {
-  getAllZmanGoalInfo,
-  getAllZmanGoalInfoByAdminId,
-} from "../../servers/getRequest";
 import "./balance.css";
+import { useEffect, useState } from "react";
+import { useAuth } from "../AuthProvider/AuthProvider";
 
-const StudentBalance = ({ payment, authData }) => {
+const StudentBalance = ({ payment }) => {
   const [zmanGoal, setZmanGoal] = useState(null);
   const [zmanStart, setZmanStart] = useState(0);
   const [zmanEnd, setZmanEnd] = useState(0);
 
+  const { zmanGoalData } = useAuth();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const zmanGoalData = await getAllZmanGoalInfo();
-        const zmanGoalData = await getAllZmanGoalInfoByAdminId(
-          authData.parent_admin_id
-        );
+        const allZmanGoalData = zmanGoalData;
 
-        if (zmanGoalData && zmanGoalData[0]) {
+        if (allZmanGoalData && allZmanGoalData[0]) {
           // Convert relevant fields to numbers
-          zmanGoalData[0].bus_price = Number(zmanGoalData[0].bus_price);
-          zmanGoalData[0].wash_price = Number(zmanGoalData[0].wash_price);
-          zmanGoalData[0].total_bus_goal = Number(
-            zmanGoalData[0].total_bus_goal
+          allZmanGoalData[0].bus_price = Number(allZmanGoalData[0].bus_price);
+          allZmanGoalData[0].wash_price = Number(allZmanGoalData[0].wash_price);
+          allZmanGoalData[0].total_bus_goal = Number(
+            allZmanGoalData[0].total_bus_goal
           );
-          zmanGoalData[0].total_wash_goal = Number(
-            zmanGoalData[0].total_wash_goal
+          allZmanGoalData[0].total_wash_goal = Number(
+            allZmanGoalData[0].total_wash_goal
           );
-          zmanGoalData[0].total_zman_goal = Number(
-            zmanGoalData[0].total_zman_goal
+          allZmanGoalData[0].total_zman_goal = Number(
+            allZmanGoalData[0].total_zman_goal
           );
         }
 
-        setZmanGoal(zmanGoalData);
+        setZmanGoal(allZmanGoalData);
       } catch (err) {
         console.error(err);
       }
     };
     fetchData();
-  }, [authData.parent_admin_id]);
+  }, [zmanGoalData]);
 
   useEffect(() => {
     if (!zmanGoal || !zmanGoal.length === 0) return;
@@ -113,7 +109,6 @@ const StudentBalance = ({ payment, authData }) => {
 
     const balance = totalPayments - totalCost;
 
-    // return { totalCost };
     return {
       totalCost,
       pastWashCost,

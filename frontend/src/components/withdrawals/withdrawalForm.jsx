@@ -4,9 +4,10 @@ import { HDate, HebrewDateEvent } from "@hebcal/core";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { IoPersonSharp } from "react-icons/io5";
 import { CiCalendarDate } from "react-icons/ci";
-import { checkAuth } from "../../servers/userRequests/getUserRequest";
 import { withdrawalInfo } from "../../servers/postRequest";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthProvider/AuthProvider";
+
 const layout = {
   labelCol: {
     span: 8,
@@ -38,12 +39,13 @@ const WithdrawalForm = ({ keyNumber }) => {
   const [customValue, setCustomValue] = useState("");
 
   const navigate = useNavigate();
+  const { authData } = useAuth();
+
+  const [form] = Form.useForm();
 
   useEffect(() => {
     const updateDates = async () => {
-      await checkAuth().then((result) => {
-        setUserId(result.user_id);
-      });
+      setUserId(authData.parent_admin_id);
       setDate(new Date().toLocaleString());
 
       const hd = new HDate(new Date());
@@ -51,8 +53,15 @@ const WithdrawalForm = ({ keyNumber }) => {
       const HD = ev.render("he-x-NoNikud");
       setHebrewDate(HD);
     };
+
+    form.setFieldsValue({
+      date,
+      hebrew_date: hebrewDate,
+      user_id: userId,
+    });
+
     updateDates();
-  }, []);
+  }, [authData.parent_admin_id, date, form, hebrewDate, userId]);
 
   const onSelectChange = (value) => {
     setSelectedValue(value);
@@ -83,9 +92,13 @@ const WithdrawalForm = ({ keyNumber }) => {
       <Card>
         <Form
           {...layout}
-          // key={hebrewDate}
+          form={form}
           key={keyNumber}
-          initialValues={{ date, hebrew_date: hebrewDate, user_id: userId }}
+          initialValues={{
+            date,
+            hebrew_date: hebrewDate,
+            user_id: userId,
+          }}
           name="nest-messages"
           onFinish={onFinish}
           style={{

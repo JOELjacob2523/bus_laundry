@@ -8,6 +8,7 @@ import { useAuth } from "../AuthProvider/AuthProvider";
 const AddUser = ({ onUserAdded, setFilteredUserInfo }) => {
   const [open, setOpen] = useState(false);
   const [disabled, setDisabled] = useState(true);
+  const [key, setKey] = useState(0);
   const [bounds, setBounds] = useState({
     left: 0,
     top: 0,
@@ -27,6 +28,7 @@ const AddUser = ({ onUserAdded, setFilteredUserInfo }) => {
 
   const handleCancel = () => {
     setOpen(false);
+    setKey((prevKey) => prevKey + 1);
   };
 
   const onStart = (_event, uiData) => {
@@ -72,6 +74,7 @@ const AddUser = ({ onUserAdded, setFilteredUserInfo }) => {
         open={open}
         onOk={handleOk}
         onCancel={handleCancel}
+        key={key}
         modalRender={(modal) => (
           <Draggable
             disabled={disabled}

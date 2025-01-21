@@ -53,7 +53,8 @@ const DeleteUser = ({ student, setFilteredUserInfo }) => {
       >
         <div>
           ? "דו ביזט זיכער אז דו ווילסט אויסמעקן "{student.first_name}{" "}
-          {student.last_name}
+          {student.last_name} <br />! מען וועט נישט קענען צוריקקערן די
+          אינפארמאציע
         </div>
       </Modal>
     </div>
