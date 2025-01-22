@@ -37,17 +37,17 @@ const DeleteUser = ({ student, setFilteredUserInfo }) => {
       <Modal
         title={
           <div className="title_header">
-            <CgDanger className="delete_icon" /> Confirm Deletion
+            <CgDanger className="delete_icon" /> באשטעטיג אויסמעקן
           </div>
         }
         open={visible}
         onCancel={() => setVisible(false)}
         footer={[
           <Button key="cancel" onClick={() => setVisible(false)}>
-            גיי צוריק
+            Cancel
           </Button>,
           <Button key="delete" type="primary" danger onClick={handleDelete}>
-            מעק אויס
+            Delete
           </Button>,
         ]}
       >

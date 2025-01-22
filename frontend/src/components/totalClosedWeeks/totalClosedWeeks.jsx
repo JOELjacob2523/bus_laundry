@@ -48,6 +48,7 @@ const TotalClosedWeeks = ({ zmanGoal }) => {
                 :זמן
               </div>
             </div>
+
             <div className="sedra_item">
               <div
                 style={{
@@ -68,6 +69,7 @@ const TotalClosedWeeks = ({ zmanGoal }) => {
                 :תחילת הזמן
               </div>
             </div>
+
             <div className="sedra_item">
               <div
                 style={{
@@ -88,6 +90,7 @@ const TotalClosedWeeks = ({ zmanGoal }) => {
                 :סוף הזמן
               </div>
             </div>
+
             <div className="sedra_item">
               <div
                 style={{
@@ -104,6 +107,7 @@ const TotalClosedWeeks = ({ zmanGoal }) => {
                 :ס"ה וואכן אינעם זמן
               </div>
             </div>
+
             <div className="sedra_item">
               <div
                 style={{
@@ -120,6 +124,24 @@ const TotalClosedWeeks = ({ zmanGoal }) => {
                 :ס"ה באס פרייז{" "}
               </div>
             </div>
+
+            <div className="sedra_item">
+              <div
+                style={{
+                  fontFamily: "OYoelTovia",
+                }}
+              >
+                {`$${formatNumber(zman.total_van_goal)}`}
+              </div>
+              <div
+                style={{
+                  fontFamily: "OYoelTovia",
+                }}
+              >
+                :ס"ה ווען פרייז{" "}
+              </div>
+            </div>
+
             <div className="sedra_item">
               <div
                 style={{

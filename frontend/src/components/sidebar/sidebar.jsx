@@ -98,7 +98,6 @@ const Sidebar = () => {
                 padding: 24,
                 minHeight: 725,
                 display: "flex",
-                // justifyContent: "center",
                 alignItems: "center",
                 background: colorBgContainer,
                 borderRadius: borderRadiusLG,
@@ -106,8 +105,6 @@ const Sidebar = () => {
             >
               <Outlet />
             </div>
-            {/* {selectedItem &&
-            items.find((item) => item.key === selectedItem)?.component} */}
           </Content>
         </Layout>
       </Layout>

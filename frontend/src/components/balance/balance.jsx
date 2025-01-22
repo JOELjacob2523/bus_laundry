@@ -6,8 +6,9 @@ const StudentBalance = ({ payment }) => {
   const [zmanGoal, setZmanGoal] = useState(null);
   const [zmanStart, setZmanStart] = useState(0);
   const [zmanEnd, setZmanEnd] = useState(0);
+  const [studentLocation, setStudentLocation] = useState([]);
 
-  const { zmanGoalData } = useAuth();
+  const { zmanGoalData, studentData } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,6 +18,7 @@ const StudentBalance = ({ payment }) => {
         if (allZmanGoalData && allZmanGoalData[0]) {
           // Convert relevant fields to numbers
           allZmanGoalData[0].bus_price = Number(allZmanGoalData[0].bus_price);
+          allZmanGoalData[0].van_price = Number(allZmanGoalData[0].van_price);
           allZmanGoalData[0].wash_price = Number(allZmanGoalData[0].wash_price);
           allZmanGoalData[0].total_bus_goal = Number(
             allZmanGoalData[0].total_bus_goal
@@ -26,6 +28,9 @@ const StudentBalance = ({ payment }) => {
           );
           allZmanGoalData[0].total_zman_goal = Number(
             allZmanGoalData[0].total_zman_goal
+          );
+          allZmanGoalData[0].total_van_goal = Number(
+            allZmanGoalData[0].total_van_goal
           );
         }
 
@@ -60,6 +65,18 @@ const StudentBalance = ({ payment }) => {
     }
   });
 
+  useEffect(() => {
+    if (studentData && studentData.length > 0 && payment.length > 0) {
+      const paymentCity = payment.map((pay) => {
+        const student = studentData.find(
+          (student) => student.student_id === pay.student_id
+        );
+        return student?.city || "Unknown";
+      });
+      setStudentLocation(paymentCity);
+    }
+  }, [studentData, payment]);
+
   const calculateTotalCost = () => {
     if (!zmanGoal || !zmanGoal[0])
       return { totalCost: 0, remainingWeeksCost: 0 };
@@ -73,21 +90,32 @@ const StudentBalance = ({ payment }) => {
     );
 
     // Calculate closed bus weeks
-    const closedBusWeeks = zmanGoal[0].closed_weeks.filter((closedWeek) => {
+    const closedWeeks = zmanGoal[0].closed_weeks.filter((closedWeek) => {
       const closedDate = new Date(closedWeek.date);
       closedDate.setHours(0, 0, 0, 0);
       return closedDate < currentDate;
     }).length;
 
+    const isVanLocation = studentLocation.some((location) =>
+      ["Monsey", "Airmont", "Spring Valley", "Suffern", "New City"].includes(
+        location
+      )
+    );
+
+    // Determine the cost based on the location
+    let costPerWeek = isVanLocation
+      ? zmanGoal[0].van_price
+      : zmanGoal[0].bus_price;
+
     // Total costs
     const pastWashCost = numberOfWeeksPassed * zmanGoal[0].wash_price;
-    const pastBusCost = closedBusWeeks * zmanGoal[0].bus_price;
-    const totalCost = pastWashCost + pastBusCost;
+    const pastTravelCost = closedWeeks * costPerWeek;
+    const totalCost = pastWashCost + pastTravelCost;
 
     // Payment attribution
     let remainingPayments = totalPayments;
     let usedWashCost = 0;
-    let usedBusCost = 0;
+    let usedTravelCost = 0;
 
     // Deduct wash costs first
     if (remainingPayments >= pastWashCost) {
@@ -98,12 +126,12 @@ const StudentBalance = ({ payment }) => {
       remainingPayments = 0;
     }
 
-    // Deduct bus costs next
-    if (remainingPayments >= pastBusCost) {
-      usedBusCost = pastBusCost;
-      remainingPayments -= pastBusCost;
+    // Deduct travel costs (bus/van) next
+    if (remainingPayments >= pastTravelCost) {
+      usedTravelCost = pastTravelCost;
+      remainingPayments -= pastTravelCost;
     } else {
-      usedBusCost = remainingPayments;
+      usedTravelCost = remainingPayments;
       remainingPayments = 0;
     }
 
@@ -112,14 +140,14 @@ const StudentBalance = ({ payment }) => {
     return {
       totalCost,
       pastWashCost,
-      pastBusCost,
+      pastTravelCost,
       usedWashCost,
-      usedBusCost,
+      usedTravelCost,
       balance,
     };
   };
 
-  const { totalCost } = calculateTotalCost();
+  const { totalCost, pastWashCost, pastTravelCost } = calculateTotalCost();
 
   let balance = 0;
   payment.some((pay) => {
@@ -133,14 +161,47 @@ const StudentBalance = ({ payment }) => {
     return false;
   });
 
-  let balanceColor;
+  const busZmanGoal =
+    zmanGoal?.[0]?.total_bus_goal + zmanGoal?.[0]?.total_wash_goal;
+  const vanZmanGoal =
+    zmanGoal?.[0]?.total_van_goal + zmanGoal?.[0]?.total_wash_goal;
 
-  if (payment.length === 0 || balance >= 0) {
-    balanceColor = "black";
-  } else if (balance > 0) {
-    balanceColor = "green";
+  const normalizedLocation = String(studentLocation || "")
+    ?.trim()
+    ?.toLowerCase();
+  const isVanLocation = [
+    "monsey",
+    "airmont",
+    "spring valley",
+    "suffern",
+    "new city",
+  ].includes(normalizedLocation);
+
+  let busBalanceColor = "black";
+  let vanBalanceColor = "black";
+
+  if (isVanLocation) {
+    if (
+      payment.length === 0 ||
+      balance === vanZmanGoal - pastWashCost - pastTravelCost
+    ) {
+      vanBalanceColor = "black";
+    } else if (balance > vanZmanGoal - pastWashCost - pastTravelCost) {
+      vanBalanceColor = "green";
+    } else if (balance < vanZmanGoal - pastWashCost - pastTravelCost) {
+      vanBalanceColor = "red";
+    }
   } else {
-    balanceColor = "red";
+    if (
+      payment.length === 0 ||
+      balance === busZmanGoal - pastWashCost - pastTravelCost
+    ) {
+      busBalanceColor = "black";
+    } else if (balance > busZmanGoal - pastWashCost - pastTravelCost) {
+      busBalanceColor = "green";
+    } else if (balance < busZmanGoal - pastWashCost - pastTravelCost) {
+      busBalanceColor = "red";
+    }
   }
 
   return (
@@ -148,7 +209,13 @@ const StudentBalance = ({ payment }) => {
       {payment.length === 0 ? (
         <div className="no_payment">No payments found</div>
       ) : (
-        <div style={{ color: balanceColor }}>${balance?.toFixed(2)}</div>
+        <div>
+          {isVanLocation ? (
+            <div style={{ color: vanBalanceColor }}>${balance?.toFixed(2)}</div>
+          ) : (
+            <div style={{ color: busBalanceColor }}>${balance?.toFixed(2)}</div>
+          )}
+        </div>
       )}
     </div>
   );

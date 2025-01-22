@@ -36,6 +36,7 @@ const ClosedWeeks = () => {
   const [selectedSedras, setSelectedSedras] = useState([]);
   const [loading, setLoading] = useState(false);
   const [zmanGoalOpen, setZmanGoalOpen] = useState(false);
+  const [key, setKey] = useState(0);
 
   const navigate = useNavigate();
   const { authData } = useAuth();
@@ -50,6 +51,7 @@ const ClosedWeeks = () => {
 
   const handleFormChange = (_, allValues) => {
     const busPrice = Number(allValues.bus_price) || 0;
+    const vanPrice = Number(allValues.van_price) || 0;
     const washPrice = Number(allValues.wash_price) || 0;
     const closedWeeksCount = selectedSedras.length;
 
@@ -65,6 +67,7 @@ const ClosedWeeks = () => {
     }
 
     const totalBusGoal = busPrice * closedWeeksCount;
+    const totalVanGoal = vanPrice * closedWeeksCount;
     const totalWashGoal = washPrice * totalZmanWeeks;
     const totalZmanGoal = totalBusGoal + totalWashGoal;
 
@@ -72,6 +75,7 @@ const ClosedWeeks = () => {
       total_zman_weeks: totalZmanWeeks,
       total_zman_goal: totalZmanGoal,
       total_bus_goal: totalBusGoal,
+      total_van_goal: totalVanGoal,
       total_wash_goal: totalWashGoal,
     });
   };
@@ -116,6 +120,7 @@ const ClosedWeeks = () => {
   };
   const closeZmanDrawer = () => {
     setZmanGoalOpen(false);
+    setKey(key + 1);
   };
 
   return (
@@ -136,10 +141,11 @@ const ClosedWeeks = () => {
       <div>
         <Drawer
           title={<div className="modal_title">זמן אינפארמאציע</div>}
-          width={800}
+          width={900}
           open={zmanGoalOpen}
           onClose={closeZmanDrawer}
           footer={null}
+          key={key}
           className="zman_goal_drawer"
         >
           <Card className="zman_goal_card">
@@ -228,7 +234,7 @@ const ClosedWeeks = () => {
                 </Form.Item>
 
                 <Form.Item
-                  label=":ראונד טריפ פרייז"
+                  label=":ראונד טריפ באס פרייז"
                   colon={false}
                   name="bus_price"
                   rules={[
@@ -240,7 +246,24 @@ const ClosedWeeks = () => {
                 >
                   <Input
                     prefix={<BsCurrencyDollar />}
-                    placeholder="...לייג אריין ראונד טריפ פרייז"
+                    placeholder="...לייג אריין ראונד טריפ באס פרייז"
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  label=":ראונד טריפ ווען פרייז"
+                  colon={false}
+                  name="van_price"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input van round trip price!",
+                    },
+                  ]}
+                >
+                  <Input
+                    prefix={<BsCurrencyDollar />}
+                    placeholder="...לייג אריין ראונד טריפ ווען פרייז"
                   />
                 </Form.Item>
 
@@ -263,39 +286,85 @@ const ClosedWeeks = () => {
 
                 <Divider>Total</Divider>
 
-                <Form.Item
-                  label=':ס"ה וואכן'
-                  colon={false}
-                  name="total_zman_weeks"
-                >
-                  <Input disabled />
-                </Form.Item>
+                <div className="total_goal_container">
+                  <div>
+                    <Form.Item
+                      label=':ס"ה וואכן'
+                      colon={false}
+                      name="total_zman_weeks"
+                      labelCol={{ span: 8 }} // Adjust the label width
+                      wrapperCol={{ span: 16 }} // Adjust the input width
+                    >
+                      <Input disabled style={{ width: "200px" }} />
+                    </Form.Item>
+                  </div>
 
-                <Form.Item
-                  label=':ס"ה זמן פרייז'
-                  colon={false}
-                  name="total_zman_goal"
-                >
-                  <Input prefix={<BsCurrencyDollar />} disabled />
-                </Form.Item>
+                  <div>
+                    <Form.Item
+                      label=':ס"ה זמן פרייז'
+                      colon={false}
+                      name="total_zman_goal"
+                      labelCol={{ span: 8 }} // Adjust the label width
+                      wrapperCol={{ span: 16 }} // Adjust the input width
+                    >
+                      <Input
+                        prefix={<BsCurrencyDollar />}
+                        disabled
+                        style={{ width: "200px" }}
+                      />
+                    </Form.Item>
+                  </div>
 
-                <Form.Item
-                  label=':ס"ה באס פרייז'
-                  colon={false}
-                  name="total_bus_goal"
-                >
-                  <Input prefix={<BsCurrencyDollar />} disabled />
-                </Form.Item>
+                  <div>
+                    <Form.Item
+                      label=':ס"ה באס פרייז'
+                      colon={false}
+                      name="total_bus_goal"
+                      labelCol={{ span: 8 }} // Adjust the label width
+                      wrapperCol={{ span: 16 }} // Adjust the input width
+                    >
+                      <Input
+                        prefix={<BsCurrencyDollar />}
+                        disabled
+                        style={{ width: "200px" }}
+                      />
+                    </Form.Item>
+                  </div>
 
-                <Form.Item
-                  label=':ס"ה וואשן פרייז'
-                  colon={false}
-                  name="total_wash_goal"
-                >
-                  <Input prefix={<BsCurrencyDollar />} disabled />
-                </Form.Item>
+                  <div>
+                    <Form.Item
+                      label=':ס"ה ווען פרייז'
+                      colon={false}
+                      name="total_van_goal"
+                      labelCol={{ span: 8 }} // Adjust the label width
+                      wrapperCol={{ span: 16 }} // Adjust the input width
+                    >
+                      <Input
+                        prefix={<BsCurrencyDollar />}
+                        disabled
+                        style={{ width: "200px" }}
+                      />
+                    </Form.Item>
+                  </div>
 
-                <Form.Item wrapperCol={{ offset: 16 }}>
+                  <div>
+                    <Form.Item
+                      label=':ס"ה וואשן פרייז'
+                      colon={false}
+                      name="total_wash_goal"
+                      labelCol={{ span: 8 }} // Adjust the label width
+                      wrapperCol={{ span: 16 }} // Adjust the input width
+                    >
+                      <Input
+                        prefix={<BsCurrencyDollar />}
+                        disabled
+                        style={{ width: "200px" }}
+                      />
+                    </Form.Item>
+                  </div>
+                </div>
+
+                <Form.Item className="submit_goal_form_btn_container">
                   <Button
                     type="primary"
                     htmlType="submit"
