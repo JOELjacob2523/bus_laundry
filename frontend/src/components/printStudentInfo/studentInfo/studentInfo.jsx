@@ -5,59 +5,50 @@ import KYLetterhead from "../../../images/KY_Letterhead.png";
 import { useAuth } from "../../AuthProvider/AuthProvider";
 
 const StudentInfoToPrint = forwardRef((props, ref) => {
-  const [mergedData, setMergedData] = useState([]);
   const [indeterminate, setIndeterminate] = useState([]);
   const [zmanGoal, setZmanGoal] = useState([]);
 
-  const { authData, studentData, paymentData, zmanGoalData } = useAuth();
+  const { data } = props;
+  const { zmanGoalData } = useAuth();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const students = studentData;
-        const payments = paymentData;
-        const zmanGoalInfo = zmanGoalData;
-
-        setZmanGoal(zmanGoalInfo);
-        const merged = students.map((student, index) => {
-          return {
-            key: index,
-            ...student,
-            payment: payments.find(
-              (payment) => payment.student_id === student.student_id
-            ),
-            city_state_zip: `${student.city}, ${student.state} ${student.zip_code}`,
-          };
-        });
-        setMergedData(merged);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-      }
-    };
-    fetchData();
-  }, [authData.parent_admin_id, studentData, paymentData, zmanGoalData]);
-
-  useEffect(() => {
-    if (!zmanGoal?.[0]?.total_zman_goal || !mergedData?.length) {
+    setZmanGoal(zmanGoalData);
+    if (
+      !zmanGoal?.[0]?.total_bus_goal ||
+      !zmanGoal?.[0]?.total_wash_goal ||
+      !zmanGoal?.[0]?.total_van_goal ||
+      !data?.length
+    ) {
       setIndeterminate([]);
       return;
     }
-    const newStates = mergedData.map((student) => {
+    const newStates = data.map((student) => {
       const totalPaid = Number(student?.payment?.total_paid) || 0;
-      const totalGoal = Number(zmanGoal[0]?.total_zman_goal);
+      const studentCity = student.city;
+      const totalGoal = [
+        "Monsey",
+        "Airmont",
+        "Spring Valley",
+        "Suffern",
+        "New City",
+      ].includes(studentCity)
+        ? Number(zmanGoal[0]?.total_van_goal) +
+          Number(zmanGoal[0]?.total_wash_goal)
+        : Number(zmanGoal[0]?.total_bus_goal) +
+          Number(zmanGoal[0]?.total_wash_goal);
       return totalPaid >= totalGoal;
     });
 
     setIndeterminate(newStates);
-  }, [mergedData, zmanGoal]);
+  }, [data, zmanGoal, zmanGoalData]);
 
   return (
     <div ref={ref} className="student_info_to_print_container">
-      {Array.from({ length: Math.ceil(mergedData.length / 4) }).map(
+      {Array.from({ length: Math.ceil(data.length / 4) }).map(
         (_, pageIndex) => {
           const start = pageIndex * 4;
           const end = start + 4;
-          const pageItems = mergedData.slice(start, end);
+          const pageItems = data.slice(start, end);
 
           return (
             <div key={pageIndex} className="print_page">
