@@ -55,6 +55,7 @@ const EditUserPayment = ({
 
   const navigate = useNavigate();
 
+  // parse the value
   const parseValue = (value) => {
     const parsed = parseFloat(value);
     return isNaN(parsed) ? 0 : parsed;

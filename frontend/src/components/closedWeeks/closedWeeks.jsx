@@ -41,6 +41,7 @@ const ClosedWeeks = () => {
   const navigate = useNavigate();
   const { authData } = useAuth();
 
+  // Calculate the number of weeks between two dates
   const calculateWeeksBetweenDates = (start, end) => {
     const startDate = new Date(start);
     const endDate = new Date(end);
@@ -49,6 +50,7 @@ const ClosedWeeks = () => {
     return Math.ceil(diffInDays / 7);
   };
 
+  // Calculate the total weeks and goals based on the form values
   const handleFormChange = (_, allValues) => {
     const busPrice = Number(allValues.bus_price) || 0;
     const vanPrice = Number(allValues.van_price) || 0;
@@ -66,24 +68,28 @@ const ClosedWeeks = () => {
       );
     }
 
+    // Calculate the total goals
     const totalBusGoal = busPrice * closedWeeksCount;
     const totalVanGoal = vanPrice * closedWeeksCount;
     const totalWashGoal = washPrice * totalZmanWeeks;
-    const totalZmanGoal = totalBusGoal + totalWashGoal;
+    // const totalZmanGoal = totalBusGoal + totalWashGoal;
 
+    // Set the form values
     form.setFieldsValue({
       total_zman_weeks: totalZmanWeeks,
-      total_zman_goal: totalZmanGoal,
+      // total_zman_goal: totalZmanGoal,
       total_bus_goal: totalBusGoal,
       total_van_goal: totalVanGoal,
       total_wash_goal: totalWashGoal,
     });
   };
 
+  // Add a new sedra to the selected sedras
   const handleAddSedra = () => {
     setSelectedSedras([...selectedSedras, ""]);
   };
 
+  // Remove a sedra from the selected sedras
   const handleRemoveSedra = (index) => {
     const updatedSedras = [...selectedSedras];
     updatedSedras.splice(index, 1);
@@ -91,10 +97,12 @@ const ClosedWeeks = () => {
     form.setFieldsValue({ closed_weeks: updatedSedras });
   };
 
+  // Handle the date change
   const handleDateChange = (dateRange) => {
     form.setFieldsValue({ zman_starts_ends: dateRange });
   };
 
+  // Handle the form submission
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
@@ -111,13 +119,17 @@ const ClosedWeeks = () => {
     }
   };
 
+  // Handle the form submission failure
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
+  // Show the zman drawer
   const showZmanDrawer = () => {
     setZmanGoalOpen(true);
   };
+
+  // Close the zman drawer
   const closeZmanDrawer = () => {
     setZmanGoalOpen(false);
     setKey(key + 1);
@@ -169,6 +181,7 @@ const ClosedWeeks = () => {
                   colon={false}
                   name="zman"
                   rules={[{ required: true, message: "Please select Zman!" }]}
+                  style={{ width: "850px" }}
                 >
                   <Select
                     options={[
@@ -189,6 +202,7 @@ const ClosedWeeks = () => {
                       message: "Please input!",
                     },
                   ]}
+                  style={{ width: "850px" }}
                 >
                   <HebrewDatePicker onChange={handleDateChange} />
                 </Form.Item>
@@ -198,6 +212,7 @@ const ClosedWeeks = () => {
                   colon={false}
                   name="closed_weeks"
                   required
+                  style={{ width: "850px" }}
                 >
                   <Space direction="vertical" style={{ width: "100%" }}>
                     {selectedSedras.map((sedra, index) => (
@@ -243,6 +258,7 @@ const ClosedWeeks = () => {
                       message: "Please input bus round trip price!",
                     },
                   ]}
+                  style={{ width: "850px" }}
                 >
                   <Input
                     prefix={<BsCurrencyDollar />}
@@ -260,6 +276,7 @@ const ClosedWeeks = () => {
                       message: "Please input van round trip price!",
                     },
                   ]}
+                  style={{ width: "850px" }}
                 >
                   <Input
                     prefix={<BsCurrencyDollar />}
@@ -277,6 +294,7 @@ const ClosedWeeks = () => {
                       message: "Please input wash bag price!",
                     },
                   ]}
+                  style={{ width: "850px" }}
                 >
                   <Input
                     prefix={<BsCurrencyDollar />}
@@ -287,34 +305,6 @@ const ClosedWeeks = () => {
                 <Divider>Total</Divider>
 
                 <div className="total_goal_container">
-                  <div>
-                    <Form.Item
-                      label=':ס"ה וואכן'
-                      colon={false}
-                      name="total_zman_weeks"
-                      labelCol={{ span: 8 }} // Adjust the label width
-                      wrapperCol={{ span: 16 }} // Adjust the input width
-                    >
-                      <Input disabled style={{ width: "200px" }} />
-                    </Form.Item>
-                  </div>
-
-                  <div>
-                    <Form.Item
-                      label=':ס"ה זמן פרייז'
-                      colon={false}
-                      name="total_zman_goal"
-                      labelCol={{ span: 8 }} // Adjust the label width
-                      wrapperCol={{ span: 16 }} // Adjust the input width
-                    >
-                      <Input
-                        prefix={<BsCurrencyDollar />}
-                        disabled
-                        style={{ width: "200px" }}
-                      />
-                    </Form.Item>
-                  </div>
-
                   <div>
                     <Form.Item
                       label=':ס"ה באס פרייז'
@@ -360,6 +350,34 @@ const ClosedWeeks = () => {
                         disabled
                         style={{ width: "200px" }}
                       />
+                    </Form.Item>
+                  </div>
+
+                  {/* <div>
+                    <Form.Item
+                      label=':ס"ה זמן פרייז'
+                      colon={false}
+                      name="total_zman_goal"
+                      labelCol={{ span: 8 }} // Adjust the label width
+                      wrapperCol={{ span: 16 }} // Adjust the input width
+                    >
+                      <Input
+                        prefix={<BsCurrencyDollar />}
+                        disabled
+                        style={{ width: "200px" }}
+                      />
+                    </Form.Item>
+                  </div> */}
+
+                  <div>
+                    <Form.Item
+                      label=':ס"ה וואכן'
+                      colon={false}
+                      name="total_zman_weeks"
+                      labelCol={{ span: 8 }} // Adjust the label width
+                      wrapperCol={{ span: 16 }} // Adjust the input width
+                    >
+                      <Input disabled style={{ width: "200px" }} />
                     </Form.Item>
                   </div>
                 </div>

@@ -117,9 +117,10 @@ async function insertZmanGoalInfo(zmanInfo) {
       van_price: zmanInfo.van_price,
       wash_price: zmanInfo.wash_price,
       total_zman_weeks: zmanInfo.total_zman_weeks,
-      total_zman_goal: zmanInfo.total_zman_goal,
+      // total_zman_goal: zmanInfo.total_zman_goal,
       total_bus_goal: zmanInfo.total_bus_goal,
       total_wash_goal: zmanInfo.total_wash_goal,
+      total_van_goal: zmanInfo.total_van_goal,
       user_id: zmanInfo.user_id,
     });
   } catch (error) {
@@ -144,7 +145,7 @@ async function migrateOldZmanGoalData() {
         van_price: goal.van_price,
         wash_price: goal.wash_price,
         total_zman_weeks: goal.total_zman_weeks,
-        total_zman_goal: goal.total_zman_goal,
+        // total_zman_goal: goal.total_zman_goal,
         total_bus_goal: goal.total_bus_goal,
         total_wash_goal: goal.total_wash_goal,
         user_id: goal.user_id,
@@ -184,9 +185,10 @@ async function migrateOldZmanGoalDataByAdminId(adminId) {
         van_price: goal.van_price,
         wash_price: goal.wash_price,
         total_zman_weeks: goal.total_zman_weeks,
-        total_zman_goal: goal.total_zman_goal,
+        // total_zman_goal: goal.total_zman_goal,
         total_bus_goal: goal.total_bus_goal,
         total_wash_goal: goal.total_wash_goal,
+        total_van_goal: goal.total_van_goal,
         user_id: goal.user_id,
       };
       await knex("old_zman_goal").insert(zmanGoalData);

@@ -18,19 +18,23 @@ const AddUser = ({ onUserAdded, setFilteredUserInfo }) => {
   const draggleRef = useRef(null);
   const { authData } = useAuth();
 
+  // open the modal
   const showModal = () => {
     setOpen(true);
   };
 
+  // close the modal
   const handleOk = () => {
     setOpen(false);
   };
 
+  // close the modal
   const handleCancel = () => {
     setOpen(false);
     setKey((prevKey) => prevKey + 1);
   };
 
+  // set the bounds of the modal
   const onStart = (_event, uiData) => {
     const { clientWidth, clientHeight } = window.document.documentElement;
     const targetRect = draggleRef.current?.getBoundingClientRect();
@@ -87,6 +91,7 @@ const AddUser = ({ onUserAdded, setFilteredUserInfo }) => {
         )}
         footer={null}
       >
+        {/* AddUserForm component */}
         <AddUserForm
           handleCancel={handleCancel}
           onUserAdded={onUserAdded}

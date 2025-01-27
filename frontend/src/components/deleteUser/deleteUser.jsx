@@ -13,6 +13,7 @@ const DeleteUser = ({ student, setFilteredUserInfo }) => {
 
   const navigate = useNavigate();
 
+  // hendle delete user
   const handleDelete = async () => {
     try {
       await deleteUserInfo(student.student_id);

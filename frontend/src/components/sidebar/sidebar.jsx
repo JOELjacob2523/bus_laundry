@@ -19,6 +19,12 @@ const Sidebar = () => {
     setSelectedItem(key);
   };
 
+  // const isDarkMode = localStorage.getItem("darkMode") === "true";
+
+  // useEffect(() => {
+  //   document.body.className = isDarkMode ? "dark_mode" : "light_mode";
+  // }, [isDarkMode]);
+
   useEffect(() => {
     if (authData.role === "Administrator") {
       setFooterMessage(
@@ -68,6 +74,7 @@ const Sidebar = () => {
           <div className="demo-logo-vertical" />
           <Menu
             theme="dark"
+            // theme={isDarkMode ? "dark" : "light"}
             mode="inline"
             defaultSelectedKeys={["1"]}
             onSelect={({ key }) => onItemClick(key)}
@@ -100,6 +107,8 @@ const Sidebar = () => {
                 display: "flex",
                 alignItems: "center",
                 background: colorBgContainer,
+                // background: isDarkMode ? "#222" : colorBgContainer,
+                // color: isDarkMode ? "#fff" : "#000",
                 borderRadius: borderRadiusLG,
               }}
             >

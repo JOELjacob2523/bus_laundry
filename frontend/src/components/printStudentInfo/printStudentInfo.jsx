@@ -14,10 +14,13 @@ const PrintStudentInfo = () => {
   const [mergedData, setMergedData] = useState([]);
   const [zmanGoal, setZmanGoal] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [infoParagraph, setInfoParagraph] = useState("");
+  const [key, setKey] = useState(0);
 
   const { studentData, paymentData, zmanGoalData } = useAuth();
   const componentRef = useRef(null);
 
+  // Merge student and payment data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -45,6 +48,7 @@ const PrintStudentInfo = () => {
     fetchData();
   }, [studentData, paymentData, zmanGoalData]);
 
+  // Cascader options
   const options = [
     {
       value: "all",
@@ -102,13 +106,16 @@ const PrintStudentInfo = () => {
     },
   ];
 
+  // Filter data based on selected option
   const handleFilterChange = (value) => {
     if (!value) {
       // Default behavior when value is cleared
       setFilteredData(mergedData);
+      setInfoParagraph("אינפארמאציע פון אלע בחורים");
       return;
     }
 
+    // Get the last selected option
     const selectedOption = value[value.length - 1];
 
     if (selectedOption === "paid_in_full") {
@@ -130,6 +137,7 @@ const PrintStudentInfo = () => {
         return totalPaid === totalTravle;
       });
       setFilteredData(unpaidStudents);
+      setInfoParagraph("אינפארמאציע פון באצאלטע בחורים");
     } else if (selectedOption === "paid_bus_only") {
       // Filter students who paid for travle only
       const unpaidStudents = mergedData.filter((student) => {
@@ -147,6 +155,9 @@ const PrintStudentInfo = () => {
         return totalPaid === totalTravle;
       });
       setFilteredData(unpaidStudents);
+      setInfoParagraph(
+        "אינפארמאציע פון בחורים וואס האבן באצאלט פאר טראנספארטאציע"
+      );
     } else if (selectedOption === "unpaid_bus") {
       // Filter students who paid for travle only
       const unpaidStudents = mergedData.filter((student) => {
@@ -164,6 +175,9 @@ const PrintStudentInfo = () => {
         return totalTravlePaid < totalTravle;
       });
       setFilteredData(unpaidStudents);
+      setInfoParagraph(
+        "אינפארמאציע פון בחורים וואס האבן נישט באצאלט פאר טראנספארטאציע"
+      );
     } else if (selectedOption === "paid_wash_only") {
       // Filter students who paid for wash only
       const unpaidStudents = mergedData.filter((student) => {
@@ -172,6 +186,7 @@ const PrintStudentInfo = () => {
         return totalPaid === totalWash;
       });
       setFilteredData(unpaidStudents);
+      setInfoParagraph("אינפארמאציע פון בחורים וואס האבן באצאלט פאר וואשן");
     } else if (selectedOption === "unpaid_wash") {
       // Filter students who paid for wash only
       const unpaidStudents = mergedData.filter((student) => {
@@ -180,28 +195,39 @@ const PrintStudentInfo = () => {
         return totalWashPaid < totalWash;
       });
       setFilteredData(unpaidStudents);
+      setInfoParagraph(
+        "אינפארמאציע פון בחורים וואס האבן נישט באצאלט פאר וואשן"
+      );
     } else if (selectedOption === "age_1") {
       // Filter students of שיעור א
       const ageOneStudents = mergedData.filter(
         (student) => student.age === "'שיעור א"
       );
       setFilteredData(ageOneStudents);
+      setInfoParagraph("'אינפארמאציע פון בחורים פון שיעור א");
     } else if (selectedOption === "age_2") {
       // Filter students of שיעור ב
       const ageTwoStudents = mergedData.filter(
         (student) => student.age === "'שיעור ב"
       );
       setFilteredData(ageTwoStudents);
+      setInfoParagraph("'אינפארמאציע פון בחורים פון שיעור ב");
     } else if (selectedOption === "young_age") {
       // Filter students of שיעור צעירים
       const youngAgeStudents = mergedData.filter(
         (student) => student.age === "שיעור צעירים"
       );
       setFilteredData(youngAgeStudents);
+      setInfoParagraph("אינפארמאציע פון בחורים פון שיעור צעירים");
     } else if (selectedOption === "all") {
       // Default: Show all students
       setFilteredData(mergedData);
+      setInfoParagraph("אינפארמאציע פון אלע בחורים");
     }
+  };
+
+  const handleCancel = () => {
+    setOpen(false);
   };
 
   return (
@@ -225,7 +251,7 @@ const PrintStudentInfo = () => {
       <Modal
         centered
         open={open}
-        onCancel={() => setOpen(false)}
+        onCancel={handleCancel}
         width={1100}
         footer={null}
       >
@@ -280,7 +306,11 @@ const PrintStudentInfo = () => {
         </div>
 
         <div className="print_student_info_container">
-          <StudentInfoToPrint ref={componentRef} data={filteredData} />
+          <StudentInfoToPrint
+            ref={componentRef}
+            data={filteredData}
+            infoParagraph={infoParagraph}
+          />
         </div>
         <Modal
           open={googleMpasModalOpen}

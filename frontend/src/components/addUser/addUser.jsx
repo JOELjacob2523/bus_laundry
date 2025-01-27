@@ -35,12 +35,14 @@ const AddUserForm = ({ handleCancel, onUserAdded, authData }) => {
 
   const { fetchStudentData } = useAuth();
 
+  // set the parent admin id
   useEffect(() => {
     authData.role === "Administrator"
       ? setParentAdminId(authData.userId)
       : setParentAdminId(authData.parent_admin_id);
   }, [authData]);
 
+  // handle the form submission
   const onFinish = async (values) => {
     try {
       const formData = { ...values, user_id: parentAdminId };

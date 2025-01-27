@@ -13,6 +13,7 @@ const TotalBalance = ({ paymentInfo, authData }) => {
   const [withdrawalData, setWithdrawalData] = useState([]);
   const [busMoney, setBusMoney] = useState(0);
   const [washMoney, setWashMoney] = useState(0);
+  const [customMoney, setCustomMoney] = useState(0);
   const [oldPyaments, setOldPayments] = useState(0);
   const [incomeDetails, setIncomeDetails] = useState([]);
 
@@ -68,16 +69,24 @@ const TotalBalance = ({ paymentInfo, authData }) => {
     const withdrawals = () => {
       let totalBusMoney = 0;
       let totalWashMoney = 0;
+      let totalCustomMoney = 0;
 
       withdrawalData.forEach((withdrawal) => {
-        if (withdrawal.withdrawal_to === "באס") {
+        if (
+          withdrawal.withdrawal_to === "באס" ||
+          withdrawal.withdrawal_to === "קאר/מיני ווען" ||
+          withdrawal.withdrawal_to === "ספרינטער "
+        ) {
           totalBusMoney += parseFloat(withdrawal.amount) || 0;
         } else if (withdrawal.withdrawal_to === "וואשן") {
           totalWashMoney += parseFloat(withdrawal.amount) || 0;
+        } else {
+          totalCustomMoney += parseFloat(withdrawal.amount) || 0;
         }
       });
       setBusMoney(totalBusMoney);
       setWashMoney(totalWashMoney);
+      setCustomMoney(totalCustomMoney);
     };
     withdrawals();
   }, [withdrawalData]);
@@ -105,6 +114,7 @@ const TotalBalance = ({ paymentInfo, authData }) => {
             </div>
             <div>עס איז אריינגעקומען </div>
           </div>
+
           <div className="total_balance_inner">
             <div>
               {washMoney ? (
@@ -115,6 +125,7 @@ const TotalBalance = ({ paymentInfo, authData }) => {
             </div>
             <div>עס איז ארויס פאר וואשן </div>
           </div>
+
           <div className="total_balance_inner">
             <div>
               {busMoney ? (
@@ -125,13 +136,29 @@ const TotalBalance = ({ paymentInfo, authData }) => {
             </div>
             <div>עס איז ארויס פאר באסעס </div>
           </div>
+
+          <div className="total_balance_inner">
+            <div>
+              {customMoney ? (
+                <strong>${formatNumber(customMoney)}</strong>
+              ) : (
+                <strong>$0</strong>
+              )}
+            </div>
+            <div>Change עס איז ארויס פאר</div>
+          </div>
+
           <div className="total_balance_inner">
             <div style={{ color: balanceColor }}>
               {busMoney + washMoney ? (
                 <strong>
                   $
                   {formatNumber(
-                    incomeDetails.total + totalOldIncome - busMoney - washMoney
+                    incomeDetails.total +
+                      totalOldIncome -
+                      busMoney -
+                      washMoney -
+                      customMoney
                   )}
                 </strong>
               ) : (

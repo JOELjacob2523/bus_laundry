@@ -23,3 +23,13 @@
     width: 100%;
     font-size: large;
 }
+
+.dark_mode {
+    background-color: #222 !important;
+    color: #fff !important;
+  }
+  
+  .light_mode {
+    background-color: #fff !important;
+    color: #222 !important;
+  }

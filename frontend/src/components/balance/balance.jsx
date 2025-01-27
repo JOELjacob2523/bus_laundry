@@ -10,6 +10,7 @@ const StudentBalance = ({ payment }) => {
 
   const { zmanGoalData, studentData } = useAuth();
 
+  // set the zman goal data to number
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -42,6 +43,7 @@ const StudentBalance = ({ payment }) => {
     fetchData();
   }, [zmanGoalData]);
 
+  // set the zman start and end dates and total payments
   useEffect(() => {
     if (!zmanGoal || !zmanGoal.length === 0) return;
     const startDate = new Date(zmanGoal[0].zman_starts_ends?.start.date);
@@ -65,6 +67,7 @@ const StudentBalance = ({ payment }) => {
     }
   });
 
+  // set the student location based on the payment
   useEffect(() => {
     if (studentData && studentData.length > 0 && payment.length > 0) {
       const paymentCity = payment.map((pay) => {
@@ -77,6 +80,7 @@ const StudentBalance = ({ payment }) => {
     }
   }, [studentData, payment]);
 
+  // calculate the total cost
   const calculateTotalCost = () => {
     if (!zmanGoal || !zmanGoal[0])
       return { totalCost: 0, remainingWeeksCost: 0 };
@@ -135,6 +139,7 @@ const StudentBalance = ({ payment }) => {
       remainingPayments = 0;
     }
 
+    // Calculate the remaining balance
     const balance = totalPayments - totalCost;
 
     return {
@@ -161,11 +166,13 @@ const StudentBalance = ({ payment }) => {
     return false;
   });
 
+  // Calculate the zman goal based on the location
   const busZmanGoal =
     zmanGoal?.[0]?.total_bus_goal + zmanGoal?.[0]?.total_wash_goal;
   const vanZmanGoal =
     zmanGoal?.[0]?.total_van_goal + zmanGoal?.[0]?.total_wash_goal;
 
+  // Normalize the location
   const normalizedLocation = String(studentLocation || "")
     ?.trim()
     ?.toLowerCase();
@@ -180,6 +187,7 @@ const StudentBalance = ({ payment }) => {
   let busBalanceColor = "black";
   let vanBalanceColor = "black";
 
+  // Determine the balance color based on the location
   if (isVanLocation) {
     if (
       payment.length === 0 ||

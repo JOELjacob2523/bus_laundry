@@ -1,7 +1,6 @@
 body, html {
   height: 100vh;
   width: 100vw;
-  /* overflow: hidden; */
 }
 
 body {
@@ -18,12 +17,12 @@ code {
     monospace;
 }
 
-.dark_mode {
-  background-color: #222;
-  color: #fff;
+body.dark_mode {
+  background-color: #222 !important;
+  color: #fff !important;
 }
 
-.light_mode {
-  background-color: #fff;
-  color: #222;
+body.light_mode {
+  background-color: #fff !important;
+  color: #222 !important;
 }

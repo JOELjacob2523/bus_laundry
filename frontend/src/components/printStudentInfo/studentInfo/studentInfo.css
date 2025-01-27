@@ -3,6 +3,20 @@
     padding: 10px;
 }
 
+.info_paragraph_container{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    line-height: 1;
+}
+
+.empty_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+}
+
 .KY_letterhead_img_container.print_only{
   display: none;
 }

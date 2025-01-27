@@ -12,12 +12,15 @@ const Details = () => {
       </Helmet>
       <div className="card_container">
         <div>
+          {/* Closed week component */}
           <ClosedWeeks />
         </div>
         <div>
+          {/* Withdrawal component */}
           <Withdrawals />
         </div>
         <div>
+          {/* Print student info component */}
           <PrintStudentInfo />
         </div>
       </div>

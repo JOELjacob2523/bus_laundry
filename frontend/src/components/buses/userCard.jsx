@@ -25,6 +25,7 @@ const UserCard = ({
   const [isCCModalVisible, setIsCCModalVisible] = useState(false);
   const [userPaymentInfo, setUserPaymentInfo] = useState(null);
 
+  // get user payment info
   useEffect(() => {
     if (!student.student_id) return;
     const fetchData = async () => {
@@ -42,6 +43,7 @@ const UserCard = ({
     fetchData();
   }, [student.student_id]);
 
+  // Credit Card URL
   const URL =
     "https://secure.cardknox.com/kedishesyoel?AmountLocked=0&xCommand=cc%3Asale";
 
@@ -49,38 +51,47 @@ const UserCard = ({
     setIsEditModalVisible(true);
   };
 
+  // Edit Modal Ok
   const handleEditOk = () => {
     setIsEditModalVisible(false);
   };
 
+  // Edit Modal Cancel
   const handleEditCancel = () => {
     setIsEditModalVisible(false);
   };
 
+  // Payment Modal visibility
   const showPaymentModal = () => {
     setIsPaymentModalVisible(true);
   };
 
+  // Payment Modal Ok
   const handlePaymentOk = () => {
     setIsPaymentModalVisible(false);
   };
 
+  // Payment Modal Cancel
   const handlePaymentCancel = () => {
     setIsPaymentModalVisible(false);
   };
 
+  // Credit Card Modal visibility
   const showCCModal = () => {
     setIsCCModalVisible(true);
   };
 
+  // Credit Card Modal Ok
   const handleCCOk = () => {
     setIsCCModalVisible(false);
   };
 
+  // Credit Card Modal Cancel
   const handleCCCancel = () => {
     setIsCCModalVisible(false);
   };
 
+  // Credit Card Payment
   const creditCardPay = () => {
     return window.open(URL, "_blank");
   };

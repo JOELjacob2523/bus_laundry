@@ -45,6 +45,7 @@ const Buses = () => {
   const { authData, studentData, paymentData } = useAuth();
   const navigate = useNavigate();
 
+  // Fetch the data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -55,6 +56,7 @@ const Buses = () => {
           setLoading(true);
         }
 
+        // Group the payments by student_id
         const paymentMap = payments.reduce((acc, payment) => {
           const { student_id } = payment;
           if (!student_id) {
@@ -68,6 +70,7 @@ const Buses = () => {
           return acc;
         }, {});
 
+        // Set the data
         setUserInfo(adminIdData);
         setPaymentInfo(paymentMap);
         setFilteredUserInfo(adminIdData);
@@ -88,21 +91,25 @@ const Buses = () => {
     }
   };
 
+  // Handle pagination
   const handlePageChange = (page, pageSize) => {
     setCurrentPage(page);
     setPageSize(pageSize);
   };
 
+  // Handle search
   const handleSearch = (filteredData) => {
     setFilteredUserInfo(filteredData);
     setCurrentPage(1);
   };
 
+  // Reset search
   const resetSearch = () => {
     setFilteredUserInfo(userInfo);
     setCurrentPage(1);
   };
 
+  // Handle checkbox change
   const handleCheckboxChange = (studentId) => {
     setSelectedUsers((prevSelectedUsers) => {
       if (prevSelectedUsers.includes(studentId)) {
@@ -113,6 +120,7 @@ const Buses = () => {
     });
   };
 
+  // Handle archive
   const handleArchive = async (selectedUsers) => {
     try {
       await archiveOldStudentPayments(selectedUsers);
@@ -127,6 +135,7 @@ const Buses = () => {
     }
   };
 
+  // Update payment
   const updatePayment = (updatedPayment) => {
     setPaymentInfo((prevPayments) => {
       // Convert the object to an array of payments
@@ -152,6 +161,7 @@ const Buses = () => {
     });
   };
 
+  // Loading spinner
   if (loading) {
     <Flex className="loading_flax">
       <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />{" "}
