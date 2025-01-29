@@ -36,6 +36,16 @@ const Items = () => {
         icon: <AiFillDatabase />,
         path: "old_data",
       },
+      // {
+      //   key: "5",
+      //   label: "User לייג צו א",
+      //   icon: (
+      //     <UserOutlined
+      //       disabled={authData.role === "User" || authData.role === "Manager"}
+      //     />
+      //   ),
+      //   path: "signup",
+      // },
     ];
 
     if (authData.role === "Administrator") {

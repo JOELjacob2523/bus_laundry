@@ -118,33 +118,42 @@ const UserCardInfo = ({
         footer={null}
       >
         <div>
-          {(authData.role === "Administrator" ||
-            authData.role === "Manager") && (
-            <div>
-              <Divider></Divider>
-              <div className="user_info_options_btn_container">
-                <div className="user_info_options_btn">
-                  <Button type="primary" onClick={handleEditClick}>
-                    טויש אינפארמאציע
-                  </Button>
-                </div>
-                {aggregatedPayment.total_paid > 0 ? null : (
-                  <div className="user_info_options_btn">
-                    <Button type="primary" onClick={() => showPaymentModal()}>
-                      לייג אריין א פעימענט
-                    </Button>
-                  </div>
-                )}
-
-                <div className="user_info_options_btn">
-                  <Button type="primary" onClick={creditCardPay}>
-                    באצאל מיט קרעדיט קארד
-                  </Button>
-                </div>
+          <div>
+            <Divider></Divider>
+            <div className="user_info_options_btn_container">
+              <div className="user_info_options_btn">
+                <Button
+                  type="primary"
+                  onClick={handleEditClick}
+                  disabled={authData.role === "User"}
+                >
+                  טויש אינפארמאציע
+                </Button>
               </div>
-              <Divider></Divider>
+              <div className="user_info_options_btn">
+                <Button
+                  type="primary"
+                  onClick={() => showPaymentModal()}
+                  disabled={
+                    authData.role === "User" || aggregatedPayment.total_paid > 0
+                  }
+                >
+                  לייג אריין א פעימענט
+                </Button>
+              </div>
+
+              <div className="user_info_options_btn">
+                <Button
+                  type="primary"
+                  onClick={creditCardPay}
+                  disabled={authData.role === "User"}
+                >
+                  באצאל מיט קרעדיט קארד
+                </Button>
+              </div>
             </div>
-          )}
+            <Divider></Divider>
+          </div>
           <div
             className={
               authData.role === "Administrator" || authData.role === "Manager"
@@ -159,6 +168,7 @@ const UserCardInfo = ({
               showButtons={showButtons}
               disabled={userDisabled}
               isEditing={isEditing}
+              setIsEditing={setIsEditing}
               setUserDisabled={setUserDisabled}
               setShowButtons={setShowButtons}
               setModalOpen={setModalOpen}
@@ -186,9 +196,7 @@ const UserCardInfo = ({
                     <div>
                       <Empty
                         description={
-                          <div>
-                            "עס איז נאכנישט געמאכט געווארן קיין פעימענט"
-                          </div>
+                          <div>"עס איז נישט געמאכט געווארן קיין פעימענט"</div>
                         }
                       />
                     </div>

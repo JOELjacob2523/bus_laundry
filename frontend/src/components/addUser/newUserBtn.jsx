@@ -52,7 +52,12 @@ const AddUser = ({ onUserAdded, setFilteredUserInfo }) => {
   return (
     <>
       <div className="add_btn_container">
-        <Button type="primary" className="add_btn" onClick={showModal}>
+        <Button
+          type="primary"
+          className="add_btn"
+          onClick={showModal}
+          disabled={authData.role === "User"}
+        >
           לייג צו א בחור
         </Button>
       </div>

@@ -209,28 +209,19 @@ const Buses = () => {
             </div>
           </div>
           <div className="add_user_container">
-            <div
-              className={
-                authData.role === "Administrator" || authData.role === "Manager"
-                  ? "search_inner_admin"
-                  : "search_inner"
-              }
-            >
+            <div className="search_inner">
               <SearchBar
                 input={filteredUserInfo}
                 onSearch={handleSearch}
                 resetSearch={resetSearch}
               />
             </div>
-            {(authData.role === "Administrator" ||
-              authData.role === "Manager") && (
-              <div className="add_user_inner">
-                <AddUser
-                  onUserAdded={handleUserAdded}
-                  setFilteredUserInfo={setFilteredUserInfo}
-                />
-              </div>
-            )}
+            <div className="add_user_inner">
+              <AddUser
+                onUserAdded={handleUserAdded}
+                setFilteredUserInfo={setFilteredUserInfo}
+              />
+            </div>
           </div>
 
           {selectedUsers.length > 0 && (

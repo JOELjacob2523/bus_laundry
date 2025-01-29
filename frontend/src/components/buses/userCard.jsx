@@ -113,6 +113,7 @@ const UserCard = ({
                 <Checkbox
                   checked={isSelected}
                   onChange={() => handleCheckboxChange(student.student_id)}
+                  disabled={authData.role === "User"}
                 >
                   לייג אין די ארכיוון
                 </Checkbox>

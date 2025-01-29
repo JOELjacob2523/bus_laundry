@@ -171,12 +171,15 @@ const EditUserPayment = ({
   return (
     <div className="edit_payment_container">
       <div className="edit_payment_btn_div">
-        {authData.role === "Administrator" || authData.role === "Manager" ? (
-          <Button type="primary" onClick={handlePaymentEditClick}>
-            טויש פעימענט
-          </Button>
-        ) : null}
+        <Button
+          type="primary"
+          onClick={handlePaymentEditClick}
+          disabled={authData.role === "User"}
+        >
+          טויש פעימענט
+        </Button>
       </div>
+
       <Form
         {...layout}
         form={form}

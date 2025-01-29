@@ -8,6 +8,7 @@ import { CiCalendarDate } from "react-icons/ci";
 import { GiRotaryPhone } from "react-icons/gi";
 import { PiCityLight } from "react-icons/pi";
 import { FaMapMarkerAlt, FaCity } from "react-icons/fa";
+import { useAuth } from "../AuthProvider/AuthProvider";
 
 const layout = {
   labelCol: {
@@ -35,10 +36,10 @@ const EditUser = ({
   studentId,
   token,
   handleEditCancel,
-  student,
   disabled,
   showButtons,
   isEditing,
+  setIsEditing,
   setUserDisabled,
   setShowButtons,
   setModalOpen,
@@ -47,6 +48,7 @@ const EditUser = ({
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
+  const { fetchStudentData } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,10 +68,21 @@ const EditUser = ({
     fetchData();
   }, [studentId, token]);
 
+  console.log(
+    userInfo
+    // .phone.replace(/^(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
+  );
+
   const onFinish = async (values) => {
     try {
       await updateUserInfo(values);
-      setUserInfo(values);
+      await fetchStudentData();
+      const formattedPhone = values.phone.replace(
+        /^(\d{3})(\d{3})(\d{4})/,
+        "$1-$2-$3"
+      );
+      setUserInfo({ ...values, phone: formattedPhone });
+      setIsEditing(false);
       setUserDisabled(true);
       setShowButtons(false);
       setModalOpen(false);
@@ -234,8 +247,8 @@ const EditUser = ({
             {!isEditing ? (
               <Input
                 value={
-                  student.phone
-                    ? student.phone.replace(
+                  userInfo.phone
+                    ? userInfo.phone.replace(
                         /^(\d{3})(\d{3})(\d{4})/,
                         "$1-$2-$3"
                       )
@@ -256,14 +269,13 @@ const EditUser = ({
           <div>
             <Input
               value={
-                student.date
-                  ? new Date(student.date).toLocaleString("en-US", {
+                userInfo.date
+                  ? new Date(userInfo.date).toLocaleString("en-US", {
                       year: "numeric",
                       month: "long",
                       day: "numeric",
                       hour: "2-digit",
                       minute: "2-digit",
-                      second: "2-digit",
                     })
                   : "N/A"
               }

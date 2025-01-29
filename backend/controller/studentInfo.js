@@ -148,6 +148,7 @@ async function migrateOldZmanGoalData() {
         // total_zman_goal: goal.total_zman_goal,
         total_bus_goal: goal.total_bus_goal,
         total_wash_goal: goal.total_wash_goal,
+        total_van_goal: goal.total_van_goal,
         user_id: goal.user_id,
       };
       await knex("old_zman_goal").insert(zmanGoalData);

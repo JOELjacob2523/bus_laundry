@@ -4,11 +4,13 @@ import { Button, Card, Drawer } from "antd";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import WithdrawalForm from "./withdrawalForm";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthProvider/AuthProvider";
 
 const Withdrawals = () => {
   const [open, setOpen] = useState(false);
   const [keyNumber, setKeyNumber] = useState(0);
   const navigate = useNavigate();
+  const { authData } = useAuth();
 
   const showDrawer = () => {
     try {
@@ -33,7 +35,11 @@ const Withdrawals = () => {
           <div className="zman_goal_description">
             דרוק דא ארויסצונעמען באס / וואשן געלט
           </div>
-          <Button className="add_zman_goal_btn" onClick={showDrawer}>
+          <Button
+            className="add_zman_goal_btn"
+            onClick={showDrawer}
+            disabled={authData.role === "User"}
+          >
             <BiMoneyWithdraw />
           </Button>
         </Card>

@@ -145,7 +145,11 @@ const ClosedWeeks = () => {
           <div className="zman_goal_description">
             דרוק דא אריינצולייגן זמן אינפארמאציע
           </div>
-          <Button onClick={showZmanDrawer} className="add_zman_goal_btn">
+          <Button
+            onClick={showZmanDrawer}
+            className="add_zman_goal_btn"
+            disabled={authData.role === "User"}
+          >
             <FaPlus />
           </Button>
         </Card>
