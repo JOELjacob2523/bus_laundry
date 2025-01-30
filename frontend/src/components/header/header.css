@@ -2,15 +2,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-} 
-
-/* .KY_symbol_container{
-    filter: drop-shadow(3px -3px 3px gray);
 }
-
-.KY_symbol_img {
-    width: 250px;
-} */
 
 .header_yeshiva_container{
     display: flex;
@@ -51,12 +43,14 @@
     align-items: center;
 }
 
-.profile_btn{
-    height: fit-content;
-    border: 0;
-    background-color: lightgray;
+.header_welcome_container{
+    line-height: 1.2;
 }
 
-.profile{
-    font-size: xx-large;
+.header_welcome_inner{
+    text-align: center;
+}
+
+.header_welcome_name{
+    font-size: large;
 }

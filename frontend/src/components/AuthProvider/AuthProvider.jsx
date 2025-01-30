@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }) => {
     email: "",
     role: "",
     yeshiva: "",
+    user_logo: null,
   });
   const [studentData, setStudentData] = useState([]);
   const [paymentData, setPaymentData] = useState([]);

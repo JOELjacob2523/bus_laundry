@@ -53,6 +53,7 @@ const UserLogin = () => {
           role: response.data.userInfo.role,
           email: response.data.userInfo.email,
           yeshiva: response.data.userInfo.yeshiva,
+          user_logo: response.data.userInfo.user_logo,
         });
         setLoading(false);
         navigate("/home");

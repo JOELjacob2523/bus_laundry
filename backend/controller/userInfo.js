@@ -21,6 +21,7 @@ module.exports = {
   getStudentLoginInfo,
   updateUserProfile,
   verifyAdminPassword,
+  uploadUserLogo,
 };
 
 // create user
@@ -214,4 +215,8 @@ async function verifyAdminPassword(inputPassword) {
 
   // If any match, return true
   return results.some((isValid) => isValid);
+}
+
+async function uploadUserLogo(adminId, file) {
+  await knex("users").where("user_id", adminId).update("user_logo", file);
 }

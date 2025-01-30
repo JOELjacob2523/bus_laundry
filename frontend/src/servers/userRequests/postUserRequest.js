@@ -131,3 +131,26 @@ export const updateUserProfile = async (formData) => {
     throw err;
   }
 };
+
+//upload user logo
+export const uploadUserlogo = async (file, adminId) => {
+  const formData = new FormData();
+  formData.append("logo_image", file);
+  formData.append("user_id", adminId);
+  try {
+    const response = await axios.post(`${URL}/upload_user_logo`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    if (response.status === 200) {
+      console.log(`Updated Success!!`);
+    } else {
+      console.log(`Error updating! ${response.data}`);
+    }
+  } catch (err) {
+    console.error("Error:", err.message);
+    throw err;
+  }
+};

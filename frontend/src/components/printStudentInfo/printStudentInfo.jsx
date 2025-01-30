@@ -17,7 +17,7 @@ const PrintStudentInfo = () => {
   const [infoParagraph, setInfoParagraph] = useState("");
   const [key, setKey] = useState(0);
 
-  const { studentData, paymentData, zmanGoalData } = useAuth();
+  const { authData, studentData, paymentData, zmanGoalData } = useAuth();
   const componentRef = useRef(null);
 
   // Merge student and payment data
@@ -260,7 +260,7 @@ const PrintStudentInfo = () => {
             <img
               className="KY_letterhead_img"
               alt="KYLetterhead"
-              src={KYLetterhead}
+              src={`http://localhost:3001/images/${authData.user_logo.filename}`}
             />
           </div>
 

@@ -3,9 +3,26 @@ const CONTORLLER = require("../controller/userInfo");
 const multer = require("multer");
 const upload = multer();
 const jwt = require("jsonwebtoken");
+const path = require("path");
 const SECRET_KEY = process.env.SECRET_KEY;
 // const { Builder, By, until } = require("selenium-webdriver");
 // const chrome = require("selenium-webdriver/chrome");
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/images");
+  },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+
+const uploadStorage = multer({
+  storage,
+});
 
 //router to singup
 router.post("/signup", upload.fields([]), async (req, res, next) => {
@@ -156,6 +173,31 @@ router.post(
       res
         .status(500)
         .json({ message: "Error updaing user", error: err.message });
+    }
+  }
+);
+
+router.post(
+  "/upload_user_logo",
+  uploadStorage.single("logo_image"),
+  async (req, res, next) => {
+    try {
+      const { user_id } = req.body;
+
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+      if (!user_id) {
+        return res.status(400).json({ message: "No user Id received" });
+      }
+
+      await CONTORLLER.uploadUserLogo(user_id, req.file);
+      res.json({ message: "Upload successful", file: req.file });
+    } catch (err) {
+      console.error("Error uploading user logo:", err);
+      res
+        .status(500)
+        .json({ message: "Error uploading user logo", error: err.message });
     }
   }
 );

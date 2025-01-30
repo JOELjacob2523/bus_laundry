@@ -162,7 +162,7 @@ const Profile = ({ authData, setAuthData }) => {
 
   return (
     <div>
-      <div>
+      <div style={{ paddingBottom: "7px" }}>
         <Dropdown
           menu={{
             items,

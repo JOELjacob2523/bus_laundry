@@ -11,6 +11,7 @@ import { useAuth } from "../../components/AuthProvider/AuthProvider";
 import { Helmet } from "react-helmet";
 import { useState } from "react";
 import { useEffect } from "react";
+import UploadImage from "../uploadImage/uploadImage";
 
 const UserSignup = () => {
   const [key, setKey] = useState(0);
@@ -48,6 +49,7 @@ const UserSignup = () => {
         <Helmet>
           <title>Add user - KJ Mesivta Bus & Laundry</title>
         </Helmet>
+        <UploadImage />
         <div className="signup_card_container">
           <div className="signup_card">
             <Card

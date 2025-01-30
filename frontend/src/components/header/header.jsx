@@ -27,9 +27,12 @@ const PageHeader = () => {
         <HebrewDate />
       </div>
       <div className="profile_container">
-        <div className="profile_info">
-          <div>
-            {authData.first_name} {authData.last_name} ,א גוטן
+        <div className="profile_info" style={{ fontFamily: "OYoelToviaBold" }}>
+          <div className="header_welcome_container">
+            <div className="header_welcome_inner">!א גוטן</div>
+            <div className="header_welcome_name">
+              {authData.first_name} {authData.last_name}
+            </div>
           </div>
         </div>
         <Profile authData={authData} setAuthData={setAuthData} />
