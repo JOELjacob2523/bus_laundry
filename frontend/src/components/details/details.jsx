@@ -3,6 +3,7 @@ import ClosedWeeks from "../closedWeeks/closedWeeks";
 import PrintStudentInfo from "../printStudentInfo/printStudentInfo";
 import Withdrawals from "../withdrawals/withdrawals";
 import { Helmet } from "react-helmet";
+import UploadImage from "../../userComponents/uploadImage/uploadImage";
 
 const Details = () => {
   return (
@@ -22,6 +23,10 @@ const Details = () => {
         <div>
           {/* Print student info component */}
           <PrintStudentInfo />
+        </div>
+        <div>
+          {/* Print student info component */}
+          <UploadImage />
         </div>
       </div>
     </div>

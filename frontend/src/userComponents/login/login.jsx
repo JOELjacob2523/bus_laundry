@@ -16,7 +16,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../servers/userRequests/postUserRequest";
 import ErrorLogin from "../errorAlert/errorLogin";
-import KYLetterhead from "../../images/KY_Letterhead.png";
+import UTAMesivtaLetterhead from "../../images/UTA_Mesivta_logo.png";
 import ForgotPasswordForm from "../forgotPessword/forgotPassword";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useAuth } from "../../components/AuthProvider/AuthProvider";
@@ -80,8 +80,8 @@ const UserLogin = () => {
         <div className="KY_letterhead_img_container">
           <img
             className="KY_letterhead_img"
-            alt="KYLetterhead"
-            src={KYLetterhead}
+            alt="UTAMesivtaLetterhead"
+            src={UTAMesivtaLetterhead}
           />
         </div>
         {error && <ErrorLogin message={error} />}
