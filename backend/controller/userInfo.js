@@ -218,5 +218,7 @@ async function verifyAdminPassword(inputPassword) {
 }
 
 async function uploadUserLogo(adminId, file) {
-  await knex("users").where("user_id", adminId).update("user_logo", file);
+  await knex("users")
+    .where("parent_admin_id", adminId)
+    .update("user_logo", file);
 }

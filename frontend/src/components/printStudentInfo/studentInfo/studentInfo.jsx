@@ -1,7 +1,6 @@
 import "./studentInfo.css";
 import React, { useEffect, useState, forwardRef } from "react";
 import { Card, List, Checkbox, Empty, Typography } from "antd";
-import KYLetterhead from "../../../images/KY_Letterhead.png";
 import { useAuth } from "../../AuthProvider/AuthProvider";
 
 const { Title } = Typography;
@@ -10,7 +9,7 @@ const StudentInfoToPrint = forwardRef((props, ref) => {
   const [indeterminate, setIndeterminate] = useState([]);
   const [zmanGoal, setZmanGoal] = useState([]);
 
-  const { data, infoParagraph } = props;
+  const { data, infoParagraph, logoImage } = props;
   const { authData, zmanGoalData } = useAuth();
 
   // set the zman goal and indeterminate states
@@ -67,13 +66,24 @@ const StudentInfoToPrint = forwardRef((props, ref) => {
 
             return (
               <div key={pageIndex} className="print_page">
-                <div className="KY_letterhead_img_container print_only">
-                  <img
-                    className="KY_letterhead_img"
-                    alt="KYLetterhead"
-                    src={`http://localhost:3001/images/${authData.user_logo.filename}`}
+                {authData.user_logo ? (
+                  <div className="KY_letterhead_img_container print_only">
+                    <img
+                      className="KY_letterhead_img"
+                      alt="KYLetterhead"
+                      src={`http://localhost:3001/images/${logoImage}`}
+                    />
+                  </div>
+                ) : (
+                  <Empty
+                    description={
+                      <div>
+                        אריינצוברענגען דא דיין בילד, גיי צו{" "}
+                        <strong>איבריגע דעטאלן</strong>
+                      </div>
+                    }
                   />
-                </div>
+                )}
                 <List
                   itemLayout="vertical"
                   className="print_list_container"

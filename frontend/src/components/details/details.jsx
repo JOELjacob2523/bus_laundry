@@ -24,10 +24,6 @@ const Details = () => {
           {/* Print student info component */}
           <PrintStudentInfo />
         </div>
-        <div>
-          {/* Print student info component */}
-          <UploadImage />
-        </div>
       </div>
     </div>
   );

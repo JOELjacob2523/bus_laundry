@@ -10,6 +10,12 @@
     margin-top: 35px;
 }
 
+.upload_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .upload_form{
     display: flex;
     flex-direction: column;
@@ -22,6 +28,6 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding-top: 35px;
+    padding-top: 15px;
     gap: 10px;
 }

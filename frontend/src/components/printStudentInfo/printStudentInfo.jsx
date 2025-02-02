@@ -5,8 +5,8 @@ import { Button, Card, Cascader, Modal } from "antd";
 import { IoMdPrint } from "react-icons/io";
 import StudentInfoToPrint from "./studentInfo/studentInfo";
 import GoogleMaps from "../googleMapRoutes/googleMaps";
-import KYLetterhead from "../../images/KY_Letterhead.png";
 import { useAuth } from "../AuthProvider/AuthProvider";
+import UploadImage from "../../userComponents/uploadImage/uploadImage";
 
 const PrintStudentInfo = () => {
   const [open, setOpen] = useState(false);
@@ -15,6 +15,7 @@ const PrintStudentInfo = () => {
   const [zmanGoal, setZmanGoal] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [infoParagraph, setInfoParagraph] = useState("");
+  const [logoImage, setLogoImage] = useState("");
   const [key, setKey] = useState(0);
 
   const { authData, studentData, paymentData, zmanGoalData } = useAuth();
@@ -27,7 +28,9 @@ const PrintStudentInfo = () => {
         const students = studentData;
         const payments = paymentData;
         const zmanGoalInfo = zmanGoalData;
+        const logo = authData.user_logo.filename;
 
+        setLogoImage(logo);
         setZmanGoal(zmanGoalInfo);
 
         const merged = students.map((student, index) => {
@@ -46,7 +49,7 @@ const PrintStudentInfo = () => {
       }
     };
     fetchData();
-  }, [studentData, paymentData, zmanGoalData]);
+  }, [studentData, paymentData, zmanGoalData, authData.user_logo.filename]);
 
   // Cascader options
   const options = [
@@ -256,13 +259,17 @@ const PrintStudentInfo = () => {
         footer={null}
       >
         <div className="print_container">
-          <div className="KY_letterhead_img_container">
-            <img
-              className="KY_letterhead_img"
-              alt="KYLetterhead"
-              src={`http://localhost:3001/images/${authData.user_logo.filename}`}
-            />
-          </div>
+          {authData.user_logo ? (
+            <div className="KY_letterhead_img_container">
+              <img
+                className="KY_letterhead_img"
+                alt="KYLetterhead"
+                src={`http://localhost:3001/images/${logoImage}`}
+              />
+            </div>
+          ) : (
+            <UploadImage />
+          )}
 
           <div className="print_student_info_header">
             <div>
@@ -310,6 +317,7 @@ const PrintStudentInfo = () => {
             ref={componentRef}
             data={filteredData}
             infoParagraph={infoParagraph}
+            logoImage={logoImage}
           />
         </div>
         <Modal
