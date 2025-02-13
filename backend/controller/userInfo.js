@@ -22,6 +22,7 @@ module.exports = {
   updateUserProfile,
   verifyAdminPassword,
   uploadUserLogo,
+  insertCCLink,
 };
 
 // create user
@@ -221,4 +222,8 @@ async function uploadUserLogo(adminId, file) {
   await knex("users")
     .where("parent_admin_id", adminId)
     .update("user_logo", file);
+}
+
+async function insertCCLink(adminId, link) {
+  await knex("users").where("parent_admin_id", adminId).update("CC_link", link);
 }

@@ -1,0 +1,9 @@
+.link_submit_btn_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.link_submit_btn {
+    width: 50%;
+}

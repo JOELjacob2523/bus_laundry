@@ -24,6 +24,7 @@ export const AuthProvider = ({ children }) => {
     role: "",
     yeshiva: "",
     user_logo: null,
+    CC_link: "",
   });
   const [studentData, setStudentData] = useState([]);
   const [paymentData, setPaymentData] = useState([]);

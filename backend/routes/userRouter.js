@@ -177,6 +177,7 @@ router.post(
   }
 );
 
+// router to upload user logo
 router.post(
   "/upload_user_logo",
   uploadStorage.single("logo_image"),
@@ -198,6 +199,32 @@ router.post(
       res
         .status(500)
         .json({ message: "Error uploading user logo", error: err.message });
+    }
+  }
+);
+
+// router to insert user CC link
+router.post(
+  "/CC_link",
+  // uploadStorage.single("logo_image"),
+  async (req, res, next) => {
+    try {
+      const { user_id, CC_link } = req.body;
+
+      if (!CC_link) {
+        return res.status(400).json({ message: "No link received" });
+      }
+      if (!user_id) {
+        return res.status(400).json({ message: "No user Id received" });
+      }
+
+      await CONTORLLER.insertCCLink(user_id, CC_link);
+      res.json({ message: "Link received successful", link: CC_link });
+    } catch (err) {
+      console.error("Error uploading user link:", err);
+      res
+        .status(500)
+        .json({ message: "Error uploading user link", error: err.message });
     }
   }
 );

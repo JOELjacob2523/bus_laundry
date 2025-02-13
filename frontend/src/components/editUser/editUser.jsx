@@ -68,11 +68,6 @@ const EditUser = ({
     fetchData();
   }, [studentId, token]);
 
-  console.log(
-    userInfo
-    // .phone.replace(/^(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
-  );
-
   const onFinish = async (values) => {
     try {
       await updateUserInfo(values);

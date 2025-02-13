@@ -54,6 +54,7 @@ const UserLogin = () => {
           email: response.data.userInfo.email,
           yeshiva: response.data.userInfo.yeshiva,
           user_logo: response.data.userInfo.user_logo,
+          CC_link: response.data.userInfo.CC_link,
         });
         setLoading(false);
         navigate("/home");

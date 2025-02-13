@@ -154,3 +154,23 @@ export const uploadUserlogo = async (file, adminId) => {
     throw err;
   }
 };
+
+//insert user CC link
+export const insertCCLink = async (formData) => {
+  try {
+    const response = await axios.post(`${URL}/CC_link`, formData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status === 200) {
+      console.log(`Updated Success!!`);
+    } else {
+      console.log(`Error updating! ${response.data}`);
+    }
+  } catch (err) {
+    console.error("Error:", err.message);
+    throw err;
+  }
+};

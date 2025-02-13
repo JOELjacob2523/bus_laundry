@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Modal, Collapse, theme, Divider, Empty } from "antd";
 import { CaretRightOutlined } from "@ant-design/icons";
 import "./userCardInfo.css";
 import EditUser from "../editUser/editUser";
 import EditUserPayment from "../editPayments/editPayments";
 import { useAuth } from "../AuthProvider/AuthProvider";
+import CCLink from "../CCLink/CCLink";
 
 const UserCardInfo = ({
   student,
@@ -22,6 +23,10 @@ const UserCardInfo = ({
   const [isEditing, setIsEditing] = useState(false);
   const [key, setKey] = useState(0);
   const { token } = theme.useToken();
+
+  useEffect(() => {
+    console.log("Credit Card Link", authData.CC_link);
+  }, [authData.CC_link]);
 
   const handleEditClick = () => {
     setUserDisabled(false);
@@ -46,9 +51,6 @@ const UserCardInfo = ({
         <Empty description="User not found" />
       </div>
     );
-
-  const URL =
-    "https://secure.cardknox.com/kedishesyoel?AmountLocked=0&xCommand=cc%3Asale";
 
   const parseValue = (value) => {
     const parsed = parseFloat(value);
@@ -81,6 +83,7 @@ const UserCardInfo = ({
       payment_type: "N/A",
     }
   );
+  const URL = authData.CC_link;
 
   const creditCardPay = () => {
     return window.open(URL, "_blank");
@@ -143,13 +146,17 @@ const UserCardInfo = ({
               </div>
 
               <div className="user_info_options_btn">
-                <Button
-                  type="primary"
-                  onClick={creditCardPay}
-                  disabled={authData.role === "User"}
-                >
-                  באצאל מיט קרעדיט קארד
-                </Button>
+                {authData.CC_link ? (
+                  <Button
+                    type="primary"
+                    onClick={creditCardPay}
+                    disabled={authData.role === "User"}
+                  >
+                    באצאל מיט קרעדיט קארד
+                  </Button>
+                ) : (
+                  <CCLink />
+                )}
               </div>
             </div>
             <Divider></Divider>
