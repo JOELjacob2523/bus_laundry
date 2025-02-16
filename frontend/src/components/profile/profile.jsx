@@ -34,7 +34,7 @@ const validateMessages = {
 };
 /* eslint-disable no-template-curly-in-string */
 
-const Profile = ({ authData, setAuthData }) => {
+const Profile = ({ authData, setAuthData, toggleDarkMode }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
@@ -51,14 +51,14 @@ const Profile = ({ authData, setAuthData }) => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const savedMode = localStorage.getItem("darkMode");
-    if (savedMode) {
-      setIsDarkMode(savedMode === "true");
-      document.body.className =
-        savedMode === "true" ? "dark_mode" : "light_mode";
-    }
-  }, []);
+  // useEffect(() => {
+  //   const savedMode = localStorage.getItem("darkMode");
+  //   if (savedMode) {
+  //     setIsDarkMode(savedMode === "true");
+  //     document.body.className =
+  //       savedMode === "true" ? "dark_mode" : "light_mode";
+  //   }
+  // }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -151,13 +151,6 @@ const Profile = ({ authData, setAuthData }) => {
     } else if (e.key === "2") {
       showModal("settings");
     } else if (e.key === "3") navigate("/");
-  };
-
-  const toggleDarkMode = () => {
-    const newMode = !isDarkMode;
-    setIsDarkMode(newMode);
-    localStorage.setItem("darkMode", newMode);
-    document.body.className = newMode ? "dark_mode" : "light_mode";
   };
 
   return (

@@ -1,5 +1,6 @@
 import "./CCLink.css";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Card, Form, Input, message, Modal } from "antd";
 import { useAuth } from "../AuthProvider/AuthProvider";
 import { insertCCLink } from "../../servers/userRequests/postUserRequest";
@@ -8,7 +9,8 @@ const CCLink = () => {
   const [open, setOpen] = useState(false);
   const [key, setKey] = useState(0);
 
-  const { authData } = useAuth();
+  const { authData, setAuthData } = useAuth();
+  const navigate = useNavigate();
 
   const openModal = () => {
     setOpen(true);
@@ -21,10 +23,17 @@ const CCLink = () => {
   };
 
   const onFinish = async (values) => {
-    await insertCCLink(values);
-    closeModal();
-    message.success("Link added successfully", 2);
+    try {
+      await insertCCLink(values);
+      setAuthData((prev) => ({ ...prev, CC_link: values.CC_link }));
+      closeModal();
+      message.success("Link added successfully", 2);
+    } catch (error) {
+      console.error("Error adding link:", error);
+      navigate("/error500");
+    }
   };
+
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };

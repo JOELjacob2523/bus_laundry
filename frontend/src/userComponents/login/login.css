@@ -16,6 +16,10 @@
     z-index: 500;
 }
 
+.KY_letterhead_img{
+    border-radius: 10px;
+}
+
 .login_card_container{
     display: flex;
     justify-content: center;

@@ -17,7 +17,7 @@ code {
     monospace;
 }
 
-body.dark_mode {
+/* body.dark_mode {
   background-color: #222 !important;
   color: #fff !important;
 }
@@ -25,4 +25,4 @@ body.dark_mode {
 body.light_mode {
   background-color: #fff !important;
   color: #222 !important;
-}
+} */

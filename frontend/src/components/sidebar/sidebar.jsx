@@ -12,6 +12,7 @@ const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [footerMessage, setFooterMessage] = useState("");
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const items = Items();
   const { authData } = useAuth();
 
@@ -19,11 +20,14 @@ const Sidebar = () => {
     setSelectedItem(key);
   };
 
-  // const isDarkMode = localStorage.getItem("darkMode") === "true";
-
-  // useEffect(() => {
-  //   document.body.className = isDarkMode ? "dark_mode" : "light_mode";
-  // }, [isDarkMode]);
+  useEffect(() => {
+    const savedMode = localStorage.getItem("darkMode");
+    if (savedMode) {
+      setIsDarkMode(savedMode === "true");
+      document.body.className =
+        savedMode === "true" ? "dark_mode" : "light_mode";
+    }
+  }, []);
 
   useEffect(() => {
     if (authData.role === "Administrator") {
@@ -50,6 +54,13 @@ const Sidebar = () => {
     }
   }, [authData.role]);
 
+  const toggleDarkMode = () => {
+    const newMode = !isDarkMode;
+    setIsDarkMode(newMode);
+    localStorage.setItem("darkMode", newMode);
+    document.body.className = newMode ? "dark_mode" : "light_mode";
+  };
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -61,7 +72,7 @@ const Sidebar = () => {
       }}
     >
       <Header className="sidebar_header">
-        <PageHeader />
+        <PageHeader toggleDarkMode={toggleDarkMode} />
       </Header>
       <Layout>
         <Sider
@@ -74,7 +85,6 @@ const Sidebar = () => {
           <div className="demo-logo-vertical" />
           <Menu
             theme="dark"
-            // theme={isDarkMode ? "dark" : "light"}
             mode="inline"
             defaultSelectedKeys={["1"]}
             onSelect={({ key }) => onItemClick(key)}
@@ -106,9 +116,9 @@ const Sidebar = () => {
                 minHeight: 725,
                 display: "flex",
                 alignItems: "center",
-                background: colorBgContainer,
-                // background: isDarkMode ? "#222" : colorBgContainer,
-                // color: isDarkMode ? "#fff" : "#000",
+                // background: colorBgContainer,
+                background: isDarkMode ? "#222" : colorBgContainer,
+                color: isDarkMode ? "#fff" : "#000",
                 borderRadius: borderRadiusLG,
               }}
             >

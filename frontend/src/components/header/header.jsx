@@ -4,7 +4,7 @@ import HebrewDate from "../hebrewDate/hebrewDate";
 import { useAuth } from "../AuthProvider/AuthProvider";
 import Profile from "../profile/profile";
 
-const PageHeader = () => {
+const PageHeader = ({ toggleDarkMode }) => {
   const { authData, setAuthData } = useAuth();
 
   return (
@@ -35,7 +35,11 @@ const PageHeader = () => {
             </div>
           </div>
         </div>
-        <Profile authData={authData} setAuthData={setAuthData} />
+        <Profile
+          authData={authData}
+          setAuthData={setAuthData}
+          toggleDarkMode={toggleDarkMode}
+        />
       </div>
     </div>
   );
