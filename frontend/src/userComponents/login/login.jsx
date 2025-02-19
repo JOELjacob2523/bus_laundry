@@ -1,19 +1,9 @@
 import "./login.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TbPasswordUser } from "react-icons/tb";
 import { MdOutlineEmail } from "react-icons/md";
-import {
-  Button,
-  Card,
-  Form,
-  Input,
-  Modal,
-  Spin,
-  Watermark,
-  Flex,
-  Checkbox,
-} from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { Button, Card, Form, Input, Modal, Spin, Flex, Checkbox } from "antd";
+import { useNavigate } from "react-router-dom";
 import { login } from "../../servers/userRequests/postUserRequest";
 import ErrorLogin from "../errorAlert/errorLogin";
 import UTAMesivtaLetterhead from "../../images/UTA_Mesivta_logo.png";
@@ -28,6 +18,10 @@ const UserLogin = () => {
   const { setAuthData } = useAuth();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 2000);
+  }, []);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -56,7 +50,6 @@ const UserLogin = () => {
           user_logo: response.data.userInfo.user_logo,
           CC_link: response.data.userInfo.CC_link,
         });
-        setLoading(false);
         navigate("/home");
       } else {
         console.error("Login failed with status:", response.status);
@@ -66,16 +59,19 @@ const UserLogin = () => {
       console.error("Error adding user:", error);
       setError("Incorrect username or password. Please try again.");
     }
+    setLoading(false);
   };
 
   if (loading) {
-    <Flex>
-      <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
-    </Flex>;
+    return (
+      <Flex className="loading_flax">
+        <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
+        Loading...
+      </Flex>
+    );
   }
 
   return (
-    // <Watermark height={80} width={130} image={KYSymbolWashed}>
     <div className="login_main_container">
       <div className="login_inner_container">
         <div className="KY_letterhead_img_container">
@@ -149,10 +145,6 @@ const UserLogin = () => {
                   >
                     Login
                   </Button>
-                  {/* <div className="signup_link">
-                    Dont have an account?{" "}
-                    <Link to="/signup">Register now!</Link>
-                  </div> */}
                 </div>
               </Form.Item>
             </Form>
@@ -168,7 +160,6 @@ const UserLogin = () => {
       >
         <ForgotPasswordForm />
       </Modal>
-      {/* </Watermark> */}
     </div>
   );
 };

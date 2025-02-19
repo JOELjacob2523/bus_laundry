@@ -116,7 +116,6 @@ const Sidebar = () => {
                 minHeight: 725,
                 display: "flex",
                 alignItems: "center",
-                // background: colorBgContainer,
                 background: isDarkMode ? "#222" : colorBgContainer,
                 color: isDarkMode ? "#fff" : "#000",
                 borderRadius: borderRadiusLG,

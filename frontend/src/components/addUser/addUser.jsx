@@ -69,149 +69,148 @@ const AddUserForm = ({ handleCancel, onUserAdded, authData }) => {
         action="student/student_info"
         method="POST"
       >
-        <Form.Item name="user_id" value={parentAdminId}>
-          <Input hidden={true} />
-        </Form.Item>
+        <div className="add_user_form_items_container">
+          <div style={{ display: "none" }}>
+            <Form.Item name="user_id" value={parentAdminId}>
+              <Input hidden={true} />
+            </Form.Item>
+          </div>
 
-        <Form.Item
-          name="first_name"
-          label=":ערשטע נאמען"
-          colon={false}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input placeholder="...ערשטע נאמען" />
-        </Form.Item>
-
-        <Form.Item
-          name="last_name"
-          label=":לעצטע נאמען"
-          colon={false}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input placeholder="...לעצטע נאמען" />
-        </Form.Item>
-
-        <Form.Item
-          name="age"
-          label=":יארגאנג"
-          colon={false}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Select
-            options={[
-              { value: "שיעור צעירים", label: "שיעור צעירים" },
-              { value: "'שיעור א", label: "'שיעור א" },
-              { value: "'שיעור ב", label: "'שיעור ב" },
+          <Form.Item
+            name="first_name"
+            label="ערשטע נאמען"
+            style={{ width: "500px" }}
+            rules={[
+              {
+                required: true,
+              },
             ]}
-            placeholder="...יארגאנג"
-          />
-        </Form.Item>
+          >
+            <Input placeholder="ערשטע נאמען..." />
+          </Form.Item>
 
-        <Form.Item
-          name="address1"
-          label=":אדרעסס 1"
-          colon={false}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input placeholder="... אדרעסס 1" />
-        </Form.Item>
+          <Form.Item
+            name="last_name"
+            label="לעצטע נאמען"
+            style={{ width: "500px" }}
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Input placeholder="לעצטע נאמען..." />
+          </Form.Item>
 
-        <Form.Item
-          name="address2"
-          label=":2 אדרעסס"
-          colon={false}
-          rules={[
-            {
-              // required: true,
-            },
-          ]}
-        >
-          <Input placeholder="... אדרעסס 2" />
-        </Form.Item>
+          <Form.Item
+            name="age"
+            label="יארגאנג"
+            style={{ width: "500px" }}
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Select
+              options={[
+                { value: "שיעור צעירים", label: "שיעור צעירים" },
+                { value: "'שיעור א", label: "'שיעור א" },
+                { value: "'שיעור ב", label: "'שיעור ב" },
+              ]}
+              placeholder="יארגאנג..."
+            />
+          </Form.Item>
 
-        <Form.Item
-          name="city"
-          label=":סיטי"
-          colon={false}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input placeholder="... סיטי" />
-        </Form.Item>
+          <Form.Item
+            name="address1"
+            label="אדרעסס 1"
+            style={{ width: "500px" }}
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Input placeholder="אדרעסס 1..." />
+          </Form.Item>
 
-        <Form.Item
-          name="state"
-          label=":שטאט"
-          colon={false}
-          rules={[
-            {
-              min: 0,
-              max: 10,
-              required: true,
-            },
-          ]}
-        >
-          <Input placeholder="... שטאט" />
-        </Form.Item>
+          <Form.Item
+            name="address2"
+            label="2 אדרעסס"
+            style={{ width: "500px" }}
+            rules={[
+              {
+                // required: true,
+              },
+            ]}
+          >
+            <Input placeholder="אדרעסס 2..." />
+          </Form.Item>
 
-        <Form.Item
-          name="zip_code"
-          label=":זיפ קאוד"
-          colon={false}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input placeholder="... זיפ קאוד" />
-        </Form.Item>
+          <Form.Item
+            name="city"
+            label="סיטי"
+            style={{ width: "500px" }}
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Input placeholder="... סיטי" />
+          </Form.Item>
+
+          <Form.Item
+            name="state"
+            label="שטאט"
+            style={{ width: "500px" }}
+            rules={[
+              {
+                min: 0,
+                max: 10,
+                required: true,
+              },
+            ]}
+          >
+            <Input placeholder="שטאט..." />
+          </Form.Item>
+
+          <Form.Item
+            name="zip_code"
+            label="זיפ קאוד"
+            style={{ width: "500px" }}
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Input placeholder="זיפ קאוד..." />
+          </Form.Item>
+        </div>
 
         <Form.Item
           name="phone"
-          label=":טעל. נומער"
-          colon={false}
+          label="טעל. נומער"
+          style={{ width: "500px", direction: "rtl" }}
           rules={[
             {
               required: true,
             },
           ]}
         >
-          <Input placeholder="... טעל. נומער" />
+          <Input placeholder="טעל. נומער..." />
         </Form.Item>
 
-        <Form.Item
-          wrapperCol={{
-            ...layout.wrapperCol,
-            offset: 16,
-          }}
-        >
-          <div className="add_user_form_container">
-            <Button onClick={handleCancel}>Cancel</Button>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </div>
-        </Form.Item>
+        <div className="add_user_form_btn_container">
+          <Button onClick={handleCancel} style={{ width: "200px" }}>
+            Cancel
+          </Button>
+          <Button type="primary" htmlType="submit" style={{ width: "200px" }}>
+            Submit
+          </Button>
+        </div>
       </Form>
     </>
   );

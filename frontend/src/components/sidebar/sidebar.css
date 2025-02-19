@@ -24,7 +24,11 @@
     font-size: large;
 }
 
-.dark_mode {
+.sidebar_collapse_container:hover{
+    background-color: rgb(1, 50, 66);
+}
+
+/* .dark_mode {
     background-color: #222 !important;
     color: #fff !important;
   }
@@ -32,4 +36,4 @@
   .light_mode {
     background-color: #fff !important;
     color: #222 !important;
-  }
+  } */

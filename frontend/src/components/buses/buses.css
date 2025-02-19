@@ -95,3 +95,10 @@
     justify-content: space-between;
     padding: 0 10px 0 10px;
   }
+
+  .loading_flax{
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}

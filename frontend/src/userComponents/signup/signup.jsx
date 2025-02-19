@@ -141,7 +141,7 @@ const UserSignup = () => {
                       rules={[
                         {
                           required: true,
-                          message: "!Password ביטע אריין לייגט איבער אייער",
+                          message: "!Password ביטע לייגט איבער אייער",
                         },
                         ({ getFieldValue }) => ({
                           validator(_, value) {

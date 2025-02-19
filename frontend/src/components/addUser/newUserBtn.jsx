@@ -67,6 +67,7 @@ const AddUser = ({ onUserAdded, setFilteredUserInfo }) => {
             style={{
               width: "100%",
               cursor: "move",
+              textAlign: "center",
             }}
             onMouseOver={() => {
               if (disabled) {
@@ -91,10 +92,23 @@ const AddUser = ({ onUserAdded, setFilteredUserInfo }) => {
             nodeRef={draggleRef}
             onStart={(event, uiData) => onStart(event, uiData)}
           >
-            <div ref={draggleRef}>{modal}</div>
+            <div
+              ref={draggleRef}
+              className="add_user_modal"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                height: "100%",
+              }}
+            >
+              {modal}
+            </div>
           </Draggable>
         )}
         footer={null}
+        centered
       >
         {/* AddUserForm component */}
         <AddUserForm

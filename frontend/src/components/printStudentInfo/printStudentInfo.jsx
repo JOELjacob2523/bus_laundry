@@ -28,7 +28,7 @@ const PrintStudentInfo = () => {
         const students = studentData;
         const payments = paymentData;
         const zmanGoalInfo = zmanGoalData;
-        const logo = authData.user_logo.filename;
+        const logo = authData?.user_logo.filename;
 
         setLogoImage(logo);
         setZmanGoal(zmanGoalInfo);
@@ -49,7 +49,7 @@ const PrintStudentInfo = () => {
       }
     };
     fetchData();
-  }, [studentData, paymentData, zmanGoalData, authData.user_logo.filename]);
+  }, [studentData, paymentData, zmanGoalData, authData?.user_logo?.filename]);
 
   // Cascader options
   const options = [

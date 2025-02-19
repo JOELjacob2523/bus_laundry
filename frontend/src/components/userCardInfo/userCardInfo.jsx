@@ -24,9 +24,9 @@ const UserCardInfo = ({
   const [key, setKey] = useState(0);
   const { token } = theme.useToken();
 
-  useEffect(() => {
-    console.log("Credit Card Link", authData.CC_link);
-  }, [authData.CC_link]);
+  // useEffect(() => {
+  //   console.log("Credit Card Link", authData.CC_link);
+  // }, [authData.CC_link]);
 
   const handleEditClick = () => {
     setUserDisabled(false);

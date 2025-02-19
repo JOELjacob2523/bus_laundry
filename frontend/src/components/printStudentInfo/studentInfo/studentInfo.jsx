@@ -44,8 +44,6 @@ const StudentInfoToPrint = forwardRef((props, ref) => {
     setIndeterminate(newStates);
   }, [data, zmanGoal, zmanGoalData]);
 
-  // console.log(authData.user_logo.filename);
-
   return (
     <div ref={ref} className="student_info_to_print_container">
       <div className="info_paragraph_container">
