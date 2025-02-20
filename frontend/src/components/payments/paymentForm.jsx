@@ -6,6 +6,7 @@ import { BsCurrencyDollar } from "react-icons/bs";
 
 const { Option } = Select;
 
+// Generate years for expiration year dropdown
 const years = [];
 const currentYear = new Date().getFullYear();
 for (let i = 0; i < 20; i++) {
@@ -52,6 +53,7 @@ const PaymentForm = () => {
 
   const navigate = useNavigate();
 
+  // Handle input change
   const handleChange = (e, fieldName) => {
     if (!e || !e.target) {
       console.error("Event or event target is undefined:", e);
@@ -66,6 +68,7 @@ const PaymentForm = () => {
     }));
   };
 
+  // Handle form submission
   const handleSubmit = async (values) => {
     setLoading(true);
     try {

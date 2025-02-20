@@ -6,6 +6,7 @@ import "react-jewish-datepicker/dist/index.css";
 const HebrewDatePicker = ({ onChange }) => {
   const [dateRange, setDateRange] = useState({ start: null, end: null });
 
+  // handle date change
   const handleDateChange = (start, end) => {
     setDateRange({ start, end });
     if (onChange) {
@@ -19,7 +20,6 @@ const HebrewDatePicker = ({ onChange }) => {
         value={new Date()}
         isHebrew
         isRange
-        // rangePicker
         onClick={handleDateChange}
       />
     </div>

@@ -20,7 +20,7 @@ const UserLogin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), 2000);
+    setTimeout(() => setLoading(false), 3000);
   }, []);
 
   const showModal = () => {
@@ -62,12 +62,21 @@ const UserLogin = () => {
     setLoading(false);
   };
 
+  // if (loading) {
+  //   return (
+  //     <Flex className="loading_flax">
+  //       <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
+  //       Loading...
+  //     </Flex>
+  //   );
+  // }
+
   if (loading) {
     return (
-      <Flex className="loading_flax">
-        <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
-        Loading...
-      </Flex>
+      <div>
+        <div id="box"></div>
+        <div className="loading_text">Loading...</div>
+      </div>
     );
   }
 

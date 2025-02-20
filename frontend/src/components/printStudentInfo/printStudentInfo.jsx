@@ -229,6 +229,7 @@ const PrintStudentInfo = () => {
     }
   };
 
+  // Close modal
   const handleCancel = () => {
     setOpen(false);
   };

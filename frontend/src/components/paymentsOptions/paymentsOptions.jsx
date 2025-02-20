@@ -52,6 +52,7 @@ const PaymentOptions = ({
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // fetch user data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -70,6 +71,7 @@ const PaymentOptions = ({
     fetchData();
   }, [studentId, token]);
 
+  // handle form change
   const handleFormChange = (_, allValues) => {
     const cashInput = Number(allValues.cash) || 0;
     const checkInput = Number(allValues.checks) || 0;
@@ -80,6 +82,7 @@ const PaymentOptions = ({
     });
   };
 
+  // handle form submit
   const onFinish = async (values) => {
     try {
       const formData = { ...values, payment_type: value };
@@ -94,15 +97,18 @@ const PaymentOptions = ({
     }
   };
 
+  // handle radio change
   const onRadioChange = (e) => {
     console.log("redio checked", e.target.value);
     setValue(e.target.value);
   };
 
+  // loading spinner
   if (loading) {
     return <Spin fullscreen={true} tip="Loading..." />;
   }
 
+  // user not found
   if (!userInfo)
     return (
       <div>

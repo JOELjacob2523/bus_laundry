@@ -60,6 +60,7 @@ const IncomeProgress = ({
     calculateIncome();
   }, [paymentInfo, zmanGoal]);
 
+  // Modal functions
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -70,6 +71,7 @@ const IncomeProgress = ({
     setIsModalOpen(false);
   };
 
+  // Withdrawal details functions
   const handleEdit = (withdrawalId) => {
     setCurrentlyEditingId(withdrawalId);
     setShowButtons(true);

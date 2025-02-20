@@ -60,6 +60,7 @@ const Profile = ({ authData, setAuthData, toggleDarkMode }) => {
   //   }
   // }, []);
 
+  // fetch user data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -73,6 +74,7 @@ const Profile = ({ authData, setAuthData, toggleDarkMode }) => {
     fetchData();
   }, [authData.userId, navigate]);
 
+  // handle form submission
   const onFinish = async (values) => {
     try {
       const formData = { ...values, role: value || userInfo.role };
@@ -90,6 +92,7 @@ const Profile = ({ authData, setAuthData, toggleDarkMode }) => {
     }
   };
 
+  // set target value
   const onRadioChange = (e) => {
     setValue(e.target.value);
   };

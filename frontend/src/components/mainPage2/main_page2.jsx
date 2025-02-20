@@ -25,6 +25,7 @@ const MainPage2 = ({
 
   const navigate = useNavigate();
 
+  // Fetching data from the server
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -42,6 +43,7 @@ const MainPage2 = ({
     fetchData();
   }, [studentData, paymentData, zmanGoalData, navigate]);
 
+  // Setting the ending date of the zman
   useEffect(() => {
     if (zmanGoal && Array.isArray(zmanGoal) && zmanGoal.length > 0) {
       const zmanEndDate = new Date(zmanGoal[0].zman_starts_ends?.end?.date);
@@ -49,6 +51,7 @@ const MainPage2 = ({
     }
   }, [zmanGoal]);
 
+  // Calculating the rest weeks
   useEffect(() => {
     let now = new Date();
     if (zmanGoal && Array.isArray(zmanGoal) && zmanGoal.length > 0) {
@@ -62,10 +65,12 @@ const MainPage2 = ({
     }
   }, [zmanGoal]);
 
+  // Calculating the total amount paid
   const total = Array.isArray(paymentInfo)
     ? paymentInfo.reduce((acc, pay) => acc + parseFloat(pay.total_paid), 0)
     : 0;
 
+  // Getting the next sedra
   useEffect(() => {
     const fetchNextSedra = () => {
       try {
@@ -95,6 +100,7 @@ const MainPage2 = ({
     fetchNextSedra();
   }, [zmanGoal]);
 
+  // Loading spinner
   if (!userInfo || !zmanGoal || !cityCounts) {
     return (
       <Flex className="loading_flax">
