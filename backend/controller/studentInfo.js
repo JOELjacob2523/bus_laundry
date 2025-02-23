@@ -13,6 +13,7 @@ module.exports = {
   updateUserInfo,
   deleteUser,
   insertZmanGoalInfo,
+  updateZmanGoalInfo,
   getAllZmanGoalInfo,
   insertPaymentInfo,
   getAllPaymentInfo,
@@ -127,6 +128,36 @@ async function insertZmanGoalInfo(zmanInfo) {
     console.error("Error inserting zman goal info:", error);
     throw error;
   }
+}
+
+async function updateZmanGoalInfo(goal) {
+  const {
+    zman_goal_id,
+    zman,
+    zman_starts_ends,
+    closed_weeks,
+    bus_price,
+    van_price,
+    wash_price,
+    total_zman_weeks,
+    total_bus_goal,
+    total_wash_goal,
+    total_van_goal,
+  } = goal;
+  return knex("zman_goal")
+    .where("zman_goal_id", zman_goal_id)
+    .update({
+      zman,
+      zman_starts_ends: JSON.stringify(zman_starts_ends),
+      closed_weeks: JSON.stringify(closed_weeks),
+      bus_price,
+      van_price,
+      wash_price,
+      total_zman_weeks,
+      total_bus_goal,
+      total_wash_goal,
+      total_van_goal,
+    });
 }
 
 //archiving old data into old data tables

@@ -167,6 +167,26 @@ router.post("/zman_goal", upload.fields([]), async (req, res, next) => {
   }
 });
 
+// router to update a zman goal
+router.post(
+  "/update_zman_goal_info",
+  upload.fields([]),
+  async (req, res, next) => {
+    try {
+      const updatedData = await CONTORLLER.updateZmanGoalInfo(req.body);
+      console.log(updatedData);
+      res.status(200).json({
+        message: "Zman goal updated successfully",
+      });
+    } catch (err) {
+      console.error("Error updating zman goal credentials:", err);
+      res
+        .status(500)
+        .json({ message: "Error updaing zman goal", error: err.message });
+    }
+  }
+);
+
 // router to create the zman goal by admin id
 router.post(
   "/zman_goal_by_admin_id",

@@ -17,15 +17,16 @@ const TotalBalance = ({ paymentInfo, authData }) => {
   const [oldPyaments, setOldPayments] = useState(0);
   const [incomeDetails, setIncomeDetails] = useState([]);
 
+  // Fetch data from the server
   useEffect(() => {
     async function fetchData() {
       try {
         const adminIdData = await getAllWithdrawalInfoByAdminId(
           authData.parent_admin_id
         );
-        const oldData = await getOldPaymentInfo();
-        setWithdrawalData(adminIdData);
-        setOldPayments(oldData);
+        const oldData = await getOldPaymentInfo(); // get old payments
+        setWithdrawalData(adminIdData); // set withdrawal data
+        setOldPayments(oldData); // set old payments
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -33,6 +34,7 @@ const TotalBalance = ({ paymentInfo, authData }) => {
     fetchData();
   }, [withdrawalData, authData.parent_admin_id]);
 
+  // Calculate the total income
   useEffect(() => {
     if (paymentInfo.length > 0) {
       const totals = paymentInfo.reduce(
@@ -49,8 +51,9 @@ const TotalBalance = ({ paymentInfo, authData }) => {
         },
         { cash: 0, checks: 0, credit_card: 0, total: 0, total_paid: 0 }
       );
-      setIncomeDetails(totals);
+      setIncomeDetails(totals); // set the total income
     } else {
+      // if there is no payment info
       setIncomeDetails({
         cash: 0,
         checks: 0,
@@ -61,10 +64,12 @@ const TotalBalance = ({ paymentInfo, authData }) => {
     }
   }, [paymentInfo]);
 
+  // Calculate the total old income
   const totalOldIncome = Array.isArray(oldPyaments)
     ? oldPyaments.reduce((acc, pay) => acc + parseFloat(pay.total_paid), 0)
     : 0;
 
+  // Calculate the total withdrawals
   useEffect(() => {
     const withdrawals = () => {
       let totalBusMoney = 0;
@@ -84,13 +89,14 @@ const TotalBalance = ({ paymentInfo, authData }) => {
           totalCustomMoney += parseFloat(withdrawal.amount) || 0;
         }
       });
-      setBusMoney(totalBusMoney);
-      setWashMoney(totalWashMoney);
-      setCustomMoney(totalCustomMoney);
+      setBusMoney(totalBusMoney); // set the total bus money
+      setWashMoney(totalWashMoney); // set the total wash money
+      setCustomMoney(totalCustomMoney); // set the total custom money
     };
     withdrawals();
   }, [withdrawalData]);
 
+  // Set the balance color
   let balanceColor;
   if (incomeDetails.total - busMoney + washMoney >= 0) {
     balanceColor = "black";

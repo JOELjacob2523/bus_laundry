@@ -1,8 +1,29 @@
-.update_zman_goal_container{
-    /* display: flex; */
-    padding-right: 20px;
+.update_zman_goal_form{
+    padding: 10px;
 }
 
-.update_zman_goal_modal{
-    width: 100%;
+.update_total_goal_container{
+    display: flex;
+    justify-content: center;
+    height: auto;
+    flex-wrap: wrap;
+}
+
+/* .update_zman_goal_card{
+    width: 520px;
+} */
+
+.update_total_goal_inner{
+    width: 50%;
+}
+
+.update_zman_goal_btn{
+    color: blue;
+}
+
+.submit_goal_form_btn_container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
 }

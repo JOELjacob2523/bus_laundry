@@ -3,12 +3,15 @@ import React from "react";
 import { Divider, Popover, Space, Input } from "antd";
 import { FiInfo } from "react-icons/fi";
 
+// Component to display the payment information of a student
+// It aggregates the payment information and displays it in a popover
 const StudentBalanceInfo = ({ payment }) => {
   const parseValue = (value) => {
     const parsed = parseFloat(value);
     return isNaN(parsed) ? 0 : parsed;
   };
 
+  // Format the payment type to be more readable
   const formatPaymentType = (paymentType) => {
     if (!paymentType) return "N/A";
     return paymentType
@@ -17,6 +20,7 @@ const StudentBalanceInfo = ({ payment }) => {
       .join(" & ");
   };
 
+  // Aggregate the payment information
   const aggregatedPayment = payment.reduce(
     (acc, pay) => {
       acc.cash += parseValue(pay.cash);
@@ -36,6 +40,7 @@ const StudentBalanceInfo = ({ payment }) => {
     }
   );
 
+  // Content of the popover
   const content = (
     <div className="main_content_container">
       <div className="content_container">

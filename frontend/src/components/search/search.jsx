@@ -1,30 +1,29 @@
 import "./search.css";
 import { Input } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const { Search } = Input;
 
 const SearchBar = ({ input, onSearch, resetSearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const onSearchChange = (value) => {
-    if (value === "") {
-      resetSearch();
+  // Search the input
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      resetSearch(); // Reset the search when input is cleared
     } else {
-      const query = value.toLowerCase();
-      const results = query
-        ? input.filter((user) => {
-            return Object.values(user || {}).some(
-              (field) =>
-                field &&
-                typeof field === "string" &&
-                field.toLowerCase().includes(query)
-            );
-          })
-        : input;
+      const query = searchQuery.toLowerCase();
+      const results = input.filter((user) =>
+        Object.values(user || {}).some(
+          (field) =>
+            field &&
+            typeof field === "string" &&
+            field.toLowerCase().includes(query)
+        )
+      );
       onSearch(results);
     }
-  };
+  }, [searchQuery, input]);
 
   return (
     <div className="search_container">
@@ -33,13 +32,8 @@ const SearchBar = ({ input, onSearch, resetSearch }) => {
         placeholder="Type to search..."
         size="large"
         allowClear={true}
-        onChange={(e) => {
-          const value = e.target.value;
-          setSearchQuery(value);
-          onSearchChange(value);
-        }}
+        onChange={(e) => setSearchQuery(e.target.value)}
         value={searchQuery}
-        onSearch={onSearchChange}
       />
     </div>
   );

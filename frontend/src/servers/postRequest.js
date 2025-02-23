@@ -41,7 +41,7 @@ export const updateUserInfo = async (formData) => {
   }
 };
 
-//update student info
+//update student payment info
 export const updateUserPaymentInfo = async (formData) => {
   try {
     const response = await axios.post(
@@ -247,6 +247,30 @@ export const updateWithdrawalInfo = async (formData) => {
   try {
     const response = await axios.post(
       `${URL}/update_withdrawal_info`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      console.log("Updated Success!!");
+    } else {
+      console.log(`Error updating! ${response.data}`);
+    }
+  } catch (err) {
+    console.error("Error:", err.message);
+    throw err;
+  }
+};
+
+//update withdrawal info
+export const updateZmanGoalInfo = async (formData) => {
+  try {
+    const response = await axios.post(
+      `${URL}/update_zman_goal_info`,
       formData,
       {
         headers: {

@@ -97,10 +97,12 @@ const Profile = ({ authData, setAuthData, toggleDarkMode }) => {
     setValue(e.target.value);
   };
 
+  // modal functions
   const showPermissionModal = () => {
     setIsPermissionModalOpen(true);
   };
 
+  // verify admin password
   const handlePermissionOk = async () => {
     const response = await verifyAdminPassword(password);
     if (!response) {
@@ -118,11 +120,13 @@ const Profile = ({ authData, setAuthData, toggleDarkMode }) => {
     }
   };
 
+  // cancel permission modal
   const handlePermissionCancel = () => {
     setIsPermissionModalOpen(false);
     setKey(key + 1);
   };
 
+  // show modal
   const showModal = (type) => {
     setModalType(type);
     setIsModalOpen(true);
@@ -130,6 +134,8 @@ const Profile = ({ authData, setAuthData, toggleDarkMode }) => {
   const handleOk = () => {
     setIsModalOpen(false);
   };
+
+  // cancel modal
   const handleCancel = () => {
     setIsModalOpen(false);
     setModalType("");
@@ -137,17 +143,20 @@ const Profile = ({ authData, setAuthData, toggleDarkMode }) => {
     setKey(key + 1);
   };
 
+  // handle edit profile
   const handleEditUserProfile = () => {
     setIsDisabled(false);
     setShowButtons(true);
     authData.role === "Administrator" && setIsVerified(true);
   };
 
+  // cancel edit profile
   const handleCancelEditUserProfile = () => {
     setIsDisabled(true);
     setShowButtons(false);
   };
 
+  // handle menu click
   const handleMenuClick = (e) => {
     if (e.key === "1") {
       showModal("profile");

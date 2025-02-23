@@ -20,6 +20,7 @@ const Sidebar = () => {
     setSelectedItem(key);
   };
 
+  // Check if dark mode is saved in local storage
   useEffect(() => {
     const savedMode = localStorage.getItem("darkMode");
     if (savedMode) {
@@ -29,6 +30,7 @@ const Sidebar = () => {
     }
   }, []);
 
+  // Set footer message based on user role
   useEffect(() => {
     if (authData.role === "Administrator") {
       setFooterMessage(
@@ -54,6 +56,7 @@ const Sidebar = () => {
     }
   }, [authData.role]);
 
+  // Toggle dark mode
   const toggleDarkMode = () => {
     const newMode = !isDarkMode;
     setIsDarkMode(newMode);
@@ -61,6 +64,7 @@ const Sidebar = () => {
     document.body.className = newMode ? "dark_mode" : "light_mode";
   };
 
+  // Get theme tokens
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();

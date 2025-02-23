@@ -19,10 +19,12 @@ const UserLogin = () => {
 
   const navigate = useNavigate();
 
+  // set loading to false after 3 seconds
   useEffect(() => {
     setTimeout(() => setLoading(false), 3000);
   }, []);
 
+  // Modal functions
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -33,6 +35,7 @@ const UserLogin = () => {
     setIsModalOpen(false);
   };
 
+  // Login function
   const onFinish = async (values) => {
     const { email, password } = values;
     try {
@@ -71,6 +74,7 @@ const UserLogin = () => {
   //   );
   // }
 
+  // loading screen
   if (loading) {
     return (
       <div>

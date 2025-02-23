@@ -7,6 +7,7 @@ const { Option } = Select;
 const SedraSelect = ({ onChange }) => {
   const [sedras, setSedras] = useState([]);
 
+  // Fetch all sedras for the current year
   useEffect(() => {
     const getAllSedras = (year) => {
       const startDate = new HDate(new Date(year, 0, 1));
@@ -38,11 +39,13 @@ const SedraSelect = ({ onChange }) => {
       return sedras;
     };
 
+    // set the current year
     const year = new Date().getFullYear();
     const fetchedSedras = getAllSedras(year);
     setSedras(fetchedSedras);
   }, []);
 
+  // Handle the change of the select
   const handleSelectChange = (value, option) => {
     const selectedSedra = sedras.find((sedra) => sedra.id === value);
     onChange(selectedSedra);
@@ -66,6 +69,7 @@ const SedraSelect = ({ onChange }) => {
                 .includes(input.toLowerCase())
             : false
         }
+        // Sort the options by the sedra name
         filterSort={(optionA, optionB) =>
           (optionA?.label ?? "")
             .toLowerCase()

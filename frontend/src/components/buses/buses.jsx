@@ -211,7 +211,7 @@ const Buses = () => {
           <div className="add_user_container">
             <div className="search_inner">
               <SearchBar
-                input={filteredUserInfo}
+                input={userInfo}
                 onSearch={handleSearch}
                 resetSearch={resetSearch}
               />
