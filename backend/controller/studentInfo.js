@@ -132,7 +132,7 @@ async function insertZmanGoalInfo(zmanInfo) {
 
 async function updateZmanGoalInfo(goal) {
   const {
-    zman_goal_id,
+    user_id,
     zman,
     zman_starts_ends,
     closed_weeks,
@@ -145,7 +145,7 @@ async function updateZmanGoalInfo(goal) {
     total_van_goal,
   } = goal;
   return knex("zman_goal")
-    .where("zman_goal_id", zman_goal_id)
+    .where("user_id", user_id)
     .update({
       zman,
       zman_starts_ends: JSON.stringify(zman_starts_ends),

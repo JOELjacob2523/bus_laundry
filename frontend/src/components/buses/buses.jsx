@@ -186,7 +186,8 @@ const Buses = () => {
               <Title
                 level={2}
                 style={{
-                  fontFamily: "OYoelTovia",
+                  fontFamily: "OYoelTovia", // Set the font
+                  whiteSpace: "nowrap",
                 }}
               >
                 ~ עס איז איינגעשריבן {filteredUserInfo.length}{" "}

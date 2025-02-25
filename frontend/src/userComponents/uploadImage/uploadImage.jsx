@@ -1,5 +1,5 @@
 import "./uploadImage.css";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import { uploadUserlogo } from "../../servers/userRequests/postUserRequest";
@@ -15,7 +15,13 @@ const formItemLayout = {
 };
 
 const UploadImage = () => {
+  const [disabled, setDisabled] = useState(false);
+
   const { authData } = useAuth();
+
+  useEffect(() => {
+    authData.role === "Administrator" ? setDisabled(false) : setDisabled(true);
+  }, [authData]);
 
   const normFile = (e) => {
     console.log("Upload event:", e);
@@ -39,6 +45,7 @@ const UploadImage = () => {
           style={{
             maxWidth: 600,
           }}
+          disabled={disabled}
         >
           <Form.Item
             name="dragger"

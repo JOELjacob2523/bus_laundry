@@ -186,7 +186,12 @@ const IncomeProgress = ({
           open={isModalOpen}
           onOk={handleOk}
           onCancel={handleCancel}
-          width={500}
+          style={{
+            maxHeight: "80vh",
+            overflowY: "auto",
+            padding: "0",
+            top: "50px",
+          }}
         >
           <WithdrawalsDetials
             handleEdit={handleEdit}

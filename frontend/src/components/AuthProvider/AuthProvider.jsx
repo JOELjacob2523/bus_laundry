@@ -86,6 +86,7 @@ export const AuthProvider = ({ children }) => {
         paymentData,
         zmanGoalData,
         fetchStudentData,
+        fetchZmanGoalData,
       }}
     >
       {children}

@@ -157,7 +157,7 @@ const ClosedWeeks = () => {
       <div>
         <Drawer
           title={<div className="modal_title">זמן אינפארמאציע</div>}
-          width={900}
+          width={800}
           open={zmanGoalOpen}
           onClose={closeZmanDrawer}
           footer={null}
@@ -174,18 +174,23 @@ const ClosedWeeks = () => {
                 variant="filled"
                 className="zman_goal_form"
                 onValuesChange={handleFormChange}
+                key={key}
                 action="/zman_goal"
                 method="POST"
               >
-                <Form.Item name="user_id" style={{ lineHeight: 1 }}>
+                <Form.Item name="user_id" style={{ display: "none" }}>
                   <Input hidden={true} />
                 </Form.Item>
+
+                <Divider orientation="start" style={{ paddingBottom: "25px" }}>
+                  לייג אריין די אינפארמאציע
+                </Divider>
+
                 <Form.Item
-                  label=":זמן"
+                  label="זמן:"
                   colon={false}
                   name="zman"
                   rules={[{ required: true, message: "Please select Zman!" }]}
-                  style={{ width: "850px" }}
                 >
                   <Select
                     options={[
@@ -197,7 +202,7 @@ const ClosedWeeks = () => {
                 </Form.Item>
 
                 <Form.Item
-                  label=":אנפאנג / סוף זמן"
+                  label="אנפאנג / סוף זמן:"
                   colon={false}
                   name="zman_starts_ends"
                   rules={[
@@ -206,17 +211,15 @@ const ClosedWeeks = () => {
                       message: "Please input!",
                     },
                   ]}
-                  style={{ width: "850px" }}
                 >
                   <HebrewDatePicker onChange={handleDateChange} />
                 </Form.Item>
 
                 <Form.Item
-                  label=":סדרה"
+                  label="סדרה:"
                   colon={false}
                   name="closed_weeks"
                   required
-                  style={{ width: "850px" }}
                 >
                   <Space direction="vertical" style={{ width: "100%" }}>
                     {selectedSedras.map((sedra, index) => (
@@ -253,7 +256,7 @@ const ClosedWeeks = () => {
                 </Form.Item>
 
                 <Form.Item
-                  label=":ראונד טריפ באס פרייז"
+                  label="ראונד טריפ באס פרייז:"
                   colon={false}
                   name="bus_price"
                   rules={[
@@ -262,16 +265,16 @@ const ClosedWeeks = () => {
                       message: "Please input bus round trip price!",
                     },
                   ]}
-                  style={{ width: "850px" }}
                 >
                   <Input
                     prefix={<BsCurrencyDollar />}
                     placeholder="...לייג אריין ראונד טריפ באס פרייז"
+                    style={{ direction: "ltr" }}
                   />
                 </Form.Item>
 
                 <Form.Item
-                  label=":ראונד טריפ ווען פרייז"
+                  label="ראונד טריפ ווען פרייז:"
                   colon={false}
                   name="van_price"
                   rules={[
@@ -280,16 +283,16 @@ const ClosedWeeks = () => {
                       message: "Please input van round trip price!",
                     },
                   ]}
-                  style={{ width: "850px" }}
                 >
                   <Input
                     prefix={<BsCurrencyDollar />}
                     placeholder="...לייג אריין ראונד טריפ ווען פרייז"
+                    style={{ direction: "ltr" }}
                   />
                 </Form.Item>
 
                 <Form.Item
-                  label=":וואשן פרייז"
+                  label="וואשן פרייז:"
                   colon={false}
                   name="wash_price"
                   rules={[
@@ -298,90 +301,79 @@ const ClosedWeeks = () => {
                       message: "Please input wash bag price!",
                     },
                   ]}
-                  style={{ width: "850px" }}
                 >
                   <Input
                     prefix={<BsCurrencyDollar />}
                     placeholder="...לייג אריין וואשן פרייז"
+                    style={{ direction: "ltr" }}
                   />
                 </Form.Item>
 
-                <Divider>Total</Divider>
+                <Divider orientation="start" style={{ paddingBottom: "25px" }}>
+                  סך הכל
+                </Divider>
 
                 <div className="total_goal_container">
                   <div>
                     <Form.Item
-                      label=':ס"ה באס פרייז'
+                      label='ס"ה באס פרייז:'
                       colon={false}
                       name="total_bus_goal"
-                      labelCol={{ span: 8 }} // Adjust the label width
+                      labelCol={{ span: 12 }} // Adjust the label width
                       wrapperCol={{ span: 16 }} // Adjust the input width
                     >
                       <Input
                         prefix={<BsCurrencyDollar />}
                         disabled
-                        style={{ width: "200px" }}
+                        style={{ width: "150px", direction: "ltr" }}
                       />
                     </Form.Item>
                   </div>
 
                   <div>
                     <Form.Item
-                      label=':ס"ה ווען פרייז'
+                      label='ס"ה ווען פרייז:'
                       colon={false}
                       name="total_van_goal"
-                      labelCol={{ span: 8 }} // Adjust the label width
+                      labelCol={{ span: 12 }} // Adjust the label width
                       wrapperCol={{ span: 16 }} // Adjust the input width
                     >
                       <Input
                         prefix={<BsCurrencyDollar />}
                         disabled
-                        style={{ width: "200px" }}
+                        style={{ width: "150px", direction: "ltr" }}
                       />
                     </Form.Item>
                   </div>
 
                   <div>
                     <Form.Item
-                      label=':ס"ה וואשן פרייז'
+                      label='ס"ה וואשן פרייז:'
                       colon={false}
                       name="total_wash_goal"
-                      labelCol={{ span: 8 }} // Adjust the label width
+                      labelCol={{ span: 12 }} // Adjust the label width
                       wrapperCol={{ span: 16 }} // Adjust the input width
                     >
                       <Input
                         prefix={<BsCurrencyDollar />}
                         disabled
-                        style={{ width: "200px" }}
+                        style={{ width: "150px", direction: "ltr" }}
                       />
                     </Form.Item>
                   </div>
 
-                  {/* <div>
+                  <div>
                     <Form.Item
-                      label=':ס"ה זמן פרייז'
+                      label='ס"ה וואכן:'
                       colon={false}
-                      name="total_zman_goal"
-                      labelCol={{ span: 8 }} // Adjust the label width
+                      name="total_zman_weeks"
+                      labelCol={{ span: 12 }} // Adjust the label width
                       wrapperCol={{ span: 16 }} // Adjust the input width
                     >
                       <Input
-                        prefix={<BsCurrencyDollar />}
                         disabled
-                        style={{ width: "200px" }}
+                        style={{ width: "150px", direction: "ltr" }}
                       />
-                    </Form.Item>
-                  </div> */}
-
-                  <div>
-                    <Form.Item
-                      label=':ס"ה וואכן'
-                      colon={false}
-                      name="total_zman_weeks"
-                      labelCol={{ span: 8 }} // Adjust the label width
-                      wrapperCol={{ span: 16 }} // Adjust the input width
-                    >
-                      <Input disabled style={{ width: "200px" }} />
                     </Form.Item>
                   </div>
                 </div>

@@ -173,8 +173,7 @@ router.post(
   upload.fields([]),
   async (req, res, next) => {
     try {
-      const updatedData = await CONTORLLER.updateZmanGoalInfo(req.body);
-      console.log(updatedData);
+      await CONTORLLER.updateZmanGoalInfo(req.body);
       res.status(200).json({
         message: "Zman goal updated successfully",
       });

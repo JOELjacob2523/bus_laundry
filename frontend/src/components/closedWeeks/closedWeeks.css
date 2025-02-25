@@ -10,13 +10,15 @@
 
 .zman_goal_form{
     width: 100%;
+    direction: rtl;
 }
 
 .total_goal_container{
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-evenly;
     flex-wrap: wrap;
+    padding-left: 50px;
 }
 
 .submit_goal_form_btn_container{

@@ -266,7 +266,7 @@ export const updateWithdrawalInfo = async (formData) => {
   }
 };
 
-//update withdrawal info
+//update zman goal info
 export const updateZmanGoalInfo = async (formData) => {
   try {
     const response = await axios.post(

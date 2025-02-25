@@ -48,7 +48,10 @@ const TotalClosedWeeks = ({ zmanGoal }) => {
       <div className="content_weeks_container">
         {isZmanInfoEditing ? (
           <div>
-            <UpdateClosedWeeks setIsZmanInfoEditing={setIsZmanInfoEditing} />
+            <UpdateClosedWeeks
+              setIsZmanInfoEditing={setIsZmanInfoEditing}
+              setIsModalVisible={setIsModalVisible}
+            />
           </div>
         ) : (
           <Card

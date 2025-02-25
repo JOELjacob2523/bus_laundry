@@ -45,9 +45,9 @@
     justify-content: space-between;
 }
 
-.withdrawal_details_container{
-    width: 100%;
-}
+/* .withdrawal_details_container{
+    
+} */
 
 .dot_beofre::before{
     content: '\2022';

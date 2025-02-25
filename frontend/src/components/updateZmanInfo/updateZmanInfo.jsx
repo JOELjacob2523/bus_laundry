@@ -37,13 +37,13 @@ const formItemLayout = {
   },
 };
 
-const UpdateClosedWeeks = ({ setIsZmanInfoEditing }) => {
+const UpdateClosedWeeks = ({ setIsZmanInfoEditing, setIsModalVisible }) => {
   const [form] = Form.useForm();
   const [selectedSedras, setSelectedSedras] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const { zmanGoalData } = useAuth();
+  const { zmanGoalData, fetchZmanGoalData } = useAuth();
 
   // Calculate the number of weeks between two dates
   const calculateWeeksBetweenDates = (start, end) => {
@@ -59,7 +59,8 @@ const UpdateClosedWeeks = ({ setIsZmanInfoEditing }) => {
     const busPrice = Number(allValues.bus_price) || 0;
     const vanPrice = Number(allValues.van_price) || 0;
     const washPrice = Number(allValues.wash_price) || 0;
-    const closedWeeksCount = selectedSedras.length;
+    // const closedWeeksCount = selectedSedras.length;
+    const closedWeeksCount = allValues.closed_weeks.length;
 
     let totalZmanWeeks = 0;
     if (
@@ -90,6 +91,10 @@ const UpdateClosedWeeks = ({ setIsZmanInfoEditing }) => {
     try {
       setLoading(true);
       await updateZmanGoalInfo(values);
+      setLoading(false);
+      setIsModalVisible(false);
+      setIsZmanInfoEditing(false);
+      fetchZmanGoalData();
       message.success("Zman goal updated successfully", 2, () =>
         navigate("/home")
       );
@@ -142,8 +147,13 @@ const UpdateClosedWeeks = ({ setIsZmanInfoEditing }) => {
           <Form.Item name="user_id" style={{ display: "none" }}>
             <Input hidden={true} />
           </Form.Item>
+
+          <Divider orientation="start" style={{ paddingBottom: "15px" }}>
+            לייג אריין די אינפארמאציע
+          </Divider>
+
           <Form.Item
-            label=":זמן"
+            label="זמן:"
             colon={false}
             name="zman"
             labelCol={{ span: 8 }} // Adjust the label width
@@ -160,7 +170,7 @@ const UpdateClosedWeeks = ({ setIsZmanInfoEditing }) => {
           </Form.Item>
 
           <Form.Item
-            label=":אנפאנג / סוף זמן"
+            label="אנפאנג / סוף זמן:"
             colon={false}
             name="zman_starts_ends"
             labelCol={{ span: 8 }} // Adjust the label width
@@ -176,7 +186,7 @@ const UpdateClosedWeeks = ({ setIsZmanInfoEditing }) => {
           </Form.Item>
 
           <Form.Item
-            label=":סדרה"
+            label="סדרה:"
             colon={false}
             name="closed_weeks"
             labelCol={{ span: 4 }} // Adjust the label width
@@ -220,7 +230,7 @@ const UpdateClosedWeeks = ({ setIsZmanInfoEditing }) => {
           </Form.Item>
 
           <Form.Item
-            label=":ראונד טריפ באס פרייז"
+            label="ראונד טריפ באס פרייז:"
             colon={false}
             name="bus_price"
             labelCol={{ span: 12 }} // Adjust the label width
@@ -235,11 +245,12 @@ const UpdateClosedWeeks = ({ setIsZmanInfoEditing }) => {
             <Input
               prefix={<BsCurrencyDollar />}
               placeholder="...לייג אריין ראונד טריפ באס פרייז"
+              style={{ direction: "ltr" }}
             />
           </Form.Item>
 
           <Form.Item
-            label=":ראונד טריפ ווען פרייז"
+            label="ראונד טריפ ווען פרייז:"
             colon={false}
             name="van_price"
             labelCol={{ span: 12 }} // Adjust the label width
@@ -254,11 +265,12 @@ const UpdateClosedWeeks = ({ setIsZmanInfoEditing }) => {
             <Input
               prefix={<BsCurrencyDollar />}
               placeholder="...לייג אריין ראונד טריפ ווען פרייז"
+              style={{ direction: "ltr" }}
             />
           </Form.Item>
 
           <Form.Item
-            label=":וואשן פרייז"
+            label="וואשן פרייז:"
             colon={false}
             name="wash_price"
             labelCol={{ span: 12 }} // Adjust the label width
@@ -273,85 +285,77 @@ const UpdateClosedWeeks = ({ setIsZmanInfoEditing }) => {
             <Input
               prefix={<BsCurrencyDollar />}
               placeholder="...לייג אריין וואשן פרייז"
+              style={{ direction: "ltr" }}
             />
           </Form.Item>
 
-          <Divider>Total</Divider>
+          <Divider orientation="start" style={{ paddingBottom: "15px" }}>
+            סך הכל
+          </Divider>
 
           <div className="update_total_goal_container">
             <div className="update_total_goal_inner">
               <Form.Item
-                label=':ס"ה באס פרייז'
+                label='ס"ה באס פרייז:'
                 colon={false}
                 name="total_bus_goal"
                 labelCol={{ span: 12 }} // Adjust the label width
                 wrapperCol={{ span: 12 }} // Adjust the input width
               >
-                <Input prefix={<BsCurrencyDollar />} disabled />
+                <Input
+                  prefix={<BsCurrencyDollar />}
+                  disabled
+                  style={{ direction: "ltr" }}
+                />
               </Form.Item>
             </div>
 
             <div className="update_total_goal_inner">
               <Form.Item
-                label=':ס"ה ווען פרייז'
+                label='ס"ה ווען פרייז:'
                 colon={false}
                 name="total_van_goal"
                 labelCol={{ span: 12 }} // Adjust the label width
                 wrapperCol={{ span: 12 }} // Adjust the input width
               >
-                <Input prefix={<BsCurrencyDollar />} disabled />
+                <Input
+                  prefix={<BsCurrencyDollar />}
+                  disabled
+                  style={{ direction: "ltr" }}
+                />
               </Form.Item>
             </div>
 
             <div className="update_total_goal_inner">
               <Form.Item
-                label=':ס"ה וואשן פרייז'
+                label='ס"ה וואשן פרייז:'
                 colon={false}
                 name="total_wash_goal"
                 labelCol={{ span: 12 }} // Adjust the label width
                 wrapperCol={{ span: 12 }} // Adjust the input width
               >
-                <Input prefix={<BsCurrencyDollar />} disabled />
+                <Input
+                  prefix={<BsCurrencyDollar />}
+                  disabled
+                  style={{ direction: "ltr" }}
+                />
               </Form.Item>
             </div>
 
-            {/* <div>
-                    <Form.Item
-                      label=':ס"ה זמן פרייז'
-                      colon={false}
-                      name="total_zman_goal"
-                      labelCol={{ span: 8 }} // Adjust the label width
-                      wrapperCol={{ span: 16 }} // Adjust the input width
-                    >
-                      <Input
-                        prefix={<BsCurrencyDollar />}
-                        disabled
-                        style={{ width: "200px" }}
-                      />
-                    </Form.Item>
-                  </div> */}
-
             <div className="update_total_goal_inner">
               <Form.Item
-                label=':ס"ה וואכן'
+                label='ס"ה וואכן:'
                 colon={false}
                 name="total_zman_weeks"
                 labelCol={{ span: 12 }} // Adjust the label width
                 wrapperCol={{ span: 12 }} // Adjust the input width
               >
-                <Input disabled />
+                <Input disabled style={{ direction: "ltr" }} />
               </Form.Item>
             </div>
           </div>
 
           <div className="submit_goal_form_btn_container">
-            <Button
-              type="default"
-              className="update_cancel_goal_form_btn"
-              onClick={() => setIsZmanInfoEditing(false)}
-            >
-              Cancel
-            </Button>
             <Button
               type="primary"
               htmlType="submit"
@@ -359,6 +363,13 @@ const UpdateClosedWeeks = ({ setIsZmanInfoEditing }) => {
               loading={loading}
             >
               Submit
+            </Button>
+            <Button
+              type="default"
+              className="update_cancel_goal_form_btn"
+              onClick={() => setIsZmanInfoEditing(false)}
+            >
+              Cancel
             </Button>
           </div>
         </Form>
