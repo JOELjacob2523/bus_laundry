@@ -58,6 +58,15 @@
 }
 
 @media print {
+    *{
+      overflow: visible !important;
+    }
+
+    body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
     .student_info_to_print_container {
       width: 100%;
       padding: 25px;
@@ -72,6 +81,10 @@
       margin: 0;
       padding: 0;
       list-style: none;
+      height: 500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   
     .print_card_item {
